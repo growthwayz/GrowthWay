@@ -76,8 +76,8 @@ const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
       }}
     >
       <div className="nav-hover-capsule"></div>
-      <a 
-        href={href} 
+      <a
+        href={href}
         className="nav-link-icon relative focus:outline-none flex flex-col items-center justify-center"
         aria-label={name}
         onFocus={() => setIsFocused(true)}
@@ -141,7 +141,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="flex-shrink-0 z-50">
-          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#111111] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#B76E79] rounded-sm">
+          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#111111] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#FF8BB9] rounded-sm">
             Growthway<span className="text-[#E95B9F]">.</span>
           </a>
         </div>
@@ -163,8 +163,8 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center z-50">
           <a
-            href="#start-project"
-            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#B76E79]"
+            href="/#start-project"
+            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#FF8BB9]"
           >
             START A PROJECT
             <span className="cta-arrow">→</span>
@@ -202,7 +202,7 @@ export default function Navbar() {
             <a
               key={link.name}
               href={link.href}
-              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#111111] hover:text-[#B76E79] transition-colors focus:text-[#B76E79] focus:font-bold focus:outline-none flex items-center gap-4`}
+              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#111111] hover:text-[#FF8BB9] transition-colors focus:text-[#FF8BB9] focus:font-bold focus:outline-none flex items-center gap-4`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <link.icon />
@@ -211,7 +211,7 @@ export default function Navbar() {
           ))}
           <div className={`mobile-nav-item delay-5 mt-12`}>
             <a
-              href="#start-project"
+              href="/#start-project"
               className="inline-flex items-center gap-2 cta-button px-8 py-4 text-lg font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >

@@ -1,0 +1,55 @@
+/* =========================================
+   CUSTOM CURSOR 
+   ========================================= */
+body.custom-cursor-enabled, 
+body.custom-cursor-enabled * {
+  cursor: none !important;
+}
+
+.custom-cursor-dot {
+  position: fixed; 
+  top: 0; left: 0; 
+  width: 8px; height: 8px;
+  background-color: var(--pink-primary, #F01E78); 
+  border-radius: 50%;
+  pointer-events: none; 
+  z-index: 9999; 
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.custom-cursor-ring {
+  position: fixed; 
+  top: 0; left: 0; 
+  width: 40px; height: 40px;
+  border: 2px solid var(--pink-light, #FF8BB9); 
+  border-radius: 50%;
+  pointer-events: none; 
+  z-index: 9998; 
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out, width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+body.cursor-hover .custom-cursor-dot { 
+  width: 12px; 
+  height: 12px; 
+  background-color: var(--text-dark, #111111); 
+}
+
+body.cursor-hover .custom-cursor-ring { 
+  width: 60px; 
+  height: 60px; 
+  border-color: var(--text-dark, #111111); 
+  background-color: rgba(17, 17, 17, 0.05); 
+}
+
+@media (max-width: 600px) {
+  body.custom-cursor-enabled, 
+  body.custom-cursor-enabled * {
+    cursor: auto !important;
+  }
+  .custom-cursor-dot, 
+  .custom-cursor-ring { 
+    display: none !important; 
+  }
+}
