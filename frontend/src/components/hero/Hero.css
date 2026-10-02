@@ -1,0 +1,119 @@
+:root {
+  --brand-pink: #ff6b8b;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #000;
+  overflow-x: hidden;
+  color: #111;
+  overscroll-behavior: none;
+}
+
+.theme-bg {
+  background: linear-gradient(135deg, #fceef0 0%, #fdf5f5 40%, #f9f9f9 100%);
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px #111;
+  position: relative;
+  will-change: opacity;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  display: inline-block;
+  line-height: 0.75;
+  padding-bottom: 0.05em;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.text-outline::selection {
+  background: rgba(247, 205, 208, 0.99);
+  color: #111;
+  -webkit-text-stroke: 0px;
+}
+
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.scene-3d {
+  position: absolute;
+  inset: 0;
+  perspective: 1000px;
+  z-index: -1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.cube-wrapper {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 120px;
+  height: 120px;
+  transform-style: preserve-3d;
+  animation: spin3D 25s infinite linear;
+}
+
+.cube-face {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(255, 107, 139, 0.4);
+  background: rgba(255, 107, 139, 0.02);
+  backdrop-filter: blur(2px);
+}
+
+.face-front {
+  transform: translateZ(60px);
+}
+
+.face-back {
+  transform: rotateY(180deg) translateZ(60px);
+}
+
+.face-right {
+  transform: rotateY(90deg) translateZ(60px);
+}
+
+.face-left {
+  transform: rotateY(-90deg) translateZ(60px);
+}
+
+.face-top {
+  transform: rotateX(90deg) translateZ(60px);
+}
+
+.face-bottom {
+  transform: rotateX(-90deg) translateZ(60px);
+}
+
+@keyframes spin3D {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg);
+  }
+}
+
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(200%);
+  }
+}
