@@ -45,13 +45,20 @@ export default function Hero() {
 
       // Inject identical font properties
       maskText.style.fontSize = cachedMetricsRef.current.fontSize
+      maskText.style.fontFamily = computed.fontFamily
+      maskText.style.fontWeight = computed.fontWeight
       maskText.style.letterSpacing = cachedMetricsRef.current.letterSpacing
       maskText.textContent = targetEl.getAttribute('data-text') // Ensures text matches
 
       // FIX: Forces SVG to render smoothly during massive scales
       maskText.setAttribute('text-rendering', 'geometricPrecision')
       maskText.style.willChange = 'transform'
-      maskText.style.transformOrigin = `${centerX}px ${centerY}px`
+      
+      // Use fill-box to ensure origin percentages are relative to the text bounding box.
+      // 35% 50% targets a solid part of the text (e.g. the stem of 'P').
+      // Scaling from a solid point guarantees the video covers the entire screen at scale=250.
+      maskText.style.transformBox = 'fill-box'
+      maskText.style.transformOrigin = '35% 50%'
 
       updateFrame()
     }
@@ -177,11 +184,7 @@ export default function Hero() {
               <a href="#" className="text-2xl font-black tracking-tight flex items-center">
                 GROWTH<span style={{ color: 'var(--brand-pink)' }}>WAY</span>
               </a>
-              <div className="hidden md:flex items-center space-x-8 text-xs font-semibold tracking-widest text-gray-600">
-                <a href="#" className="hover:text-black transition-colors duration-300">WORK</a>
-                <a href="#" className="hover:text-black transition-colors duration-300">SERVICES</a>
-                <a href="#" className="hover:text-black transition-colors duration-300">ABOUT</a>
-              </div>
+
               <a
                 href="#"
                 className="hidden sm:inline-block border border-gray-300 px-6 py-2.5 text-xs font-bold tracking-wider uppercase rounded hover:bg-black hover:text-white transition-all duration-300"

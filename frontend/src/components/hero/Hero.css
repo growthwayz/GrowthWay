@@ -24,7 +24,7 @@ body {
   display: inline-block;
   line-height: 0.75;
   padding-bottom: 0.05em;
-  overflow: hidden;
+  overflow: visible;
   vertical-align: bottom;
 }
 
