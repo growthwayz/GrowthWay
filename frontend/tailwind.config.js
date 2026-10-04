@@ -35,6 +35,7 @@ export default {
         fast: '300ms',
         normal: '600ms',
         cinematic: '1200ms',
+
       },
     },
   },
