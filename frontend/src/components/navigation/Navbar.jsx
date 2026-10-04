@@ -163,8 +163,8 @@ export default function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center z-50">
-          <a
-            href="#start-project"
+          <Link
+            to="/#start-project"
             className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-gw-olive"
           >
             START A PROJECT
@@ -202,7 +202,7 @@ export default function Navbar() {
           {navLinks.map((link, index) => (
             <Link
               key={link.name}
-              href={link.href}
+              to={link.href}
               className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-gw-ink hover:text-gw-olive transition-colors focus:text-gw-olive focus:font-bold focus:outline-none flex items-center gap-4`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
