@@ -1,9 +1,15 @@
+import { Routes, Route, Navigate } from 'react-router-dom';
+import PortfolioPage from './pages/PortfolioPage';
+import ProjectDetail from './pages/ProjectDetail';
+
 function App() {
   return (
-    <main className="grid min-h-screen place-items-center bg-slate-50">
-      <h1 className="text-3xl font-semibold text-slate-900">GrowthWay</h1>
-    </main>
-  )
+    <Routes>
+      <Route path="/" element={<Navigate to="/work" replace />} />
+      <Route path="/work" element={<PortfolioPage />} />
+      <Route path="/work/:slug" element={<ProjectDetail />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
