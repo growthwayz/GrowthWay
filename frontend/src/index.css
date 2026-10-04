@@ -14,16 +14,34 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #FAF8F5;          /* gw-cream */
+  color: #111111;               /* gw-ink */
+  overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
-/* selection color */
+/* selection — olive accent */
 ::selection {
-  background: rgba(247, 205, 208, 0.6);
+  background: rgba(92, 158, 49, 0.25);   /* gw-olive */
   color: #111111;
+}
+
+/* Reduced motion: global */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

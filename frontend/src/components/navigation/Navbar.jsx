@@ -141,8 +141,8 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="flex-shrink-0 z-50">
-          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#111111] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#B76E79] rounded-sm">
-            Growthway<span className="text-[#E95B9F]">.</span>
+          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-gw-ink hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-gw-olive rounded-sm">
+            Growthway<span className="text-gw-olive">.</span>
           </a>
         </div>
 
@@ -164,7 +164,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center z-50">
           <a
             href="#start-project"
-            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#B76E79]"
+            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-gw-olive"
           >
             START A PROJECT
             <span className="cta-arrow">→</span>
@@ -173,7 +173,7 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden z-50 p-2 -mr-2 text-[#111111] focus:outline-none"
+          className="md:hidden z-50 p-2 -mr-2 text-gw-ink focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
@@ -202,7 +202,7 @@ export default function Navbar() {
             <a
               key={link.name}
               href={link.href}
-              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#111111] hover:text-[#B76E79] transition-colors focus:text-[#B76E79] focus:font-bold focus:outline-none flex items-center gap-4`}
+              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-gw-ink hover:text-gw-olive transition-colors focus:text-gw-olive focus:font-bold focus:outline-none flex items-center gap-4`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <link.icon />
