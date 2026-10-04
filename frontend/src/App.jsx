@@ -1,5 +1,8 @@
-import Navbar from './components/navigation/Navbar'
-import Hero from './components/hero/Hero'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import PortfolioPage from './pages/PortfolioPage';
+import ProjectDetail from './pages/ProjectDetail';
+import Navbar from './components/navigation/Navbar';
+import Hero from './components/hero/Hero';
 
 function App() {
   return (
@@ -14,10 +17,14 @@ function App() {
       <Navbar />
 
       <main>
-        <Hero />
+        <Routes>
+          <Route path="/" element={<Hero />} />
+          <Route path="/work" element={<PortfolioPage />} />
+          <Route path="/work/:slug" element={<ProjectDetail />} />
+        </Routes>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

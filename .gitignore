@@ -11,3 +11,4 @@ backend/**/*.py[cod]
 .env
 .env.*
 !.env.example
+Growthway_Implementation_Worklog.md
