@@ -7,11 +7,11 @@ import Hero from './components/hero/Hero';
 function App() {
   return (
     <div
-      className="min-h-screen font-sans text-[#111111]"
+      className="min-h-screen font-sans text-gw-ink"
       style={{
-        backgroundColor: '#F7F4F4',
+        backgroundColor: '#FAF8F5',
         backgroundImage:
-          'linear-gradient(180deg, rgba(241,206,203,0.15) 0%, rgba(247,244,244,0) 300px)',
+          'linear-gradient(180deg, rgba(92,158,49,0.06) 0%, rgba(250,248,245,0) 400px)',
       }}
     >
       <Navbar />
