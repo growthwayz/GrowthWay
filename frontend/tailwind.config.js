@@ -6,6 +6,8 @@ export default {
       colors: {
         gw: {
           cream: '#FAF8F5',          // Primary background — warm off-white
+          canvas: '#FAF8F5',         // Primary background alias
+          pink: '#E95B9F',           // Growthway Pink
           white: '#FFFDF9',          // Warm white panels
           ink: '#111111',            // Primary text
           black: '#080808',          // Dark sections
