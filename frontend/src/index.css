@@ -1,0 +1,501 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gw-canvas text-gw-ink font-body antialiased selection:bg-gw-pink selection:text-white;
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+  background: #FAF8F5;          /* gw-cream */
+  color: #111111;               /* gw-ink */
+  overflow-x: hidden;
+  overscroll-behavior: none;
+    
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* ============================================
+   CUSTOM CURSOR
+   ============================================ */
+body, a, button, .nav-btn, .interactive-hover {
+  cursor: none !important;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 12px; height: 12px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s ease;
+  mix-blend-mode: difference;
+}
+.cursor-dot.hovering {
+  width: 60px; height: 60px;
+}
+
+/* ============================================
+   TEXTURE OVERLAYS
+   ============================================ */
+.noise-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none; z-index: 900; opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   MICRO-ACCENTS
+   ============================================ */
+.accent-cross {
+  position: absolute;
+  color: rgba(255,255,255,0.25);
+  font-size: 0.8rem;
+  pointer-events: none;
+  font-family: monospace;
+  transition: transform 0.3s ease;
+}
+.side-text {
+  position: absolute; left: 2vw; top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem; letter-spacing: 4px;
+  color: rgba(255,255,255,0.25);
+  transition: transform 0.3s ease;
+}
+
+/* ============================================
+   SCROLL INDICATOR
+   ============================================ */
+.scroll-indicator {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  width: 1px; height: 60px; background: rgba(255,255,255,0.1); overflow: hidden;
+}
+.scroll-indicator::after {
+  content: ''; position: absolute; top: -100%; left: 0;
+  width: 100%; height: 100%; background: var(--color-gw-pink, #E95B9F);
+  animation: scrollDrop 2s infinite ease-in-out;
+}
+@keyframes scrollDrop {
+  0% { top: -100%; }
+  50% { top: 100%; }
+  100% { top: 100%; }
+}
+
+/* ============================================
+   3D TILT CARD ENGINE (Fixed)
+   ============================================ */
+.tilt-card {
+  position: relative;
+  perspective: 1200px;
+  /* No overflow hidden here — that kills 3D */
+}
+
+.tilt-card-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.08s linear, box-shadow 0.15s ease;
+  will-change: transform;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tilt-card-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.tilt-card-inner img {
+  transform: translateZ(30px) scale(1.06);
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================================
+   TEXT EFFECTS
+   ============================================ */
+.text-stroke-light {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.12);
+  color: transparent;
+}
+
+/* ============================================
+   SCROLL-TRIGGERED REVEAL ANIMATIONS
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 100ms; }
+.reveal-delay-2 { transition-delay: 200ms; }
+.reveal-delay-3 { transition-delay: 300ms; }
+.reveal-delay-4 { transition-delay: 400ms; }
+
+/* Slide from left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Slide from right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale reveal for images */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ============================================
+   HERO ENTRANCE (page-load only)
+   ============================================ */
+.hero-fade-up {
+  animation: heroFadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+.hero-fade-up.d1 { animation-delay: 0.1s; }
+.hero-fade-up.d2 { animation-delay: 0.25s; }
+.hero-fade-up.d3 { animation-delay: 0.4s; }
+.hero-fade-up.d4 { animation-delay: 0.55s; }
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   LINE ANIMATIONS
+   ============================================ */
+.line-expand {
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.line-expand.visible {
+  width: 100%;
+}
+
+/* ============================================
+   PROJECT NUMBER PULSE
+   ============================================ */
+@keyframes numberPulse {
+  0%, 100% { opacity: 0.06; }
+  50% { opacity: 0.12; }
+}
+.number-pulse {
+  animation: numberPulse 4s ease-in-out infinite;
+}
+
+/* ============================================
+   CTA SHIMMER
+   ============================================ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.btn-shimmer {
+  background: linear-gradient(
+    110deg,
+    var(--color-gw-pink, #E95B9F) 0%,
+    #f089bf 25%,
+    var(--color-gw-pink, #E95B9F) 50%,
+    #f089bf 75%,
+    var(--color-gw-pink, #E95B9F) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ============================================
+   FILTER BAR
+   ============================================ */
+.filter-bar {
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+}
+
+/* ============================================
+   FOOTER GRADIENT
+   ============================================ */
+.footer-gradient {
+  background: linear-gradient(
+    135deg,
+    #080808 0%,
+    #0d0d0d 30%,
+    #121015 60%,
+    #0e0a12 100%
+  );
+}
+
+/* ==========================================================================
+   MARQUEE BANNER
+   ========================================================================== */
+.marquee-container {
+  background-color: #E95B9F; /* Growthway Pink */
+  color: #111111; /* Dark Ink text */
+  padding: 24px 0;
+  overflow: hidden;
+  display: flex;
+  position: relative;
+  z-index: 11;
+  width: 100%;
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem; /* Adjust size as needed */
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  animation: marquee 25s linear infinite;
+  align-items: center;
+}
+
+/* Spacing between the text and the bullet points */
+.marquee-track span {
+  margin: 0 2.5vw; 
+}
+
+/* The infinite scroll animation */
+@keyframes marquee { 
+  0% { 
+    transform: translateX(0); 
+  } 
+  100% { 
+    /* Translates by exactly half the width to create a seamless loop with the duplicated text */
+    transform: translateX(-50%); 
+  } 
+}
+
+/* Optional: Pauses the scrolling when the user hovers over the banner */
+.marquee-container:hover .marquee-track { 
+  animation-play-state: paused; 
+}
+
+/* ============================================
+   EDITORIAL LINE RULES
+   ============================================ */
+.luxury-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(233, 91, 159, 0.3) 20%,
+    rgba(233, 91, 159, 0.5) 50%,
+    rgba(233, 91, 159, 0.3) 80%,
+    transparent 100%
+  );
+}
+
+/* ============================================
+   STAT COUNTER
+   ============================================ */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+  -webkit-text-stroke: 1.5px currentColor;
+  color: transparent;
+}
+.stat-number-filled {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   PULL QUOTE
+   ============================================ */
+.pull-quote {
+  position: relative;
+}
+.pull-quote::before {
+  content: '"';
+  position: absolute;
+  top: -0.3em;
+  left: -0.15em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 6em;
+  line-height: 1;
+  color: var(--color-gw-pink, #E95B9F);
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* ============================================
+   LUXURY TYPOGRAPHY UTILITIES
+   ============================================ */
+.text-balance {
+  text-wrap: balance;
+}
+.tracking-luxury {
+  letter-spacing: 0.35em;
+}
+.tracking-editorial {
+  letter-spacing: 0.2em;
+}
+
+/* --- HERO SECTION --- */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  background-color: #080808;
+}
+
+.side-text {
+  position: absolute;
+  left: 3vw;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #777777;
+  text-transform: uppercase;
+}
+
+.hero-bg-number {
+  position: absolute;
+  left: -2vw;
+  top: 5vh;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 45vw;
+  font-weight: 700;
+  color: rgba(241, 206, 203, 0.03);
+  line-height: 0.75;
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 5vw;
+  z-index: 10;
+}
+
+.hero-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(5rem, 11vw, 11rem);
+  line-height: 0.85;
+  font-weight: 700;
+  color: #F7F4F4;
+  letter-spacing: -0.03em;
+  margin: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-title:hover {
+  -webkit-text-stroke: 1.5px #F7F4F4;
+  color: transparent;
+}
+
+.hero-title span {
+  color: #F1CECB;
+  -webkit-text-stroke: 0;
+}
+
+.hero-subtitle { 
+  margin-top: 40px;
+  font-size: 1.15rem;
+  color: #777777;
+  max-width: 420px;
+  margin-left: auto;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@media (max-width: 834px) {
+  .hero-subtitle {
+    margin-left: 0;
+    margin-top: 30px;
+  }
+  .side-text {
+    display: none;
+  }
+}
+
+/* selection — olive accent */
+::selection {
+  background: rgba(92, 158, 49, 0.25);   /* gw-olive */
+  color: #111111;
+}
+
+/* Reduced motion: global */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
