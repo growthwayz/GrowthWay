@@ -180,22 +180,22 @@ export default function Hero() {
             className="w-full h-full flex flex-col absolute inset-0 z-10 opacity-0 pointer-events-auto"
           >
             {/* Nav */}
-            <nav className="w-full flex items-center justify-between px-6 md:px-16 py-8 relative z-50">
-              <a href="#" className="text-2xl font-black tracking-tight flex items-center">
-                GROWTH<span style={{ color: 'var(--brand-pink)' }}>WAY</span>
+            <nav className="w-full flex items-center justify-between px-6 md:px-[5vw] py-6 relative z-50">
+              <a href="#" className="text-2xl font-display font-black tracking-tight flex items-center">
+                GROWTH<span className="text-gw-olive">WAY</span>
               </a>
 
               <a
                 href="#"
-                className="hidden sm:inline-block border border-gray-300 px-6 py-2.5 text-xs font-bold tracking-wider uppercase rounded hover:bg-black hover:text-white transition-all duration-300"
+                className="hidden sm:inline-block border border-gw-line px-6 py-2.5 text-xs font-bold tracking-wider uppercase rounded-sm hover:bg-gw-black hover:text-white transition-all duration-300"
               >
                 Start a Project
               </a>
             </nav>
 
             {/* Main content */}
-            <main className="flex-1 w-full flex flex-col lg:flex-row items-center justify-between px-6 md:px-16 pb-12 lg:pb-0 relative gap-12 lg:gap-8">
-              <div className="w-full lg:w-[55%] flex flex-col justify-center z-10 pt-10 lg:pt-0 relative">
+            <main className="flex-1 w-full flex flex-col lg:flex-row items-center justify-center lg:justify-between px-6 md:px-[5vw] pb-6 lg:pb-0 relative gap-6 lg:gap-8 overflow-y-auto lg:overflow-visible">
+              <div className="w-full lg:w-[55%] flex flex-col justify-center z-10 pt-2 sm:pt-6 lg:pt-0 relative">
                 {/* 3D cube */}
                 <div className="scene-3d bg-parallax-layer">
                   <div className="cube-wrapper hidden md:block">
@@ -209,18 +209,17 @@ export default function Hero() {
                 </div>
 
                 {/* Eyebrow */}
-                <div className="flex items-center gap-4 text-xs font-bold tracking-[0.2em] text-gray-400 uppercase mb-8">
-                  <span className="w-10 h-[1px] bg-red-400" />
+                <div className="flex items-center gap-4 text-xs font-bold tracking-[0.2em] text-gw-muted uppercase mb-6 sm:mb-8">
+                  <span className="w-10 h-[1px] bg-gw-olive" />
                   Creative Growth Agency
                 </div>
 
-                {/* Headline */}
                 <h1
-                  className="flex flex-col font-black leading-[0.85] tracking-tighter mb-8"
-                  style={{ fontSize: 'clamp(4.5rem, 9vw, 9rem)' }}
+                  className="flex flex-col font-display font-bold uppercase leading-[0.85] tracking-[-0.05em] mb-4 sm:mb-8"
+                  style={{ fontSize: 'clamp(2.5rem, 11vw, 9rem)' }}
                 >
-                  <span className="text-black inline-block overflow-hidden pb-1 leading-[0.75] align-bottom">IDEAS TO</span>
-                  <div className="relative flex items-center flex-wrap gap-4 mt-2">
+                  <span className="text-gw-ink inline-block overflow-hidden pb-1 leading-[0.75] align-bottom">IDEAS TO</span>
+                  <div className="relative flex items-center flex-wrap gap-3 sm:gap-4 mt-2">
                     <span
                       ref={impactTargetRef}
                       id="impact-target"
@@ -229,23 +228,23 @@ export default function Hero() {
                     >
                       IMPACT
                     </span>
-                    <div className="inline-flex items-center gap-2 bg-black text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-xl whitespace-nowrap mt-4 sm:mt-0 relative sm:-top-4 lg:-top-6">
-                      <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <div className="inline-flex items-center gap-2 bg-gw-olive-dark text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-xl whitespace-nowrap mt-3 sm:mt-0 relative sm:-top-4 lg:-top-6">
+                      <span className="w-2 h-2 rounded-full bg-gw-olive-light animate-pulse" />
                       Open for Projects
                     </div>
                   </div>
                 </h1>
 
                 {/* Description */}
-                <p className="text-gray-500 text-sm md:text-base lg:text-lg max-w-md leading-relaxed mb-10">
-                  We build brands people remember. Strategy, content, branding, campaigns and execution — all under one roof.
+                <p className="text-gw-muted text-sm sm:text-base lg:text-lg max-w-md leading-relaxed mb-6 sm:mb-10 font-body">
+                  We help brands turn ideas into meaningful digital presence. Strategy, content, branding, campaigns and execution — all under one roof.
                 </p>
 
-                {/* CTA */}
+                {/* CTA — white bg, black text per design doc section 7 */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pointer-events-auto">
                   <a
                     href="#"
-                    className="bg-[#111] text-white px-8 py-4 text-xs md:text-sm font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors duration-300 shadow-xl flex items-center gap-3 group"
+                    className="bg-gw-ink text-white px-8 py-4 text-xs sm:text-sm font-bold tracking-widest uppercase hover:bg-gw-charcoal transition-colors duration-300 shadow-xl flex items-center gap-3 group rounded-sm"
                   >
                     Start a Project
                     <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
@@ -254,16 +253,16 @@ export default function Hero() {
               </div>
 
               {/* Showreel card */}
-              <div className="w-full lg:w-[45%] h-[50vh] lg:h-[75vh] flex items-center justify-center relative mt-12 lg:mt-0">
-                <div className="w-full max-w-[550px] h-full max-h-[700px] bg-[#151515] rounded-xl shadow-2xl relative flex flex-col items-center justify-center cursor-pointer overflow-hidden border border-white/5 group">
+              <div className="w-full lg:w-[45%] h-[28vh] sm:h-[40vh] lg:h-[75vh] flex items-center justify-center relative mt-2 sm:mt-8 lg:mt-0">
+                <div className="w-full max-w-[550px] h-full max-h-[700px] bg-gw-charcoal rounded-lg shadow-2xl relative flex flex-col items-center justify-center cursor-pointer overflow-hidden border border-white/5 group">
                   <div className="absolute inset-0 bg-grid-pattern opacity-50 z-0" />
                   <div className="flex flex-col items-center gap-6 z-10 transition-transform duration-500 group-hover:scale-105">
-                    <div className="w-20 h-20 rounded-full border border-gray-400/50 flex items-center justify-center hover:bg-white transition-colors duration-500 relative text-white hover:text-black">
-                      <svg className="w-6 h-6 ml-1 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-gray-400/50 flex items-center justify-center hover:bg-white transition-colors duration-500 relative text-white hover:text-gw-olive-dark">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-1 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M8 5v14l11-7z" />
                       </svg>
                     </div>
-                    <span className="text-gray-400 text-xs font-bold tracking-[0.3em] uppercase">Showreel</span>
+                    <span className="text-gw-muted text-xs font-bold tracking-[0.3em] uppercase">Showreel</span>
                   </div>
                 </div>
               </div>
@@ -274,8 +273,8 @@ export default function Hero() {
       </div>
 
       {/* Page 2: Next Section */}
-      <div className="h-screen flex items-center justify-center theme-bg border-t border-gray-200">
-        <p className="text-gray-400 font-bold tracking-widest uppercase">Next Section</p>
+      <div className="h-screen flex items-center justify-center theme-bg border-t border-gw-line">
+        <p className="text-gw-olive-light font-bold tracking-widest uppercase">Next Section</p>
       </div>
     </>
   )
