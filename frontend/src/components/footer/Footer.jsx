@@ -47,17 +47,21 @@ export default function Footer() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion || !parallaxZoneRef.current) return;
 
+    let frameId;
     const handleMouseMove = (e) => {
-      const rect = parallaxZoneRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const moveX = (e.clientX - centerX) / 45;
-      const moveY = (e.clientY - centerY) / 45;
+      if (frameId) cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        // Highly optimized: Use window center instead of forcing layout reflows with getBoundingClientRect
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        const moveX = (e.clientX - centerX) / 45;
+        const moveY = (e.clientY - centerY) / 45;
 
-      parallaxElsRef.current.forEach((el) => {
-        if (!el) return;
-        const speed = parseFloat(el.getAttribute('data-speed') || '0');
-        el.style.translate = `${moveX * speed}px ${moveY * speed}px`;
+        parallaxElsRef.current.forEach((el) => {
+          if (!el) return;
+          const speed = parseFloat(el.getAttribute('data-speed') || '0');
+          el.style.translate = `${moveX * speed}px ${moveY * speed}px`;
+        });
       });
     };
 
@@ -87,6 +91,7 @@ export default function Footer() {
 
     const handleMouseMove = (e) => {
       const card = e.currentTarget;
+      // getBoundingClientRect is fast here since transform doesn't invalidate layout
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -94,11 +99,18 @@ export default function Footer() {
       const centerY = rect.height / 2;
       const rotateX = ((y - centerY) / centerY) * -6;
       const rotateY = ((x - centerX) / centerX) * 6;
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      
+      // Decouple DOM writes
+      requestAnimationFrame(() => {
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
     };
 
     const handleMouseLeave = (e) => {
-      e.currentTarget.style.transform = '';
+      const card = e.currentTarget;
+      requestAnimationFrame(() => {
+        card.style.transform = '';
+      });
     };
 
     cards.forEach(card => {
@@ -127,9 +139,9 @@ export default function Footer() {
         <svg className="ribbon-svg" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMin slice">
           <defs>
             <linearGradient id="ribbonGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#FF3B8E" />
-              <stop offset="50%" stopColor="#F01E78" />
-              <stop offset="100%" stopColor="#FF3B8E" />
+              <stop offset="0%" stopColor="#263326" />
+              <stop offset="50%" stopColor="#3D4A36" />
+              <stop offset="100%" stopColor="#263326" />
             </linearGradient>
             <path id="text-path" d="M-100,50 Q360,10 720,50 T1540,50" fill="none" />
           </defs>
@@ -209,7 +221,7 @@ export default function Footer() {
 
           {/* Polaroids */}
           <div ref={addParallaxRef} className="polaroid polaroid-1 cursor-hover parallax-el" data-speed="0.07" data-cap="BRANDING">
-            <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=500&fit=crop" alt="Photography" />
+            <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=500&fit=crop" alt="Photography" loading="lazy" decoding="async" />
           </div>
 
           <div ref={addParallaxRef} className="polaroid polaroid-2 cursor-hover parallax-el" data-speed="0.04" data-cap="DIGITAL">
@@ -217,7 +229,7 @@ export default function Footer() {
           </div>
 
           <div ref={addParallaxRef} className="polaroid polaroid-3 cursor-hover parallax-el" data-speed="-0.06" data-cap="CAMPAIGNS">
-            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=400&fit=crop" alt="Production" />
+            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=400&fit=crop" alt="Production" loading="lazy" decoding="async" />
           </div>
 
           {/* Brands Box */}
@@ -314,7 +326,7 @@ export default function Footer() {
                   YouTube
                 </a></li>
                 <li><a href="#" className="cursor-hover">
-                  <div className="social-icon-box"><svg viewBox="0 0 24 24" className="fill-icon"><path d="M8.22 10.97c1.33 0 2.22-.88 2.22-2.12 0-1.12-.8-1.95-2.03-1.95H4.27v4.07h3.95zm-.76 5.51c1.55 0 2.52-.96 2.52-2.3 0-1.42-1.05-2.26-2.52-2.26H4.27v4.56h3.19zM0 22h24V2H0v20zm12.3-9.98c0 1.76.54 3.03 1.55 3.84 1 .8 2.45 1.15 4.18 1.15 1.57 0 2.87-.27 3.86-.78V13.8c-.8.5-1.93.8-3.1.8-2.05 0-3.1-1.07-3.15-3.08h6.42v-.64c0-3.3-1.6-5.07-4.66-5.07-3.1 0-5.1 2.05-5.1 5.21zm2.34-11h4.94v1.85h-4.94V1.02zm5.06 6.94c0 1.25-.8 2.05-2.34 2.05h-2.3v-3.95c1.45 0 2.28.62 2.28 1.9z" fill="#fff" /></svg></div>
+                  <div className="social-icon-box"><svg viewBox="0 0 24 24" className="fill-icon"><path d="M8.22 10.97c1.33 0 2.22-.88 2.22-2.12 0-1.12-.8-1.95-2.03-1.95H4.27v4.07h3.95zm-.76 5.51c1.55 0 2.52-.96 2.52-2.3 0-1.42-1.05-2.26-2.52-2.26H4.27v4.56h3.19zM0 22h24V2H0v20zm12.3-9.98c0 1.76.54 3.03 1.55 3.84 1 .8 2.45 1.15 4.18 1.15 1.57 0 2.87-.27 3.86-.78V13.8c-.8.5-1.93.8-3.1.8-2.05 0-3.1-1.07-3.15-3.08h6.42v-.64c0-3.3-1.6-5.07-4.66-5.07-3.1 0-5.1 2.05-5.1 5.21zm2.34-11h4.94v1.85h-4.94V1.02zm5.06 6.94c0 1.25-.8 2.05-2.34 2.05h-2.3v-3.95c1.45 0 2.28.62 2.28 1.9z" /></svg></div>
                   Behance
                 </a></li>
               </ul>

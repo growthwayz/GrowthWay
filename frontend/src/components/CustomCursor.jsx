@@ -12,30 +12,21 @@ export default function CustomCursor() {
     // Add global body class to hide default cursor
     document.body.classList.add('custom-cursor-enabled');
 
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-    let animationFrameId;
-
     const onMouseMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.left = `${mouseX}px`;
-        dotRef.current.style.top = `${mouseY}px`;
-      }
-    };
-
-    const renderRing = () => {
-      ringX += (mouseX - ringX) * 0.2;
-      ringY += (mouseY - ringY) * 0.2;
-      if (ringRef.current) {
-        ringRef.current.style.left = `${ringX}px`;
-        ringRef.current.style.top = `${ringY}px`;
-      }
-      animationFrameId = requestAnimationFrame(renderRing);
+      // Use requestAnimationFrame for smoother DOM writes
+      requestAnimationFrame(() => {
+        if (dotRef.current) {
+          dotRef.current.style.left = `${e.clientX}px`;
+          dotRef.current.style.top = `${e.clientY}px`;
+        }
+        if (ringRef.current) {
+          ringRef.current.style.left = `${e.clientX}px`;
+          ringRef.current.style.top = `${e.clientY}px`;
+        }
+      });
     };
 
     document.addEventListener('mousemove', onMouseMove);
-    animationFrameId = requestAnimationFrame(renderRing);
 
     // Event delegation for hover states
     const handleMouseOver = (e) => {
@@ -74,7 +65,7 @@ export default function CustomCursor() {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('mouseout', handleMouseOut);
     };
   }, []);
 

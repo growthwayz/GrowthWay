@@ -1,6 +1,7 @@
 import Navbar from './components/navigation/Navbar'
 import Footer from './components/footer/Footer'
 import CustomCursor from './components/CustomCursor'
+import SignatureExperience from './components/signature-experience/SignatureExperience'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <main className="pt-24 min-h-[calc(100vh-6rem)] grid place-items-center">
         <h1 className="text-4xl font-display font-bold">Growthway</h1>
       </main>
+      <SignatureExperience />
       <Footer />
     </div>
   )

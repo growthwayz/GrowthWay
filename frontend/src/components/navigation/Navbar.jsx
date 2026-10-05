@@ -141,8 +141,8 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="flex-shrink-0 z-50">
-          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#111111] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#FF8BB9] rounded-sm">
-            Growthway<span className="text-[#E95B9F]">.</span>
+          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#171717] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm">
+            Growthway<span className="text-[#641F2B]">.</span>
           </a>
         </div>
 
@@ -164,7 +164,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center z-50">
           <a
             href="/#start-project"
-            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#FF8BB9]"
+            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#3D4A36]"
           >
             START A PROJECT
             <span className="cta-arrow">→</span>
@@ -202,7 +202,7 @@ export default function Navbar() {
             <a
               key={link.name}
               href={link.href}
-              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#111111] hover:text-[#FF8BB9] transition-colors focus:text-[#FF8BB9] focus:font-bold focus:outline-none flex items-center gap-4`}
+              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#171717] hover:text-[#3D4A36] transition-colors focus:text-[#3D4A36] focus:font-bold focus:outline-none flex items-center gap-4`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <link.icon />
