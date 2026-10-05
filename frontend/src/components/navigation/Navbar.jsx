@@ -79,7 +79,7 @@ const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
       <div className="nav-hover-capsule"></div>
       <Link 
         to={href} 
-        className="nav-link-icon relative focus:outline-none flex flex-col items-center justify-center"
+        className="nav-link-icon focus:outline-none"
         aria-label={name}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
@@ -213,7 +213,7 @@ export default function Navbar() {
           <div className={`mobile-nav-item delay-5 mt-12`}>
             <Link
               to="/#start-project"
-              className="inline-flex items-center gap-2 cta-button px-8 py-4 text-lg font-medium"
+              className="cta-button mobile-menu-cta items-center gap-2 font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               START A PROJECT
