@@ -357,9 +357,6 @@ export default function SignatureExperience() {
         </div>
       </div>
     </section>
-    
-    {/* NEW SERVICES COMPONENT INTEGRATION */}
-    <Services />
     </>
   );
 }
