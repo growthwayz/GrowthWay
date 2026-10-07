@@ -53,7 +53,7 @@ export default function Hero() {
       // FIX: Forces SVG to render smoothly during massive scales
       maskText.setAttribute('text-rendering', 'geometricPrecision')
       maskText.style.willChange = 'transform'
-      
+
       // Use fill-box to ensure origin percentages are relative to the text bounding box.
       // 35% 50% targets a solid part of the text (e.g. the stem of 'P').
       // Scaling from a solid point guarantees the video covers the entire screen at scale=250.
@@ -272,10 +272,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Page 2: Next Section */}
-      <div className="h-screen flex items-center justify-center theme-bg border-t border-gw-line">
-        <p className="text-gw-olive-light font-bold tracking-widest uppercase">Next Section</p>
-      </div>
     </>
   )
 }
