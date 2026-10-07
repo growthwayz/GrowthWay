@@ -67,6 +67,20 @@ const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
     translateY = 0;
   }
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      const targetTop = target.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: targetTop,
+        behavior: 'smooth'
+      });
+      // Optionally update the URL silently
+      window.history.pushState(null, '', href);
+    }
+  };
+
   return (
     <div
       ref={itemRef}
@@ -82,6 +96,7 @@ const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
         aria-label={name}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        onClick={handleClick}
       >
         <Icon />
         <span className="nav-hover-dot"></span>

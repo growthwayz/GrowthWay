@@ -10,26 +10,24 @@ body.custom-cursor-enabled * {
   position: fixed; 
   top: 0; left: 0; 
   width: 8px; height: 8px;
-  background-color: #ffffff;
+  background-color: #5C7051;
   border-radius: 50%;
   pointer-events: none; 
   z-index: 9999; 
-  transform: translate(-50%, -50%);
+  transform: translate3d(0,0,0) translate(-50%, -50%);
   transition: width 0.2s, height 0.2s, background-color 0.2s;
-  mix-blend-mode: difference;
 }
 
 .custom-cursor-ring {
   position: fixed; 
   top: 0; left: 0; 
   width: 40px; height: 40px;
-  border: 1.5px solid #ffffff; 
+  border: 1.5px solid #5C7051; 
   border-radius: 50%;
   pointer-events: none; 
   z-index: 9998; 
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out, width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
-  mix-blend-mode: difference;
+  transform: translate3d(0,0,0) translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
 }
 
 body.cursor-hover .custom-cursor-dot { 

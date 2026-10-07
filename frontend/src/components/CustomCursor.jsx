@@ -16,12 +16,10 @@ export default function CustomCursor() {
       // Use requestAnimationFrame for smoother DOM writes
       requestAnimationFrame(() => {
         if (dotRef.current) {
-          dotRef.current.style.left = `${e.clientX}px`;
-          dotRef.current.style.top = `${e.clientY}px`;
+          dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
         }
         if (ringRef.current) {
-          ringRef.current.style.left = `${e.clientX}px`;
-          ringRef.current.style.top = `${e.clientY}px`;
+          ringRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
         }
       });
     };

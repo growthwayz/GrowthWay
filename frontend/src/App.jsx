@@ -1,24 +1,56 @@
+import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/navigation/Navbar'
 import Footer from './components/footer/Footer'
 import CustomCursor from './components/CustomCursor'
 import SignatureExperience from './components/signature-experience/SignatureExperience'
+import Hero from './components/hero/Hero'
+import PortfolioPage from './pages/PortfolioPage'
+import ProjectDetail from './pages/ProjectDetail'
+import Services from './components/services/Services'
+
+function Home() {
+  return (
+    <div className="flex flex-col w-full">
+      <div id="hero">
+        <Hero />
+      </div>
+      <div id="work">
+        <PortfolioPage />
+      </div>
+      <div id="about">
+        <SignatureExperience />
+      </div>
+      <div id="services">
+        <Services />
+      </div>
+    </div>
+  )
+}
 
 function App() {
   return (
     <div
-      className="min-h-screen font-sans text-[#111111]"
+      className="min-h-screen font-sans text-gw-ink"
       style={{
-        backgroundColor: '#F7F4F4',
-        backgroundImage: 'linear-gradient(180deg, rgba(241,206,203,0.15) 0%, rgba(247,244,244,0) 300px)'
+        backgroundColor: '#FAF8F5',
+        backgroundImage:
+          'linear-gradient(180deg, rgba(92,158,49,0.06) 0%, rgba(250,248,245,0) 400px)',
       }}
     >
       <CustomCursor />
       <Navbar />
-      <main className="pt-24 min-h-[calc(100vh-6rem)] grid place-items-center">
-        <h1 className="text-4xl font-display font-bold">Growthway</h1>
+
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/work" element={<PortfolioPage />} />
+          <Route path="/work/:slug" element={<ProjectDetail />} />
+        </Routes>
       </main>
-      <SignatureExperience />
-      <Footer />
+
+      <div id="contact">
+        <Footer />
+      </div>
     </div>
   )
 }

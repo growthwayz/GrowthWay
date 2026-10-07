@@ -27,9 +27,10 @@ export default function SignatureExperience() {
     // 2. STEPPED SCROLL TIMELINE (Smooth Z-Depth transitions)
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: "#stage", // Match prototype exactly
+        trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
+
         scrub: 0.5, // Reduced scrub delay so the animation doesn't lag behind the physical scroll when flicking the wheel
         onUpdate: (self) => {
           const p = self.progress;
@@ -71,6 +72,16 @@ export default function SignatureExperience() {
       .to(".sig-phase-5", { autoAlpha: 1, duration: 0.5 }, "<0.5")
       .to(scene, { z: depths[4], duration: 3 }); // Ideal pause so it stays visible without feeling stuck
 
+    // Refresh ScrollTrigger to ensure accurate layout after initial render (syncing dynamically loaded image heights)
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener('load', refresh);
+    setTimeout(refresh, 500);
+    setTimeout(refresh, 1500);
+    setTimeout(refresh, 3000);
+
+    return () => {
+      window.removeEventListener('load', refresh);
+    };
   }, { scope: containerRef });
 
   return (
