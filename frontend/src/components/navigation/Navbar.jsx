@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const WorkIcon = () => (
@@ -68,6 +67,20 @@ const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
     translateY = 0;
   }
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      const targetTop = target.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: targetTop,
+        behavior: 'smooth'
+      });
+      // Optionally update the URL silently
+      window.history.pushState(null, '', href);
+    }
+  };
+
   return (
     <div
       ref={itemRef}
@@ -77,17 +90,18 @@ const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
       }}
     >
       <div className="nav-hover-capsule"></div>
-      <Link 
-        to={href} 
-        className="nav-link-icon focus:outline-none"
+      <a
+        href={href}
+        className="nav-link-icon relative focus:outline-none flex flex-col items-center justify-center"
         aria-label={name}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        onClick={handleClick}
       >
         <Icon />
         <span className="nav-hover-dot"></span>
         <span className="nav-hover-label">{name}</span>
-      </Link>
+      </a>
     </div>
   );
 };
@@ -126,10 +140,10 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: 'WORK', href: '/work', active: false, icon: WorkIcon },
-    { name: 'SERVICES', href: '/#services', active: true, icon: ServicesIcon },
-    { name: 'ABOUT', href: '/#about', active: false, icon: AboutIcon },
-    { name: 'CONTACT', href: '/#contact', active: false, icon: ContactIcon },
+    { name: 'WORK', href: '#work', active: false, icon: WorkIcon },
+    { name: 'SERVICES', href: '#services', active: true, icon: ServicesIcon },
+    { name: 'ABOUT', href: '#about', active: false, icon: AboutIcon },
+    { name: 'CONTACT', href: '#contact', active: false, icon: ContactIcon },
   ];
 
   return (
@@ -142,8 +156,8 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="flex-shrink-0 z-50">
-          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-gw-ink hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-gw-olive rounded-sm">
-            Growthway<span className="text-gw-olive">.</span>
+          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#171717] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm">
+            Growthway<span className="text-[#641F2B]">.</span>
           </a>
         </div>
 
@@ -163,18 +177,18 @@ export default function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center z-50">
-          <Link
-            to="/#start-project"
-            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-gw-olive"
+          <a
+            href="/#start-project"
+            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#3D4A36]"
           >
             START A PROJECT
             <span className="cta-arrow">→</span>
-          </Link>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden z-50 p-2 -mr-2 text-gw-ink focus:outline-none"
+          className="md:hidden z-50 p-2 -mr-2 text-[#111111] focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
@@ -200,25 +214,25 @@ export default function Navbar() {
       >
         <nav className="flex flex-col gap-6 mt-16">
           {navLinks.map((link, index) => (
-            <Link
+            <a
               key={link.name}
-              to={link.href}
-              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-gw-ink hover:text-gw-olive transition-colors focus:text-gw-olive focus:font-bold focus:outline-none flex items-center gap-4`}
+              href={link.href}
+              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#171717] hover:text-[#3D4A36] transition-colors focus:text-[#3D4A36] focus:font-bold focus:outline-none flex items-center gap-4`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <link.icon />
               {link.name}
-            </Link>
+            </a>
           ))}
           <div className={`mobile-nav-item delay-5 mt-12`}>
-            <Link
-              to="/#start-project"
-              className="cta-button mobile-menu-cta items-center gap-2 font-medium"
+            <a
+              href="/#start-project"
+              className="inline-flex items-center gap-2 cta-button px-8 py-4 text-lg font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               START A PROJECT
               <span className="cta-arrow">→</span>
-            </Link>
+            </a>
           </div>
         </nav>
       </div>
