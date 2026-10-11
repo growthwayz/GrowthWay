@@ -64,7 +64,6 @@ export default function CustomCursor() {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
-      document.removeEventListener('mouseout', handleMouseOut);
     };
   }, []);
 
