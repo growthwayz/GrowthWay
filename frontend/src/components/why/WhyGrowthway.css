@@ -169,3 +169,8 @@
     transform: none !important;
   }
 }
+
+@media (max-width: 768px) {
+ .why-content { min-width: 0; width: 100%; }
+ .why-word { font-size: clamp(2rem, 8.7vw, 3rem); overflow-wrap: anywhere; }
+}

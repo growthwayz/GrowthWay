@@ -22,6 +22,12 @@ const ContactPage = lazy(() => import('./pages/ContactPage'))
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
+const AdminContent = lazy(() => import('./pages/admin/AdminContent'))
+const AdminHero = lazy(() => import('./pages/admin/AdminHero'))
+const AdminMedia = lazy(() => import('./pages/admin/AdminMedia'))
+const AdminLeads = lazy(() => import('./pages/admin/AdminLeads'))
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'))
+const AdminAccounts = lazy(() => import('./pages/admin/AdminAccounts'))
 
 /**
  * Homepage flow (per Phase A acceptance):
@@ -88,7 +94,7 @@ function App() {
         Skip to main content
       </a>
 
-      <CustomCursor />
+      {!isAdminRoute && <CustomCursor />}
       {!isAdminRoute && <Navbar />}
 
       <main id="main-content" tabIndex="-1" className="outline-none">
@@ -107,6 +113,14 @@ function App() {
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="content/:collection" element={<AdminContent />} />
+              <Route path="hero" element={<AdminHero />} />
+              <Route path="media" element={<AdminMedia />} />
+              <Route path="leads" element={<AdminLeads />} />
+              <Route path="settings" element={<AdminSettings />} />
+              <Route path="users" element={<AdminAccounts mode="users" />} />
+              <Route path="audit" element={<AdminAccounts mode="audit" />} />
+              <Route path="account" element={<AdminAccounts mode="account" />} />
             </Route>
 
             {/* Catch-all fallback */}

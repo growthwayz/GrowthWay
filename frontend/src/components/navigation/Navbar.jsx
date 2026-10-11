@@ -194,7 +194,7 @@ export default function Navbar() {
           {navLinks.map((link, index) => (
             <a
               key={link.name}
-              href={link.href}
+              href={window.location.pathname === '/' ? link.href : '/' + link.href}
               className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#171717] hover:text-[#3D4A36] transition-colors focus:text-[#3D4A36] focus:font-bold focus:outline-none flex items-center gap-4`}
               onClick={() => setIsMobileMenuOpen(false)}
             >

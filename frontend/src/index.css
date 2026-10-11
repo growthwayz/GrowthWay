@@ -615,3 +615,18 @@
     min-width: 320px;
     min-height: 100vh;
   }
+/* Mobile layout adjustments; desktop artwork and typography remain unchanged. */
+@media (max-width: 767px) {
+ .gw-portfolio .hero { height: auto; min-height: 100svh; padding: 120px 0 64px; }
+ .gw-portfolio .hero-title { font-size: clamp(2.75rem, 12.5vw, 5.5rem); }
+ .gw-portfolio h2, .gw-portfolio h3, .gw-project-detail h1 { overflow-wrap: anywhere; }
+ .gw-project-detail h1 { font-size: clamp(2.5rem, 12vw, 3.75rem); }
+ .gw-project-detail > nav { margin-top: 100px; }
+ .gw-contact .inline-flex.rounded-full { align-self: flex-start; max-width: 100%; }
+ .gw-contact .inline-flex.rounded-full > span:last-child { font-size: 10px; }
+ .gw-contact .contact-form-panel { padding: 20px; }
+ .mobile-menu-glass { overflow-y: auto; padding-top: 100px; padding-bottom: 32px; justify-content: flex-start; }
+ .mobile-menu-glass > nav { margin-top: 20px; }
+ .mobile-menu-glass .cta-button { max-width: 100%; font-size: 14px; padding: 16px 20px; }
+ .gw-portfolio .filter-bar button { white-space: normal; overflow-wrap: anywhere; }
+}

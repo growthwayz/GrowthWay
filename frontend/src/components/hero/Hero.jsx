@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './Hero.css'
 import heroVideo from "./videos/sample.mp4"
+import { videoUrl } from '../../lib/media'
+import { usePublicCms } from '../../lib/publicCms'
 
 const PLACEHOLDER_VIDEO = heroVideo
 
@@ -17,6 +19,9 @@ export default function Hero() {
   const cachedMetricsRef = useRef(null)
   const tickingRef = useRef(false)
   const [isPlaying, setIsPlaying] = useState(true)
+  const { data: settings } = usePublicCms('/api/site-settings')
+  const hero = settings?.hero
+  const videoSource = hero?.videoUrl && hero.videoPermissionApproved ? videoUrl(hero.videoUrl) : PLACEHOLDER_VIDEO
 
   // Ensure videos are properly muted and autoplaying without browser blockage
   useEffect(() => {
@@ -28,17 +33,14 @@ export default function Hero() {
     if (showreelVideoRef.current) {
       showreelVideoRef.current.defaultMuted = true
       showreelVideoRef.current.muted = true
-      showreelVideoRef.current.play().catch(() => {
-        setIsPlaying(false)
-      })
+      showreelVideoRef.current.play().catch(() => {})
     }
-  }, [])
+  }, [videoSource])
 
   const toggleShowreel = () => {
     if (!showreelVideoRef.current) return
     if (showreelVideoRef.current.paused) {
-      showreelVideoRef.current.play()
-      setIsPlaying(true)
+      showreelVideoRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
     } else {
       showreelVideoRef.current.pause()
       setIsPlaying(false)
@@ -106,6 +108,14 @@ export default function Hero() {
       if (!cachedMetricsRef.current) return
 
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (window.matchMedia('(max-width: 1023px)').matches) {
+        uiLayer.style.opacity = 1
+        videoLayer.style.opacity = 0
+        targetEl.style.opacity = 1
+        if (scrollHint) scrollHint.style.opacity = 0
+        tickingRef.current = false
+        return
+      }
       if (prefersReducedMotion) {
         uiLayer.style.opacity = 1
         videoLayer.style.opacity = 1
@@ -178,8 +188,8 @@ export default function Hero() {
   }, [])
 
   return (
-    <div ref={containerRef} className="h-[300vh] w-full relative">
-      <div ref={stickyRef} className="sticky top-0 w-full h-screen overflow-hidden theme-bg">
+    <div ref={containerRef} className="gw-hero h-[300vh] w-full relative">
+      <div ref={stickyRef} className="hero-stage sticky top-0 w-full h-screen overflow-hidden theme-bg">
 
         {/* SVG clipPath definition for video masking */}
         <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
@@ -198,11 +208,13 @@ export default function Hero() {
         {/* Video layer that gets masked by the zooming text */}
         <div
           ref={videoLayerRef}
-          className="absolute inset-0 w-full h-full z-40 pointer-events-none origin-center"
+          className="hero-intro-layer absolute inset-0 w-full h-full z-40 pointer-events-none origin-center"
         >
           <video
             ref={introVideoRef}
-            src={PLACEHOLDER_VIDEO}
+            src={videoSource}
+            poster={hero?.poster || undefined}
+            preload="metadata"
             autoPlay
             loop
             muted
@@ -225,7 +237,7 @@ export default function Hero() {
         {/* UI layer: Hero content, typography, CTAs and interactive showreel */}
         <div
           ref={uiLayerRef}
-          className="w-full h-full flex flex-col justify-center absolute inset-0 z-10 pointer-events-auto"
+          className="hero-ui w-full h-full flex flex-col justify-center absolute inset-0 z-10 pointer-events-auto"
           style={{ opacity: 0 }}
         >
           {/* 3D decorative cube layer */}
@@ -241,13 +253,13 @@ export default function Hero() {
           </div>
 
           {/* Main hero presentation canvas */}
-          <main className="w-full flex-1 flex flex-col lg:flex-row items-center justify-between px-6 md:px-[5vw] pt-28 pb-16 lg:py-0 relative gap-8 lg:gap-12 z-10">
+          <main className="hero-presentation w-full flex-1 flex flex-col lg:flex-row items-center justify-between px-6 md:px-[5vw] pt-28 pb-16 lg:py-0 relative gap-8 lg:gap-12 z-10">
             
             {/* Left Column: Typography & Conversion Core */}
             <div className="w-full lg:w-[55%] flex flex-col justify-center z-10">
               
               {/* Eyebrow with official emblem badge */}
-              <div className="flex items-center gap-3 sm:gap-4 text-xs font-bold tracking-[0.25em] text-gw-muted uppercase mb-6 sm:mb-8">
+              <div className="hero-eyebrow flex items-center gap-3 sm:gap-4 text-xs font-bold tracking-[0.25em] text-gw-muted uppercase mb-6 sm:mb-8">
                 <img src="/logo-icon.png" alt="" className="w-5 h-5 rounded-[4px] object-cover shadow-sm" />
                 <span className="w-8 h-[1.5px] bg-gw-olive" />
                 <span>Creative Growth Agency</span>
@@ -305,15 +317,23 @@ export default function Hero() {
             </div>
 
             {/* Right Column: Video Showreel Showcase */}
-            <div className="w-full lg:w-[45%] h-[34vh] sm:h-[45vh] lg:h-[72vh] flex items-center justify-center relative mt-4 lg:mt-0">
+            <div className="hero-showreel w-full lg:w-[45%] h-[34vh] sm:h-[45vh] lg:h-[72vh] flex items-center justify-center relative mt-4 lg:mt-0">
               <div
                 onClick={toggleShowreel}
+                role="button"
+                tabIndex={0}
+                aria-label={isPlaying ? 'Pause showreel' : 'Play showreel'}
+                onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleShowreel(); } }}
                 className="w-full max-w-[560px] h-full max-h-[680px] bg-gw-charcoal rounded-sm shadow-2xl relative flex flex-col items-center justify-center cursor-pointer overflow-hidden border border-black/10 group"
               >
                 {/* Embedded video player */}
                 <video
                   ref={showreelVideoRef}
-                  src={PLACEHOLDER_VIDEO}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  src={videoSource}
+                  poster={hero?.poster || undefined}
+                  preload="metadata"
                   autoPlay
                   loop
                   muted

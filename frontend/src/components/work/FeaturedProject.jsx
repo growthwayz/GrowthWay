@@ -47,7 +47,7 @@ const FeaturedProject = ({ project }) => {
 
             {/* Project Stats */}
             {project.stats && (
-              <div className="flex gap-8 mb-14 reveal reveal-delay-3">
+              <div className="flex flex-wrap gap-8 mb-14 reveal reveal-delay-3">
                 {Object.entries(project.stats).map(([key, value]) => (
                   <div key={key} className="text-center">
                     <span className="font-display text-3xl font-bold text-gw-ink">{value}</span>
@@ -77,7 +77,7 @@ const FeaturedProject = ({ project }) => {
               <Link to={`/work/${project.slug}`} className="block aspect-[4/3] md:aspect-[16/10] bg-gw-black">
                 <img 
                   src={project.image} 
-                  alt={project.title}
+                  alt={project.imageAlt || project.title}
                   loading="lazy"
                   className="w-full h-full object-cover"
                 />
