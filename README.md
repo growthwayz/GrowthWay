@@ -1,3 +1,5 @@
+> Updated implementation (11 October 2026): use [CMS guide](docs/CMS_GUIDE.md), [missing inputs](docs/MISSING_INPUTS.md) and [deployment guide](docs/DEPLOYMENT.md) for current setup/status. Earlier completion claims and Excel statuses are historical. Cloudinary image/video uploads are verified. SMTP/GA4 and production deployment remain pending owner details; AI is excluded.
+
 # GrowthWay — Ideas to Impact
 > **Creative Growth Agency Web Platform**  
 > Built with modern web craft: React 18, Vite, Tailwind CSS, GSAP, FastAPI, MongoDB Atlas, and Cloudinary.

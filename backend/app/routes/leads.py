@@ -1,65 +1,21 @@
-"""
-Lead generation routes (Phase B).
-"""
-
-from fastapi import APIRouter, HTTPException, BackgroundTasks, Request
-from datetime import datetime, timedelta
+from fastapi import APIRouter, Request, HTTPException, BackgroundTasks
+from app.models.schemas import LeadCreate
 from app.db.mongodb import get_db
-from app.models.schemas import LeadCreate, ErrorResponse
-from app.services.email import send_lead_notification
+from app.core.security import rate_limit
+from app.auth.jwt import now
+from app.services.email import notify_lead
 
-router = APIRouter(prefix="/api/leads", tags=["leads"])
-
-# Simple in-memory rate limiting (IP-based) for leads
-# Real apps should use redis, but this is fine for this requirement (e.g. 5/hour/IP)
-RATE_LIMIT_REQUESTS = 5
-RATE_LIMIT_HOURS = 1
-_rate_limits = {}
-
-def check_rate_limit(ip: str):
-    now = datetime.utcnow()
-    # Cleanup old entries
-    if ip in _rate_limits:
-        _rate_limits[ip] = [t for t in _rate_limits[ip] if now - t < timedelta(hours=RATE_LIMIT_HOURS)]
-        if len(_rate_limits[ip]) >= RATE_LIMIT_REQUESTS:
-            return False
-        _rate_limits[ip].append(now)
-    else:
-        _rate_limits[ip] = [now]
-    return True
-
-@router.post("", response_model=dict, responses={429: {"model": ErrorResponse}, 400: {"model": ErrorResponse}})
-async def create_lead(lead: LeadCreate, request: Request, background_tasks: BackgroundTasks):
-    """
-    Submit a new lead/enquiry.
-    Validates payload, checks rate limits, saves to DB, sends email notification.
-    """
-    client_ip = request.client.host if request.client else "unknown"
-    if not check_rate_limit(client_ip):
-        raise HTTPException(
-            status_code=429, 
-            detail={"code": "RATE_LIMIT_EXCEEDED", "message": "Too many requests. Try again later.", "details": []}
-        )
-    
-    if not lead.consent:
-        raise HTTPException(
-            status_code=400,
-            detail={"code": "VALIDATION_ERROR", "message": "Consent is required.", "details": ["consent"]}
-        )
-
-    # Basic honeypot / timestamp check could be implemented on the frontend and validated here
-    
-    db = get_db()
-    
-    # Save to db
-    lead_doc = lead.model_dump()
-    lead_doc["status"] = "New"
-    lead_doc["createdAt"] = datetime.utcnow()
-    lead_doc["source"] = "organic" # Can be updated if we pass UTMs
-    
-    result = await db.leads.insert_one(lead_doc)
-    
-    # Send email in background
-    background_tasks.add_task(send_lead_notification, lead_doc)
-    
-    return {"id": str(result.inserted_id), "status": "New"}
+router = APIRouter(prefix='/api', tags=['leads'])
+@router.post('/leads', status_code=201)
+async def create_lead(data: LeadCreate, request: Request, tasks: BackgroundTasks):
+    await rate_limit(request, 'leads', 5, 3600)
+    if data.website_fax_hp: raise HTTPException(400, 'Unable to submit this enquiry')
+    if not data.consent: raise HTTPException(422, 'Please consent to being contacted about this enquiry')
+    for slug in set(data.servicesNeeded):
+        if not await get_db().services.find_one({'slug': slug, 'published': True}): raise HTTPException(422, 'Choose a currently available service')
+    lead = data.model_dump(exclude={'website_fax_hp'})
+    lead.update(status='New', createdAt=now(), updatedAt=now(), revision=1, notificationStatus='pending', notificationAttempts=0)
+    result = await get_db().leads.insert_one(lead)
+    # Persist before notification. SMTP failures never discard an enquiry.
+    tasks.add_task(notify_lead, result.inserted_id)
+    return {'id': str(result.inserted_id), 'message': 'Your enquiry has been received.'}

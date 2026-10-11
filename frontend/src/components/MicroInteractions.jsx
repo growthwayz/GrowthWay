@@ -7,10 +7,6 @@ const MicroInteractions = () => {
     // Scroll-triggered reveal animations via IntersectionObserver
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .line-expand');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      revealElements.forEach((el) => el.classList.add('visible'));
-      return;
-    }
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -23,10 +19,24 @@ const MicroInteractions = () => {
       { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
     );
 
-    revealElements.forEach((el) => observerRef.current.observe(el));
+    function observe(elements) {
+      elements.forEach(el => {
+        if (prefersReducedMotion) el.classList.add('visible');
+        else observerRef.current.observe(el);
+      });
+    }
+    observe(revealElements);
+    // CMS projects arrive after the initial render. Include their existing animations.
+    const added = new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
+      if (node.nodeType !== 1) return;
+      if (node.matches('.reveal, .reveal-left, .reveal-right, .reveal-scale, .line-expand')) observe([node]);
+      observe(node.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .line-expand'));
+    })));
+    added.observe(document.getElementById('main-content'), { childList: true, subtree: true });
 
     return () => {
       if (observerRef.current) observerRef.current.disconnect();
+      added.disconnect();
     };
   }, []);
 

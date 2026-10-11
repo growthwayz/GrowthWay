@@ -99,3 +99,5 @@ desktop.ini
 *.swp
 *.swo
 *~
+docs/
+DEVELOPER_HANDOVER_GUIDE.md

@@ -1,48 +1,42 @@
-"""
-Authentication utilities for Admin panel.
-"""
-
-from datetime import datetime, timedelta
-from jose import jwt
+import hashlib
+import secrets
+from datetime import datetime, timedelta, timezone
 import bcrypt
-from fastapi import HTTPException, Depends
+from jose import jwt, JWTError
+from fastapi import Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordBearer
 from app.core.config import get_settings
+from app.db.mongodb import get_db
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/admin/login")
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/admin/login', auto_error=False)
+def now(): return datetime.now(timezone.utc)
+def _password_bytes(password): return hashlib.sha256(password.encode('utf-8')).hexdigest().encode('ascii')
+def get_password_hash(password): return 'sha256:' + bcrypt.hashpw(_password_bytes(password), bcrypt.gensalt()).decode()
+def verify_password(password, hashed):
     try:
-        # bcrypt standard limit is 72 bytes
-        plain_bytes = plain_password.encode('utf-8')[:72]
-        hash_bytes = hashed_password.encode('utf-8')
-        return bcrypt.checkpw(plain_bytes, hash_bytes)
-    except Exception:
-        return False
+        if hashed.startswith('sha256:'): return bcrypt.checkpw(_password_bytes(password), hashed[7:].encode())
+        return bcrypt.checkpw(password.encode()[:72], hashed.encode())
+    except (ValueError, TypeError, AttributeError): return False
 
-def get_password_hash(password: str) -> str:
-    plain_bytes = password.encode('utf-8')[:72]
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(plain_bytes, salt).decode('utf-8')
+async def create_session(admin):
+    settings = get_settings(); jti = secrets.token_urlsafe(32)
+    expire = now() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    await get_db().sessions.insert_one({'jti': jti, 'username': admin['username'], 'expiresAt': expire})
+    return jwt.encode({'sub': admin['username'], 'jti': jti, 'exp': expire, 'iat': now()}, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    settings = get_settings()
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
-    return encoded_jwt
+async def get_current_admin(request: Request, token: str | None = Depends(oauth2_scheme)):
+    settings = get_settings(); cookie_auth = not token
+    token = token or request.cookies.get('gw_session')
+    if not token: raise HTTPException(401, 'Sign in to continue')
+    if cookie_auth and request.method not in ('GET', 'HEAD', 'OPTIONS'):
+        if request.headers.get('origin') not in [o.strip() for o in settings.CORS_ORIGINS.split(',')]: raise HTTPException(403, 'Untrusted request origin')
+    try: payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+    except JWTError: raise HTTPException(401, 'Invalid or expired session') from None
+    session = await get_db().sessions.find_one({'jti': payload.get('jti'), 'username': payload.get('sub'), 'expiresAt': {'$gte': now()}})
+    admin = await get_db().admins.find_one({'username': payload.get('sub'), 'active': True})
+    if not session or not admin: raise HTTPException(401, 'Session revoked or account disabled')
+    return {**admin, 'jti': payload['jti']}
 
-async def get_current_admin(token: str = Depends(oauth2_scheme)):
-    settings = get_settings()
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
-        return username
-    except Exception:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
+async def require_owner(admin=Depends(get_current_admin)):
+    if admin.get('role') != 'admin': raise HTTPException(403, 'Administrator access required')
+    return admin

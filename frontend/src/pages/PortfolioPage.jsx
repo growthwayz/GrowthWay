@@ -4,9 +4,9 @@ import SelectedWorkIntro from '../components/work/SelectedWorkIntro';
 import PortfolioFilter from '../components/work/PortfolioFilter';
 import FeaturedProject from '../components/work/FeaturedProject';
 import ProjectCollection from '../components/work/ProjectCollection';
-import Navbar from '../components/navigation/Navbar';
+import { usePublicCms, portfolioProject } from '../lib/publicCms';
 import MicroInteractions from '../components/MicroInteractions';
-import { projects, categories, stats, clientLogos } from '../data/projects';
+import { stats, clientLogos } from '../data/projects';
 
 /* ── Luxury Stats Bar ── */
 const StatsBar = () => (
@@ -73,6 +73,11 @@ const TrustedBy = () => (
 /* ── MAIN PAGE ── */
 const PortfolioPage = () => {
   const [activeCategory, setActiveCategory] = useState('All');
+  const { data: records, loading, error } = usePublicCms('/api/projects');
+  const { data: categoryRecords } = usePublicCms('/api/categories');
+  const { data: services } = usePublicCms('/api/services');
+  const projects = (records || []).map((record, index) => portfolioProject(record, index, categoryRecords || [], services || []));
+  const categories = ['All', ...new Set(projects.flatMap(project => project.categories))];
 
   const filteredProjects = projects.filter(project => {
     if (activeCategory === 'All') return true;
@@ -83,7 +88,7 @@ const PortfolioPage = () => {
   const remainingProjects = filteredProjects.filter(p => p.id !== featuredProject?.id);
 
   return (
-    <div className="bg-gw-canvas min-h-screen text-gw-ink relative overflow-x-hidden">
+    <div className="gw-portfolio bg-gw-canvas min-h-screen text-gw-ink relative overflow-x-hidden">
       <MicroInteractions />
 
       {/* ── HERO ── */}
@@ -101,6 +106,10 @@ const PortfolioPage = () => {
         activeCategory={activeCategory} 
         onSelect={setActiveCategory} 
       />
+
+      {loading && <p role="status" className="px-5 py-16 text-center text-gw-muted">Loading selected work…</p>}
+      {error && <p role="alert" className="px-5 py-16 text-center text-gw-muted">{error}</p>}
+      {!loading && !error && !filteredProjects.length && <p className="px-5 py-16 text-center text-gw-muted">{activeCategory === 'All' ? 'Selected work will appear here when published.' : 'No projects in this category yet.'}</p>}
 
       {/* ── FEATURED PROJECT ── */}
       {featuredProject && (
@@ -151,7 +160,7 @@ const PortfolioPage = () => {
                 </span>
               </div>
 
-              <div className="flex gap-8 text-[10px] uppercase tracking-luxury text-gw-white/15">
+              <div className="flex flex-wrap justify-center gap-8 text-[10px] uppercase tracking-luxury text-gw-white/15">
                 <span className="interactive-hover hover:text-gw-white/40 transition-colors">Instagram</span>
                 <span className="interactive-hover hover:text-gw-white/40 transition-colors">LinkedIn</span>
                 <span className="interactive-hover hover:text-gw-white/40 transition-colors">Behance</span>
