@@ -15,7 +15,17 @@ async def lifespan(app):
     await close_db()
 
 app = FastAPI(title=settings.APP_NAME, lifespan=lifespan, docs_url='/docs' if settings.ENVIRONMENT in ('development', 'test') else None, redoc_url=None)
-app.add_middleware(CORSMiddleware, allow_origins=[o.strip() for o in settings.CORS_ORIGINS.split(',') if o.strip()], allow_credentials=True, allow_methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], allow_headers=['Content-Type', 'Authorization'])
+cors_origins = [o.strip() for o in settings.CORS_ORIGINS.split(',') if o.strip()]
+allow_any_origin = cors_origins == ['*']
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[] if allow_any_origin else cors_origins,
+    # Credentialed requests need a specific origin in the response, not a literal '*'.
+    allow_origin_regex=r'https?://[^/@?#\s]+' if allow_any_origin else None,
+    allow_credentials=True,
+    allow_methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allow_headers=['Content-Type', 'Authorization'],
+)
 
 @app.middleware('http')
 async def security(request: Request, call_next):

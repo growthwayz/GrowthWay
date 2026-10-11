@@ -86,9 +86,9 @@ async def connect_db():
     if len(settings.SECRET_KEY) < 32 or settings.SECRET_KEY.startswith('CHANGE'):
         raise RuntimeError('Set a random SECRET_KEY with at least 32 characters.')
     if settings.ENVIRONMENT in ('production', 'staging'):
-        origins = settings.CORS_ORIGINS.split(',')
-        if not origins or any(not o.strip().startswith('https://') or '*' in o for o in origins):
-            raise RuntimeError('Staging and production require explicit HTTPS CORS origins.')
+        origins = [origin.strip() for origin in settings.CORS_ORIGINS.split(',') if origin.strip()]
+        if origins != ['*'] and (not origins or any(not origin.startswith('https://') or '*' in origin for origin in origins)):
+            raise RuntimeError('Staging and production require HTTPS CORS origins or the temporary * setting.')
     if settings.MONGODB_URL == 'memory://':
         if settings.ENVIRONMENT != 'test': raise RuntimeError('Memory database is only allowed in tests.')
         _db = InMemoryDatabase()
