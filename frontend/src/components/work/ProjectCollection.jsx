@@ -225,20 +225,6 @@ const ProjectCollection = ({ projects }) => {
   return (
     <section className="bg-gw-canvas">
       <div className="max-w-[1440px] mx-auto px-5 md:px-18">
-        {/* Section Header */}
-        <div className="pt-20 md:pt-32 pb-8 flex items-center justify-between reveal">
-          <div>
-            <h2 className="font-display font-medium text-2xl md:text-3xl tracking-[-0.02em] mb-2">
-              Project Directory
-            </h2>
-            <p className="text-sm text-gw-charcoal/40">A curated selection of our most impactful collaborations</p>
-          </div>
-          <span className="text-[10px] uppercase tracking-luxury text-gw-muted/40 hidden md:block">
-            {projects.length} Projects
-          </span>
-        </div>
-        <div className="h-px w-full bg-gw-line/40 line-expand mb-4"></div>
-        
         <div className="flex flex-col">
           {projects.map((project, index) => {
             switch (project.composition) {
