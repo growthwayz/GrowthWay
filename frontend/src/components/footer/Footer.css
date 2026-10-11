@@ -1,7 +1,7 @@
 :root {
-  --pink-primary: #8DC63F;
-  --pink-light: #A4D65E;
-  --pink-gradient: linear-gradient(90deg, #8DC63F 0%, #689E23 100%);
+  --olive-primary: #8DC63F;
+  --olive-light: #A4D65E;
+  --olive-gradient: linear-gradient(90deg, #8DC63F 0%, #689E23 100%);
   --bg-color: #F5F1E8;
   --dot-color: #DCD6C8;
   --text-dark: #182219;
@@ -27,7 +27,7 @@
   left: 0;
   width: 8px;
   height: 8px;
-  background-color: var(--pink-primary);
+  background-color: var(--olive-primary);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -41,7 +41,7 @@
   left: 0;
   width: 40px;
   height: 40px;
-  border: 2px solid var(--pink-light);
+  border: 2px solid var(--olive-light);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
@@ -224,7 +224,7 @@ body.cursor-hover .custom-cursor-ring {
 
 .node-text-wrapper .num {
   font-family: var(--font-disp);
-  color: var(--pink-primary);
+  color: var(--olive-primary);
   font-weight: normal;
   font-size: 1.1rem;
 }
@@ -332,7 +332,7 @@ body.cursor-hover .custom-cursor-ring {
 .map-info svg {
   width: 24px;
   height: 24px;
-  stroke: var(--pink-primary);
+  stroke: var(--olive-primary);
   fill: none;
 }
 
@@ -506,7 +506,7 @@ body.cursor-hover .custom-cursor-ring {
   left: -45px;
   bottom: -10px;
   width: 40px;
-  stroke: var(--pink-primary);
+  stroke: var(--olive-primary);
   fill: none;
   stroke-width: 2;
   transform: rotate(15deg);
@@ -517,7 +517,7 @@ body.cursor-hover .custom-cursor-ring {
   position: absolute;
   font-family: var(--font-hand);
   font-size: 2.2rem;
-  color: var(--pink-primary);
+  color: var(--olive-primary);
   line-height: 1.1;
   rotate: -10deg;
   font-weight: 700;
@@ -609,7 +609,7 @@ body.cursor-hover .custom-cursor-ring {
   bottom: -8px;
   width: 28px;
   height: 2px;
-  background: var(--pink-primary);
+  background: var(--olive-primary);
 }
 
 /* Shared Link Styles */
@@ -663,7 +663,7 @@ body.cursor-hover .custom-cursor-ring {
   bottom: 0;
   width: 0;
   height: 1.5px;
-  background: var(--pink-primary);
+  background: var(--olive-primary);
   transition: width 0.3s ease;
 }
 
@@ -673,7 +673,7 @@ body.cursor-hover .custom-cursor-ring {
   margin-left: 8px;
   font-family: var(--font-body);
   font-size: 1rem;
-  color: var(--pink-primary);
+  color: var(--olive-primary);
   opacity: 0;
   transform: translateX(-10px);
   transition: all 0.3s ease;
@@ -681,7 +681,7 @@ body.cursor-hover .custom-cursor-ring {
 
 .col-r1 .link-list a:hover,
 .col-r2 .link-list a:hover {
-  color: var(--pink-primary);
+  color: var(--olive-primary);
   transform: translateX(4px);
 }
 
@@ -740,12 +740,12 @@ body.cursor-hover .custom-cursor-ring {
   width: 18px;
   height: 18px;
   flex: none;
-  stroke: var(--pink-primary);
+  stroke: var(--olive-primary);
   fill: none;
   stroke-width: 2;
 }
 
-/* FIXED: WhatsApp Button (Black by default, Pink on Hover) */
+/* FIXED: WhatsApp Button (Black by default, Olive on hover) */
 .btn-whatsapp {
   margin-top: auto;
   background: var(--text-dark);
@@ -785,8 +785,8 @@ body.cursor-hover .custom-cursor-ring {
 }
 
 .btn-whatsapp:hover {
-  background: var(--pink-primary);
-  /* Pink on hover */
+  background: var(--olive-primary);
+  /* Olive on hover */
   transform: scale(1.03) translateY(-2px);
   box-shadow: 0 15px 35px rgba(141, 198, 63, 0.25);
 }
@@ -827,13 +827,13 @@ body.cursor-hover .custom-cursor-ring {
 }
 
 .col-r4 .link-list a:hover {
-  color: var(--pink-primary);
+  color: var(--olive-primary);
   transform: translateX(6px);
 }
 
 .col-r4 .link-list a:hover .social-icon-box {
-  background: var(--pink-primary);
-  border-color: var(--pink-primary);
+  background: var(--olive-primary);
+  border-color: var(--olive-primary);
 }
 
 .col-r4 .link-list a:hover .social-icon-box svg {
@@ -847,7 +847,7 @@ body.cursor-hover .custom-cursor-ring {
 }
 
 .col-r4 .link-list a:hover .social-icon-box svg.fill-icon polygon {
-  fill: var(--pink-primary);
+  fill: var(--olive-primary);
 }
 
 .dark-polaroid-frame {
@@ -871,7 +871,7 @@ body.cursor-hover .custom-cursor-ring {
   left: 0px;
   font-family: var(--font-hand);
   font-size: 2.2rem;
-  color: var(--pink-primary);
+  color: var(--olive-primary);
   transform: rotate(-5deg);
   z-index: 20;
 }
@@ -921,7 +921,7 @@ body.cursor-hover .custom-cursor-ring {
 }
 
 .legal-links a:hover {
-  color: var(--pink-primary);
+  color: var(--olive-primary);
 }
 
 .intent-text {

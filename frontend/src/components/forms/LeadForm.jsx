@@ -171,7 +171,13 @@ export default function LeadForm() {
 
       setStatus('success');
     } catch (err) {
-      setErrorMessage(err.data?.error?.message || 'We could not submit your brief. Please verify connection and retry.');
+      // FastAPI returns: { detail: { code, message, details } } or { detail: string }
+      const detail = err.data?.detail;
+      const msg = (typeof detail === 'object' ? detail?.message : detail)
+        || err.data?.error?.message
+        || err.message
+        || 'We could not submit your brief. Please verify your connection and retry.';
+      setErrorMessage(msg);
       setStatus('error');
     }
   };

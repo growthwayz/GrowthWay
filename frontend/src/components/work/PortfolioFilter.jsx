@@ -13,7 +13,7 @@ const PortfolioFilter = ({ categories, activeCategory, onSelect }) => {
                 className={`
                   relative text-xs md:text-sm uppercase tracking-wide whitespace-nowrap interactive-hover
                   transition-all duration-400 ease-out
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gw-pink
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gw-olive
                   ${activeCategory === category 
                     ? 'text-gw-ink font-semibold' 
                     : 'text-gw-muted font-normal hover:text-gw-ink'}
@@ -22,10 +22,10 @@ const PortfolioFilter = ({ categories, activeCategory, onSelect }) => {
               >
                 {category}
 
-                {/* Active pink underline with smooth width transition */}
+                {/* Active olive underline with smooth width transition */}
                 <span 
                   className={`
-                    absolute -bottom-2 left-0 h-[2px] bg-gw-pink rounded-full
+                    absolute -bottom-2 left-0 h-[2px] bg-gw-olive rounded-full
                     transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
                     ${activeCategory === category ? 'w-full opacity-100' : 'w-0 opacity-0'}
                   `}
@@ -45,3 +45,4 @@ const PortfolioFilter = ({ categories, activeCategory, onSelect }) => {
 };
 
 export default PortfolioFilter;
+

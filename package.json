@@ -1,0 +1,13 @@
+{
+  "name": "growthway",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GrowthWay - Digital Growth Agency Platform",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "backend": "cd backend && .venv\\Scripts\\fastapi dev main.py"
+  }
+}

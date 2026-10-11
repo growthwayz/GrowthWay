@@ -105,6 +105,16 @@ export default function Hero() {
     function updateFrame() {
       if (!cachedMetricsRef.current) return
 
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (prefersReducedMotion) {
+        uiLayer.style.opacity = 1
+        videoLayer.style.opacity = 1
+        targetEl.style.opacity = 1
+        if (scrollHint) scrollHint.style.opacity = 0
+        tickingRef.current = false
+        return
+      }
+
       // Total scroll range for the video zoom effect (2 viewports of scroll)
       const scrollY = window.scrollY
       const totalDistance = window.innerHeight * 2

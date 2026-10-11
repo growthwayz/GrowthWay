@@ -130,7 +130,7 @@ export default function Navbar() {
           <a href="/" className="flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm group">
             <img
               src="/logo-icon.png"
-              alt="Growth Way"
+              alt="GrowthWay"
               className="w-7 h-7 rounded-[6px] object-cover shadow-sm group-hover:scale-105 transition-transform"
             />
             <span className="text-[19px] font-display font-extrabold tracking-tight text-[#171717]">
@@ -168,6 +168,7 @@ export default function Navbar() {
           className="md:hidden z-50 p-2 -mr-2 text-[#111111] focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
         >
           {isMobileMenuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

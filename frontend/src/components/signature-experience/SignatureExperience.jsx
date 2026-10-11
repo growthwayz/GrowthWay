@@ -2,14 +2,19 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import useReducedMotion from '../../hooks/useReducedMotion';
 import './SignatureExperience.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SignatureExperience() {
   const containerRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   useGSAP(() => {
+    // Skip all motion if user prefers reduced motion
+    if (reducedMotion) return;
+
     // 1. ELEMENT FLOATING ONLY (No Screen Swaying)
     gsap.utils.toArray('.sig-float').forEach((el) => {
       gsap.to(el, {
