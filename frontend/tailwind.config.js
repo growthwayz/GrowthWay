@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         gw: {
+          canvas: '#FAF8F5',
           cream: '#FAF8F5',          // Primary background — warm off-white
           canvas: '#FAF8F5',         // Primary background alias
           pink: '#5C9E31',           // Growthway Pink -> mapped to olive to match current theme
@@ -15,6 +16,8 @@ export default {
           olive: '#5C9E31',          // Primary accent — vibrant leaf green
           'olive-dark': '#3E701D',   // Deeper vibrant green
           'olive-light': '#87C95B',  // Lighter energetic green
+          pink: '#E95B9F',
+          'blush-soft': '#F0DDD0',
           maroon: '#7A3B3B',         // Supporting colour — only if needed
           muted: '#777777',          // Secondary text
           line: '#E8E4DF',           // Dividers — warm toned
