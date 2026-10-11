@@ -1,0 +1,182 @@
+/* ============================================
+   TESTIMONIALS — Items 23–24
+   ============================================ */
+
+.test-section {
+  padding: 96px 0;
+  background: #FAF8F5;
+  outline: none;
+  position: relative;
+}
+
+@media (max-width: 768px) { .test-section { padding: 64px 0; } }
+
+.test-section:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: -2px;
+}
+
+.test-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 72px;
+  text-align: center;
+}
+
+@media (max-width: 1024px) { .test-container { padding: 0 40px; } }
+@media (max-width: 768px) { .test-container { padding: 0 20px; } }
+
+/* ── Quote ── */
+.test-content {
+  position: relative;
+}
+
+.test-quote-mark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 8rem;
+  line-height: 1;
+  color: #5C9E31;
+  opacity: 0.1;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.test-quote {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 600;
+  color: #111111;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+  animation: testFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes testFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Author ── */
+.test-author {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 40px;
+}
+
+.test-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111111;
+}
+
+.test-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #777777;
+}
+
+/* ── Navigation ── */
+.test-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.test-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #E8E4DF;
+  border-radius: 50%;
+  background: transparent;
+  color: #111111;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.test-btn:hover {
+  background: #111111;
+  color: #FFFDF9;
+  border-color: #111111;
+}
+
+.test-btn:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+.test-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.test-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #E8E4DF;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+
+.test-dot.active {
+  background: #111111;
+  transform: scale(1.3);
+}
+
+.test-dot:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+/* ── Skeleton ── */
+.test-skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.test-skel-quote {
+  width: 80%;
+  height: 120px;
+  background: linear-gradient(90deg, #E8E4DF 25%, #F0ECE8 50%, #E8E4DF 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.test-skel-name {
+  width: 160px;
+  height: 20px;
+  background: linear-gradient(90deg, #E8E4DF 25%, #F0ECE8 50%, #E8E4DF 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .test-quote {
+    animation: none;
+  }
+  .test-btn,
+  .test-dot {
+    transition: none !important;
+  }
+  .test-skel-quote,
+  .test-skel-name {
+    animation: none;
+  }
+}

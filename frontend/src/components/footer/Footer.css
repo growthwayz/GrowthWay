@@ -253,11 +253,11 @@ body.cursor-hover .custom-cursor-ring {
 }
 
 .icon-strategy {
-  background: #E8C9C7;
+  background: #E5F1DB;
 }
 
 .icon-strategy svg {
-  stroke: #641F2B;
+  stroke: #5C9E31;
 }
 
 .icon-creative {
@@ -277,11 +277,11 @@ body.cursor-hover .custom-cursor-ring {
 }
 
 .icon-impact {
-  background: #E8C9C7;
+  background: #E5F1DB;
 }
 
 .icon-impact svg {
-  stroke: #641F2B;
+  stroke: #5C9E31;
 }
 
 .node-1 {
@@ -438,14 +438,14 @@ body.cursor-hover .custom-cursor-ring {
   position: absolute;
   bottom: 15px;
   right: -20px;
-  background: #E8C9C7;
+  background: #E5F1DB;
   width: 45px;
   height: 40px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #5C9E31;
   font-size: 1.2rem;
   transform: rotate(10deg);
 }

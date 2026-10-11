@@ -336,7 +336,10 @@ export default function Footer() {
       </div>
 
       <div className="legal-bar">
-        <div>&copy; 2026 GROWTHWAY. ALL RIGHTS RESERVED.</div>
+        <div className="flex items-center gap-3">
+          <img src="/logo-icon.png" alt="Growth Way" className="w-5 h-5 rounded-[4px] object-cover" />
+          <span>&copy; 2026 GROWTHWAY. ALL RIGHTS RESERVED.</span>
+        </div>
         <div className="legal-links">
           <a href="#" className="cursor-hover">PRIVACY POLICY</a>
           <a href="#" className="cursor-hover">TERMS OF SERVICE</a>
