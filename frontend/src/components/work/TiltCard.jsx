@@ -7,6 +7,7 @@ const TiltCard = ({ children, className = '', intensity = 12 }) => {
   const rafRef = useRef(null);
 
   const handleMouseMove = useCallback((e) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const inner = innerRef.current;
     const glare = glareRef.current;
     if (!inner) return;

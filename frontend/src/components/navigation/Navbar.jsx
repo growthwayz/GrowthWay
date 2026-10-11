@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const WorkIcon = () => (
@@ -32,62 +31,48 @@ const ContactIcon = () => (
   </svg>
 );
 
-const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
-  const itemRef = useRef(null);
+const NavItem = ({ name, href, active, icon: Icon }) => {
   const [isFocused, setIsFocused] = useState(false);
-
-  let scale = 1;
-  let translateY = 0;
-  let isHovered = false;
-
-  if (mouseX !== null && itemRef.current) {
-    const rect = itemRef.current.getBoundingClientRect();
-    const itemCenterX = rect.left + rect.width / 2;
-    const distance = Math.abs(mouseX - itemCenterX);
-
-    // Max distance for interaction
-    const maxDistance = 120;
-
-    if (distance < maxDistance) {
-      // Ease function for smooth falloff
-      const ease = Math.max(0, 1 - distance / maxDistance);
-      scale = 1 + ease * 0.15; // up to 1.15
-      translateY = ease * -4; // up to -4px
-
-      // Determine if this is the "hovered" item
-      isHovered = distance < (rect.width / 2 + 15);
-    }
-  }
+  const [isHovered, setIsHovered] = useState(false);
 
   const effectiveHover = isHovered || isFocused;
 
-  // Handle prefers-reduced-motion
-  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) {
-    scale = 1;
-    translateY = 0;
-  }
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (window.location.pathname !== '/') {
+      window.location.href = '/' + href;
+      return;
+    }
+    const target = document.querySelector(href);
+    if (target) {
+      const targetTop = target.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: targetTop,
+        behavior: 'smooth'
+      });
+      window.history.pushState(null, '', href);
+    }
+  };
 
   return (
     <div
-      ref={itemRef}
       className={`nav-item-container ${effectiveHover ? 'is-hovered' : ''} ${active ? 'nav-item-active' : ''}`}
-      style={{
-        transform: `translateY(${translateY}px) scale(${scale})`
-      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="nav-hover-capsule"></div>
-      <Link 
-        to={href} 
+      <a
+        href={href}
         className="nav-link-icon relative focus:outline-none flex flex-col items-center justify-center"
         aria-label={name}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        onClick={handleClick}
       >
         <Icon />
         <span className="nav-hover-dot"></span>
         <span className="nav-hover-label">{name}</span>
-      </Link>
+      </a>
     </div>
   );
 };
@@ -126,10 +111,10 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: 'WORK', href: '/work', active: false, icon: WorkIcon },
-    { name: 'SERVICES', href: '/#services', active: true, icon: ServicesIcon },
-    { name: 'ABOUT', href: '/#about', active: false, icon: AboutIcon },
-    { name: 'CONTACT', href: '/#contact', active: false, icon: ContactIcon },
+    { name: 'WORK', href: '#work', active: false, icon: WorkIcon },
+    { name: 'SERVICES', href: '#services', active: true, icon: ServicesIcon },
+    { name: 'ABOUT', href: '#about', active: false, icon: AboutIcon },
+    { name: 'CONTACT', href: '#contact', active: false, icon: ContactIcon },
   ];
 
   return (
@@ -142,9 +127,16 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="flex-shrink-0 z-50">
-          <Link to="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#111111] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#B76E79] rounded-sm">
-            Growthway<span className="text-[#E95B9F]">.</span>
-          </Link>
+          <a href="/" className="flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm group">
+            <img
+              src="/logo-icon.png"
+              alt="GrowthWay"
+              className="w-7 h-7 rounded-[6px] object-cover shadow-sm group-hover:scale-105 transition-transform"
+            />
+            <span className="text-[19px] font-display font-extrabold tracking-tight text-[#171717]">
+              Growth<span className="font-semibold text-gw-olive">Way</span>
+            </span>
+          </a>
         </div>
 
         {/* Desktop Navigation */}
@@ -155,7 +147,6 @@ export default function Navbar() {
               name={link.name}
               href={link.href}
               active={link.active}
-              mouseX={mouseX}
               icon={link.icon}
             />
           ))}
@@ -163,13 +154,13 @@ export default function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center z-50">
-          <Link
-            to="/#start-project"
-            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#B76E79]"
+          <a
+            href="/contact"
+            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#3D4A36]"
           >
             START A PROJECT
             <span className="cta-arrow">→</span>
-          </Link>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
@@ -177,6 +168,7 @@ export default function Navbar() {
           className="md:hidden z-50 p-2 -mr-2 text-[#111111] focus:outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
         >
           {isMobileMenuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -200,25 +192,25 @@ export default function Navbar() {
       >
         <nav className="flex flex-col gap-6 mt-16">
           {navLinks.map((link, index) => (
-            <Link
+            <a
               key={link.name}
-              to={link.href}
-              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#111111] hover:text-[#B76E79] transition-colors focus:text-[#B76E79] focus:font-bold focus:outline-none flex items-center gap-4`}
+              href={link.href}
+              className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#171717] hover:text-[#3D4A36] transition-colors focus:text-[#3D4A36] focus:font-bold focus:outline-none flex items-center gap-4`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <link.icon />
               {link.name}
-            </Link>
+            </a>
           ))}
           <div className={`mobile-nav-item delay-5 mt-12`}>
-            <Link
-              to="/#start-project"
+            <a
+              href="/contact"
               className="inline-flex items-center gap-2 cta-button px-8 py-4 text-lg font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               START A PROJECT
               <span className="cta-arrow">→</span>
-            </Link>
+            </a>
           </div>
         </nav>
       </div>

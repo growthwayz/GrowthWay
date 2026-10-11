@@ -5,13 +5,13 @@ import TiltCard from './TiltCard';
 
 const FeaturedProject = ({ project }) => {
   return (
-    <section className="py-28 md:py-40 bg-gw-canvas">
+    <section className="pt-28 md:pt-40 bg-gw-canvas">
       <div className="max-w-[1440px] mx-auto px-5 md:px-18">
         
         {/* Intro Meta */}
         <div className="flex items-center gap-4 mb-20 reveal">
-          <span className="text-xs uppercase tracking-luxury text-gw-pink font-semibold">Featured Project</span>
-          <div className="h-px bg-gw-pink/30 flex-grow max-w-40"></div>
+          <span className="text-xs uppercase tracking-luxury text-gw-olive font-semibold">Featured Project</span>
+          <div className="h-px bg-gw-olive/30 flex-grow max-w-40"></div>
           <span className="text-xs uppercase tracking-editorial text-gw-muted/60 hidden md:block">{project.metadata.year}</span>
         </div>
 
@@ -19,7 +19,7 @@ const FeaturedProject = ({ project }) => {
           
           {/* Left: Project Details */}
           <div className="lg:col-span-4 flex flex-col justify-center order-2 lg:order-1">
-            <span className="font-display text-7xl md:text-8xl lg:text-9xl text-gw-pink font-bold leading-none -ml-2 select-none reveal reveal-delay-1">
+            <span className="font-display text-7xl md:text-8xl lg:text-9xl text-gw-olive font-bold leading-none -ml-2 select-none reveal reveal-delay-1">
               {project.id}
             </span>
             
@@ -32,7 +32,7 @@ const FeaturedProject = ({ project }) => {
             </p>
 
             {/* Location & role */}
-            <p className="text-xs uppercase tracking-luxury text-gw-pink/80 mb-10 reveal reveal-delay-2">
+            <p className="text-xs uppercase tracking-luxury text-gw-olive/80 mb-10 reveal reveal-delay-2">
               {project.metadata.location} — {project.metadata.role}
             </p>
 
@@ -59,13 +59,13 @@ const FeaturedProject = ({ project }) => {
 
             <Link 
               to={`/work/${project.slug}`}
-              className="group inline-flex items-center gap-5 text-xs font-semibold uppercase tracking-editorial text-gw-ink hover:text-gw-pink transition-colors duration-400 w-fit interactive-hover reveal reveal-delay-4"
+              className="group inline-flex items-center gap-5 text-xs font-semibold uppercase tracking-editorial text-gw-ink hover:text-gw-olive transition-colors duration-400 w-fit interactive-hover reveal reveal-delay-4"
             >
               <span className="relative pb-1">
                 View Case Study
-                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gw-ink group-hover:bg-gw-pink transition-colors"></span>
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gw-ink group-hover:bg-gw-olive transition-colors"></span>
               </span>
-              <span className="w-11 h-11 rounded-full border border-gw-line flex items-center justify-center group-hover:border-gw-pink group-hover:bg-gw-pink group-hover:text-white transition-all duration-400">
+              <span className="w-11 h-11 rounded-full border border-gw-line flex items-center justify-center group-hover:border-gw-olive group-hover:bg-gw-olive group-hover:text-white transition-all duration-400">
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform duration-300" />
               </span>
             </Link>
@@ -79,6 +79,7 @@ const FeaturedProject = ({ project }) => {
                   src={project.image} 
                   alt={project.title}
                   loading="lazy"
+                  className="w-full h-full object-cover"
                 />
                 
                 {/* Gradient overlay with metadata */}
@@ -102,3 +103,4 @@ const FeaturedProject = ({ project }) => {
 };
 
 export default FeaturedProject;
+

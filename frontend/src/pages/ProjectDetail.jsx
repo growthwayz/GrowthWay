@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { projects } from '../data/projects';
 import { ArrowLeft } from 'lucide-react';
+import MicroInteractions from '../components/MicroInteractions';
 
 const ProjectDetail = () => {
   const { slug } = useParams();
@@ -10,8 +11,9 @@ const ProjectDetail = () => {
   if (!project) {
     return (
       <div className="min-h-screen bg-gw-canvas flex flex-col items-center justify-center p-6 text-center">
+        <MicroInteractions />
         <h1 className="font-display text-4xl font-bold mb-4">Project Not Found</h1>
-        <Link to="/work" className="text-gw-pink uppercase tracking-widest text-sm font-semibold hover:underline">
+        <Link to="/work" className="text-gw-olive uppercase tracking-widest text-sm font-semibold hover:underline">
           Return to Portfolio
         </Link>
       </div>
@@ -20,8 +22,9 @@ const ProjectDetail = () => {
 
   return (
     <div className="bg-gw-canvas min-h-screen text-gw-ink">
+      <MicroInteractions />
       <nav className="h-20 border-b border-gw-line flex items-center px-6 md:px-18">
-        <Link to="/work" className="flex items-center gap-2 text-xs uppercase tracking-widest font-semibold hover:text-gw-pink transition-colors">
+        <Link to="/work" className="flex items-center gap-2 text-xs uppercase tracking-widest font-semibold hover:text-gw-olive transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Work
         </Link>
       </nav>
@@ -74,3 +77,4 @@ const ProjectDetail = () => {
 };
 
 export default ProjectDetail;
+

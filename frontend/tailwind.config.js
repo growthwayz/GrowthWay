@@ -5,20 +5,26 @@ export default {
     extend: {
       colors: {
         gw: {
-          canvas: '#F1F1F1',
-          white: '#FFFFFF',
-          ink: '#111111',
-          black: '#080808',
-          charcoal: '#1C1C1C',
-          blush: '#F7CDD0',
-          'blush-soft': '#F9DDDF',
-          'blush-deep': '#F7BFC3',
-          muted: '#777777',
-          line: '#E5E3E2',
-          pink: '#E95B9F',
-          purple: '#B35CE8',
-          green: '#72B957',
-          orange: '#F26A21',
+          canvas: '#FAF8F5',
+          cream: '#FAF8F5',          // Primary background — warm off-white
+          white: '#FFFDF9',          // Warm white panels
+          ink: '#111111',            // Primary text
+          black: '#080808',          // Dark sections
+          charcoal: '#1C1C1C',       // Footer / dark panels
+          olive: '#5C9E31',          // Primary accent — vibrant leaf green
+          'olive-dark': '#3E701D',   // Deeper vibrant green
+          'olive-light': '#87C95B',  // Lighter energetic green
+          // NOTE: gw-pink is intentionally removed — olive is the primary accent.
+          // Any legacy 'gw-pink' usages should be migrated to gw-olive.
+          maroon: '#7A3B3B',         // Supporting colour — only if needed
+          muted: '#777777',          // Secondary text
+          line: '#E8E4DF',           // Dividers — warm toned
+          blush: '#E5F1DB',          // Subtle green-tinted fill
+          'blush-soft': '#F1F8EB',   // Soft green fills
+          'blush-deep': '#87C95B',   // Deeper hover — light olive
+          purple: '#B35CE8',         // Chip accent
+          green: '#72B957',          // Chip accent
+          orange: '#F26A21',         // Chip accent
         },
       },
       fontFamily: {

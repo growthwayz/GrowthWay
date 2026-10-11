@@ -1,0 +1,345 @@
+/* ============================================
+   INDUSTRIES LIST — Items 19–20
+   ============================================ */
+
+.ind-section {
+  padding: 96px 0 120px;
+  background: #FAF8F5;
+  position: relative;
+  overflow: hidden;
+}
+
+.ind-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 72px;
+}
+
+@media (max-width: 1024px) {
+  .ind-container { padding: 0 40px; }
+  .ind-section { padding: 72px 0 96px; }
+}
+
+@media (max-width: 768px) {
+  .ind-container { padding: 0 20px; }
+  .ind-section { padding: 56px 0 72px; }
+}
+
+/* ── Header ── */
+.ind-header {
+  margin-bottom: 64px;
+}
+
+.ind-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #777777;
+  margin-bottom: 20px;
+}
+
+.ind-eyebrow::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: #5C9E31;
+}
+
+.ind-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* ── Layout ── */
+.ind-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .ind-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* ── List ── */
+.ind-list {
+  outline: none;
+}
+
+.ind-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #E8E4DF;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  outline: none;
+}
+
+.ind-item:first-child {
+  border-top: 1px solid #E8E4DF;
+}
+
+.ind-item:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+.ind-item.faded {
+  opacity: 0.35;
+}
+
+.ind-item.active {
+  opacity: 1;
+}
+
+.ind-item:hover,
+.ind-item:focus {
+  opacity: 1;
+}
+
+.ind-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #777777;
+  min-width: 28px;
+  transition: color 0.3s;
+}
+
+.ind-item.active .ind-num {
+  color: #5C9E31;
+}
+
+.ind-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  flex: 1;
+  text-transform: uppercase;
+  transition: letter-spacing 0.3s;
+}
+
+.ind-item.active .ind-name {
+  letter-spacing: 0;
+}
+
+.ind-arrow {
+  font-size: 1.2rem;
+  color: #111111;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ind-item.active .ind-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Mobile Accordion ── */
+.ind-accordion {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  grid-column: 1 / -1;
+}
+
+.ind-accordion.expanded {
+  max-height: 500px;
+}
+
+.ind-accordion-inner {
+  padding: 20px 0 8px;
+}
+
+.ind-accordion-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.ind-accordion-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ind-shortline {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #777777;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.ind-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #111111;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.3s;
+}
+
+.ind-link:hover {
+  gap: 12px;
+}
+
+.ind-link:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+/* Hide accordion on desktop */
+@media (min-width: 1025px) {
+  .ind-accordion { display: none; }
+  .ind-item {
+    flex-wrap: nowrap;
+  }
+}
+
+/* On mobile, wrap for accordion */
+@media (max-width: 1024px) {
+  .ind-item {
+    flex-wrap: wrap;
+  }
+  .ind-arrow { display: none; }
+}
+
+/* ── Desktop Preview ── */
+.ind-preview {
+  position: sticky;
+  top: 120px;
+}
+
+@media (max-width: 1024px) {
+  .ind-preview { display: none; }
+}
+
+.ind-preview-card {
+  border-radius: 4px;
+  overflow: hidden;
+  background: #FFFDF9;
+  border: 1px solid #E8E4DF;
+}
+
+.ind-preview-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.ind-preview-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ind-preview-card:hover .ind-preview-img img {
+  transform: scale(1.03);
+}
+
+.ind-preview-meta {
+  padding: 24px;
+}
+
+.ind-preview-line {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: #777777;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.ind-preview-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #111111;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.3s;
+}
+
+.ind-preview-link:hover {
+  gap: 12px;
+}
+
+.ind-preview-link:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+/* ── Skeleton ── */
+.ind-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ind-skeleton-row {
+  height: 64px;
+  background: linear-gradient(90deg, #E8E4DF 25%, #F0ECE8 50%, #E8E4DF 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Error ── */
+.ind-error {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: #777777;
+  padding: 24px 0;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .ind-item,
+  .ind-arrow,
+  .ind-num,
+  .ind-name,
+  .ind-accordion,
+  .ind-preview-img img {
+    transition: none !important;
+  }
+  .ind-skeleton-row {
+    animation: none;
+  }
+}
