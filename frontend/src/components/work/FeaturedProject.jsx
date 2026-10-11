@@ -5,7 +5,7 @@ import TiltCard from './TiltCard';
 
 const FeaturedProject = ({ project }) => {
   return (
-    <section className="py-28 md:py-40 bg-gw-canvas">
+    <section className="pt-28 md:pt-40 bg-gw-canvas">
       <div className="max-w-[1440px] mx-auto px-5 md:px-18">
         
         {/* Intro Meta */}

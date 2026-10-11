@@ -107,13 +107,13 @@ const PortfolioPage = () => {
         <FeaturedProject project={featuredProject} />
       )}
 
-      {/* ── TRUSTED BY ── */}
-      <TrustedBy />
-
       {/* ── PROJECT COLLECTION ── */}
       {remainingProjects.length > 0 && (
         <ProjectCollection projects={remainingProjects} />
       )}
+
+      {/* ── TRUSTED BY ── */}
+      <TrustedBy />
       
       {/* ── FOOTER ── */}
       <footer className="footer-gradient text-gw-white py-32 md:py-48 px-6 md:px-18 relative overflow-hidden">
@@ -144,9 +144,12 @@ const PortfolioPage = () => {
             <div className="luxury-rule mb-10"></div>
             
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-              <span className="font-display font-bold text-xl tracking-tight interactive-hover">
-                Growthway<span className="text-gw-pink">.</span>
-              </span>
+              <div className="flex items-center gap-2.5">
+                <img src="/logo-icon.png" alt="Growth Way" className="w-6 h-6 rounded-[5px] object-cover" />
+                <span className="font-display font-bold text-xl tracking-tight interactive-hover">
+                  Growth<span className="text-gw-olive">Way</span>
+                </span>
+              </div>
 
               <div className="flex gap-8 text-[10px] uppercase tracking-luxury text-gw-white/15">
                 <span className="interactive-hover hover:text-gw-white/40 transition-colors">Instagram</span>

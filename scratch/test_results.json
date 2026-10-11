@@ -1,0 +1,186 @@
+{
+  "server_health": [
+    {
+      "label": "Vite Server 5173",
+      "url": "http://localhost:5173/",
+      "status": 200,
+      "success": true,
+      "body_len": 1178,
+      "error": null,
+      "body": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"icon\" type=\"image/png\" href=\"/logo-icon.png\" />\r\n  <link rel=\"apple-touch-icon\" href=\"/logo-icon.png\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <meta name=\"description\"\r\n    content=\"Growth Way \u2014 A creative growth agency. Strategy, content, branding, campaigns and execution. Ideas to Impact.\" />\r\n  <title>Growth Way \u2014 Ideas to Impact</title>\r\n\r\n  <!-- Google Fonts -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n  <link\r\n    href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap\"\r\n    rel=\"stylesheet\" />\r\n</head>\r\n\r\n<body>\r\n  <div id=\"root\"></div>\r\n  <script type=\"module\" src=\"/src/main.jsx?t=1791711234588\"></script>\r\n</body>\r\n\r\n</html>"
+    },
+    {
+      "label": "Vite Server 5174",
+      "url": "http://localhost:5174/",
+      "status": 200,
+      "success": true,
+      "body_len": 1178,
+      "error": null,
+      "body": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"icon\" type=\"image/png\" href=\"/logo-icon.png\" />\r\n  <link rel=\"apple-touch-icon\" href=\"/logo-icon.png\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <meta name=\"description\"\r\n    content=\"Growth Way \u2014 A creative growth agency. Strategy, content, branding, campaigns and execution. Ideas to Impact.\" />\r\n  <title>Growth Way \u2014 Ideas to Impact</title>\r\n\r\n  <!-- Google Fonts -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n  <link\r\n    href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap\"\r\n    rel=\"stylesheet\" />\r\n</head>\r\n\r\n<body>\r\n  <div id=\"root\"></div>\r\n  <script type=\"module\" src=\"/src/main.jsx?t=1791711234587\"></script>\r\n</body>\r\n\r\n</html>"
+    },
+    {
+      "label": "FastAPI Root",
+      "url": "http://localhost:8000/",
+      "status": 200,
+      "success": true,
+      "body_len": 38,
+      "error": null,
+      "body": "{\"message\":\"GrowthWay API is running\"}"
+    }
+  ],
+  "frontend_routes": [
+    {
+      "label": "Homepage / Landing Page",
+      "url": "http://localhost:5173/",
+      "status": 200,
+      "success": true,
+      "body_len": 1178,
+      "error": null,
+      "body": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"icon\" type=\"image/png\" href=\"/logo-icon.png\" />\r\n  <link rel=\"apple-touch-icon\" href=\"/logo-icon.png\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <meta name=\"description\"\r\n    content=\"Growth Way \u2014 A creative growth agency. Strategy, content, branding, campaigns and execution. Ideas to Impact.\" />\r\n  <title>Growth Way \u2014 Ideas to Impact</title>\r\n\r\n  <!-- Google Fonts -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n  <link\r\n    href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap\"\r\n    rel=\"stylesheet\" />\r\n</head>\r\n\r\n<body>\r\n  <div id=\"root\"></div>\r\n  <script type=\"module\" src=\"/src/main.jsx?t=1791711234588\"></script>\r\n</body>\r\n\r\n</html>",
+      "html_valid": true
+    },
+    {
+      "label": "Portfolio Showcase (/work)",
+      "url": "http://localhost:5173/work",
+      "status": 200,
+      "success": true,
+      "body_len": 1178,
+      "error": null,
+      "body": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"icon\" type=\"image/png\" href=\"/logo-icon.png\" />\r\n  <link rel=\"apple-touch-icon\" href=\"/logo-icon.png\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <meta name=\"description\"\r\n    content=\"Growth Way \u2014 A creative growth agency. Strategy, content, branding, campaigns and execution. Ideas to Impact.\" />\r\n  <title>Growth Way \u2014 Ideas to Impact</title>\r\n\r\n  <!-- Google Fonts -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n  <link\r\n    href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap\"\r\n    rel=\"stylesheet\" />\r\n</head>\r\n\r\n<body>\r\n  <div id=\"root\"></div>\r\n  <script type=\"module\" src=\"/src/main.jsx?t=1791711234588\"></script>\r\n</body>\r\n\r\n</html>",
+      "html_valid": true
+    },
+    {
+      "label": "Lead Intake & Contact Page (/contact)",
+      "url": "http://localhost:5173/contact",
+      "status": 200,
+      "success": true,
+      "body_len": 1178,
+      "error": null,
+      "body": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"icon\" type=\"image/png\" href=\"/logo-icon.png\" />\r\n  <link rel=\"apple-touch-icon\" href=\"/logo-icon.png\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <meta name=\"description\"\r\n    content=\"Growth Way \u2014 A creative growth agency. Strategy, content, branding, campaigns and execution. Ideas to Impact.\" />\r\n  <title>Growth Way \u2014 Ideas to Impact</title>\r\n\r\n  <!-- Google Fonts -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n  <link\r\n    href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap\"\r\n    rel=\"stylesheet\" />\r\n</head>\r\n\r\n<body>\r\n  <div id=\"root\"></div>\r\n  <script type=\"module\" src=\"/src/main.jsx?t=1791711234588\"></script>\r\n</body>\r\n\r\n</html>",
+      "html_valid": true
+    },
+    {
+      "label": "Admin Login Portal (/admin)",
+      "url": "http://localhost:5173/admin",
+      "status": 200,
+      "success": true,
+      "body_len": 1178,
+      "error": null,
+      "body": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"icon\" type=\"image/png\" href=\"/logo-icon.png\" />\r\n  <link rel=\"apple-touch-icon\" href=\"/logo-icon.png\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <meta name=\"description\"\r\n    content=\"Growth Way \u2014 A creative growth agency. Strategy, content, branding, campaigns and execution. Ideas to Impact.\" />\r\n  <title>Growth Way \u2014 Ideas to Impact</title>\r\n\r\n  <!-- Google Fonts -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n  <link\r\n    href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap\"\r\n    rel=\"stylesheet\" />\r\n</head>\r\n\r\n<body>\r\n  <div id=\"root\"></div>\r\n  <script type=\"module\" src=\"/src/main.jsx?t=1791711234588\"></script>\r\n</body>\r\n\r\n</html>",
+      "html_valid": true
+    },
+    {
+      "label": "Admin Analytics Dashboard (/admin/dashboard)",
+      "url": "http://localhost:5173/admin/dashboard",
+      "status": 200,
+      "success": true,
+      "body_len": 1178,
+      "error": null,
+      "body": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\r\n  <meta charset=\"UTF-8\" />\r\n  <link rel=\"icon\" type=\"image/png\" href=\"/logo-icon.png\" />\r\n  <link rel=\"apple-touch-icon\" href=\"/logo-icon.png\" />\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n  <meta name=\"description\"\r\n    content=\"Growth Way \u2014 A creative growth agency. Strategy, content, branding, campaigns and execution. Ideas to Impact.\" />\r\n  <title>Growth Way \u2014 Ideas to Impact</title>\r\n\r\n  <!-- Google Fonts -->\r\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\r\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\r\n  <link\r\n    href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap\"\r\n    rel=\"stylesheet\" />\r\n</head>\r\n\r\n<body>\r\n  <div id=\"root\"></div>\r\n  <script type=\"module\" src=\"/src/main.jsx?t=1791711234588\"></script>\r\n</body>\r\n\r\n</html>",
+      "html_valid": true
+    }
+  ],
+  "backend_apis": [
+    {
+      "label": "Public Industries API",
+      "url": "http://localhost:8000/api/industries",
+      "status": 200,
+      "success": true,
+      "body_len": 1782,
+      "error": null,
+      "body": "[{\"slug\":\"startups\",\"name\":\"Startups\",\"shortLine\":\"From zero to brand recognition\",\"image\":\"https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&auto=format&fit=crop\",\"order\":1},{\"slug\":\"hospitality\",\"name\":\"Hospitality\",\"shortLine\":\"Experiences guests remember\",\"image\":\"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop\",\"order\":2},{\"slug\":\"cafes-restaurants\",\"name\":\"Cafes & Restaurants\",\"shortLine\":\"Where taste meets visual identity\",\"image\":\"https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&auto=format&fit=crop\",\"order\":3},{\"slug\":\"fashion-jewellery\",\"name\":\"Fashion & Jewellery\",\"shortLine\":\"Crafting desire through design\",\"image\":\"https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&auto=format&fit=crop\",\"order\":4},{\"slug\":\"beauty\",\"name\":\"Beauty\",\"shortLine\":\"Aesthetics that sell themselves\",\"image\":\"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop\",\"order\":5},{\"slug\":\"real-estate\",\"name\":\"Real Estate\",\"shortLine\":\"Positioning properties with purpose\",\"image\":\"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop\",\"order\":6},{\"slug\":\"events\",\"name\":\"Events\",\"shortLine\":\"Making moments unforgettable\",\"image\":\"https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop\",\"order\":7},{\"slug\":\"personal-brands\",\"name\":\"Personal Brands\",\"shortLine\":\"Your story, amplified\",\"image\":\"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop\",\"order\":8},{\"slug\":\"local-businesses\",\"name\":\"Local Businesses\",\"shortLine\":\"Neighbourhood names, national reach\",\"image\":\"https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&auto=format&fit=crop\",\"order\":9}]",
+      "item_count": 9
+    },
+    {
+      "label": "Public Services API",
+      "url": "http://localhost:8000/api/services",
+      "status": 200,
+      "success": true,
+      "body_len": 664,
+      "error": null,
+      "body": "[{\"slug\":\"branding\",\"title\":\"Branding & Identity\",\"description\":\"Logo, voice, and visual systems.\",\"capabilities\":[],\"order\":1},{\"slug\":\"web-design\",\"title\":\"Web Design & UX\",\"description\":\"Digital experiences that convert.\",\"capabilities\":[],\"order\":2},{\"slug\":\"social-media\",\"title\":\"Social Media Strategy\",\"description\":\"Engaging your audience where they are.\",\"capabilities\":[],\"order\":3},{\"slug\":\"content-production\",\"title\":\"Content Production\",\"description\":\"High-quality photo and video.\",\"capabilities\":[],\"order\":4},{\"slug\":\"seo-marketing\",\"title\":\"SEO & Performance Marketing\",\"description\":\"Data-driven growth strategies.\",\"capabilities\":[],\"order\":5}]",
+      "item_count": 5
+    },
+    {
+      "label": "Public Projects API",
+      "url": "http://localhost:8000/api/projects",
+      "status": 200,
+      "success": true,
+      "body_len": 718,
+      "error": null,
+      "body": "[{\"slug\":\"aura-botanicals\",\"title\":\"Aura Botanicals\",\"client\":\"Aura Botanicals\",\"industry\":\"ecommerce\",\"services\":[\"Branding\",\"Web Design & Dev\",\"Art Direction\"],\"coverImage\":\"https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop\",\"gallery\":[],\"challenge\":\"\",\"strategy\":\"\",\"execution\":\"\",\"results\":[],\"featured\":true,\"order\":1},{\"slug\":\"verve-hospitality\",\"title\":\"Verve Hospitality\",\"client\":\"Verve Hospitality Group\",\"industry\":\"hospitality\",\"services\":[\"Identity\",\"Digital Flagship\"],\"coverImage\":\"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop\",\"gallery\":[],\"challenge\":\"\",\"strategy\":\"\",\"execution\":\"\",\"results\":[],\"featured\":true,\"order\":2}]",
+      "item_count": 2
+    },
+    {
+      "label": "Public Clients API",
+      "url": "http://localhost:8000/api/clients",
+      "status": 200,
+      "success": true,
+      "body_len": 2,
+      "error": null,
+      "body": "[]",
+      "item_count": 0
+    },
+    {
+      "label": "Public Testimonials API",
+      "url": "http://localhost:8000/api/testimonials",
+      "status": 200,
+      "success": true,
+      "body_len": 172,
+      "error": null,
+      "body": "[{\"quote\":\"GrowthWay helped scale our digital presence with high aesthetic precision.\",\"personName\":\"Elena Rostova\",\"role\":\"Founder\",\"brand\":\"Aura Botanicals\",\"logo\":null}]",
+      "item_count": 1
+    },
+    {
+      "label": "Public Team API",
+      "url": "http://localhost:8000/api/team",
+      "status": 200,
+      "success": true,
+      "body_len": 247,
+      "error": null,
+      "body": "[{\"name\":\"Priyanka Barnwal\",\"role\":\"Founder\",\"photo\":\"\",\"bio\":\"Leading creative growth and strategic direction.\",\"order\":1},{\"name\":\"Ajay Ojha\",\"role\":\"Co-Founder\",\"photo\":\"\",\"bio\":\"Directing operations, media campaigns and execution.\",\"order\":2}]",
+      "item_count": 2
+    },
+    {
+      "label": "Public Studio Settings API",
+      "url": "http://localhost:8000/api/site-settings",
+      "status": 200,
+      "success": true,
+      "body_len": 137,
+      "error": null,
+      "body": "{\"whatsappNumber\":\"\",\"email\":\"\",\"instagram\":\"\",\"linkedin\":\"\",\"youtube\":\"\",\"behance\":\"\",\"phone\":\"\",\"whyGrowthway\":{\"intro\":\"\",\"items\":[]}}",
+      "item_count": 1
+    },
+    {
+      "label": "Public Lead Submission",
+      "url": "http://localhost:8000/api/leads",
+      "status": 200,
+      "success": true,
+      "body_len": 48,
+      "error": null,
+      "body": "{\"id\":\"6acb5a99cbb82b05b700a505\",\"status\":\"New\"}"
+    }
+  ],
+  "admin_auth_flow": [
+    {
+      "label": "Admin Login (OAuth2 Form)",
+      "url": "http://localhost:8000/api/admin/login",
+      "status": 200,
+      "success": true,
+      "body_len": 185,
+      "error": null,
+      "body": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc5MTcxMzY5OX0.awhF53-_b2kKzoeLwf0HJY6N_8q2pzPQw4vNxp6DLWo\",\"token_type\":\"bearer\"}"
+    }
+  ],
+  "pipeline_telemetry": [
+    {
+      "label": "Admin Analytics Telemetry",
+      "url": "http://localhost:8000/api/admin/analytics",
+      "status": 200,
+      "success": true,
+      "body_len": 5893,
+      "error": null,
+      "body": "{\"summary\":{\"totalLeads\":11,\"newLeads\":3,\"contactedLeads\":2,\"wonLeads\":3,\"pipelineValue\":228500,\"conversionRate\":27.3,\"avgTurnaroundHours\":14.5,\"slaAdherence\":\"98.4%\"},\"pipelineStages\":{\"New\":3,\"Contacted\":2,\"Proposal\":2,\"Won\":3,\"Lost\":1},\"budgetDistribution\":{\"<5k\":1,\"5k-10k\":2,\"10k-25k\":4,\">25k\":4},\"businessTypeDistribution\":{\"startup\":5,\"ecommerce\":2,\"hospitality\":2,\"b2b\":1,\"personal-brand\":1},\"serviceDistribution\":{\"brand-strategy\":8,\"web-design-dev\":6,\"creative-direction\":5,\"growth-marketing\":2,\"content-production\":2},\"recentLeads\":[{\"id\":\"6acb5a99cbb82b05b700a505\",\"name\":\"Alex Mercer\",\"brand\":\"Prism Dynamics\",\"email\":\"alex@prism.design\",\"phone\":\"+1 415 555 0199\",\"businessType\":\"startup\",\"servicesNeeded\":[\"brand-strategy\",\"web-design-dev\"],\"budgetRange\":\"10k-25k\",\"timeline\":\"1-2-months\",\"projectDescription\":\"Scratchpad automated audit test submission.\",\"status\":\"New\",\"createdAt\":\"2026-10-11T09:44:57.332656\"},{\"id\":\"660000000000000000000001\",\"name\":\"Elena Rostova\",\"brand\":\"Aura Botanicals\",\"email\":\"elena@aurabotanicals.com\",\"phone\":\"+1 415 890 2201\",\"businessType\":\"ecommerce\",\"servicesNeeded\":[\"brand-strategy\",\"web-design-dev\",\"creative-direction\"],\"budgetRange\":\">25k\",\"timeline\":\"1-2-months\",\"projectDescription\":\"Luxury organic skincare brand launch. Requires complete brand book, bespoke e-commerce store with 3D product showcase, and premium packaging design system.\",\"status\":\"Won\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000002\",\"name\":\"Julian Vance\",\"brand\":\"Verve Hospitality Group\",\"email\":\"jvance@vervegrouphotels.com\",\"phone\":\"+1 212 555 8390\",\"businessType\":\"hospitality\",\"servicesNeeded\":[\"brand-strategy\",\"creative-direction\"],\"budgetRange\":\"10k-25k\",\"timeline\":\"2-3-months\",\"projectDescription\":\"Boutique hotel chain rebranding across 3 coastal locations. Needs visual identity, guest collateral, signage direction, and responsive booking experience.\",\"status\":\"Proposal\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000003\",\"name\":\"Marcus Chen\",\"brand\":\"Kairo Studio\",\"email\":\"marcus@kairodesign.co\",\"phone\":\"+44 20 7946 0912\",\"businessType\":\"startup\",\"servicesNeeded\":[\"web-design-dev\",\"growth-marketing\"],\"budgetRange\":\"10k-25k\",\"timeline\":\"asap\",\"projectDescription\":\"High-craft architectural hardware studio. Developing high-conversion direct-to-architect web portal with dynamic quote calculator.\",\"status\":\"Contacted\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000004\",\"name\":\"Sophia Sterling\",\"brand\":\"Apex Capital Partners\",\"email\":\"s.sterling@apexventures.fund\",\"phone\":\"+1 312 400 9182\",\"businessType\":\"b2b\",\"servicesNeeded\":[\"brand-strategy\",\"web-design-dev\"],\"budgetRange\":\">25k\",\"timeline\":\"1-2-months\",\"projectDescription\":\"Early-stage deeptech venture fund. Complete digital identity refresh, executive investor portal, and animated pitch deck deck design system.\",\"status\":\"Won\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000005\",\"name\":\"David Althaus\",\"brand\":\"Solis Atelier\",\"email\":\"david@solis-atelier.de\",\"phone\":\"+49 30 12345678\",\"businessType\":\"personal-brand\",\"servicesNeeded\":[\"creative-direction\",\"content-production\"],\"budgetRange\":\"5k-10k\",\"timeline\":\"flexible\",\"projectDescription\":\"Bespoke bespoke timepiece and mechanical object maker. Visual direction, macro horology cinematography, and archival web catalog.\",\"status\":\"New\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000006\",\"name\":\"Amira Haddad\",\"brand\":\"Lumina Architectural Lab\",\"email\":\"amira@luminalab.io\",\"phone\":\"+971 4 391 0000\",\"businessType\":\"startup\",\"servicesNeeded\":[\"web-design-dev\",\"brand-strategy\"],\"budgetRange\":\">25k\",\"timeline\":\"2-3-months\",\"projectDescription\":\"Computational facade and lighting engineering firm. Interactive portfolio site with WebGL canvas simulations and case study narrative builder.\",\"status\":\"Proposal\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000007\",\"name\":\"Liam Gallagher\",\"brand\":\"Velour Living\",\"email\":\"liam@velourliving.com\",\"phone\":\"+1 604 772 1934\",\"businessType\":\"ecommerce\",\"servicesNeeded\":[\"content-production\",\"growth-marketing\"],\"budgetRange\":\"5k-10k\",\"timeline\":\"1-2-months\",\"projectDescription\":\"Scandinavian acoustic furnishings and minimalist textiles. Multi-channel paid creative assets and high-end video lookbook.\",\"status\":\"Contacted\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000008\",\"name\":\"Chloe Dupont\",\"brand\":\"Terra Organic Collective\",\"email\":\"chloe@terraorganics.fr\",\"phone\":\"+33 1 42 68 55 00\",\"businessType\":\"hospitality\",\"servicesNeeded\":[\"brand-strategy\",\"creative-direction\"],\"budgetRange\":\"10k-25k\",\"timeline\":\"flexible\",\"projectDescription\":\"Farm-to-table culinary collective and natural wine label. Complete visual identity, menu hierarchy, and sustainable packaging suite.\",\"status\":\"Won\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000009\",\"name\":\"Noah Sterling\",\"brand\":\"Pulse Mobility\",\"email\":\"noah@pulsemobility.co\",\"phone\":\"+1 512 889 0019\",\"businessType\":\"startup\",\"servicesNeeded\":[\"brand-strategy\"],\"budgetRange\":\"<5k\",\"timeline\":\"asap\",\"projectDescription\":\"Micromobility fleet software pilot seeking fast pitch deck polish and landing page teaser.\",\"status\":\"Lost\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"},{\"id\":\"660000000000000000000010\",\"name\":\"Kavita Rao\",\"brand\":\"Nexus AI Robotics\",\"email\":\"kavita@nexusrobotics.ai\",\"phone\":\"+91 98200 45678\",\"businessType\":\"startup\",\"servicesNeeded\":[\"brand-strategy\",\"web-design-dev\",\"creative-direction\"],\"budgetRange\":\">25k\",\"timeline\":\"1-2-months\",\"projectDescription\":\"Autonomous warehouse robotics startup raising Series A. Full brand positioning, technical product illustrations, and investor-ready web experience.\",\"status\":\"New\",\"createdAt\":\"2026-10-11T09:44:20.989530+00:00\"}]}"
+    }
+  ]
+}
