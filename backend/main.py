@@ -48,3 +48,14 @@ app.include_router(admin_router)
 @app.get("/")
 async def root():
     return {"message": "GrowthWay API is running"}
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok", "app": settings.APP_NAME}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
