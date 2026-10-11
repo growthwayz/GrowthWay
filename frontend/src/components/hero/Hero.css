@@ -71,11 +71,8 @@
   position: absolute;
   width: 120px;
   height: 120px;
-  border: 1px solid rgba(92, 158, 49, 0.40);
-  /* gw-olive */
-  background: rgba(92, 158, 49, 0.05);
-  /* gw-olive */
-  backdrop-filter: blur(2px);
+  border: 1px solid rgba(92, 158, 49, 0.35);
+  background: rgba(92, 158, 49, 0.06);
 }
 
 .face-front {

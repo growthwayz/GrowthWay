@@ -8,7 +8,7 @@ export default {
           canvas: '#FAF8F5',
           cream: '#FAF8F5',          // Primary background — warm off-white
           canvas: '#FAF8F5',         // Primary background alias
-          pink: '#E95B9F',           // Growthway Pink
+          pink: '#5C9E31',           // Growthway Pink -> mapped to olive to match current theme
           white: '#FFFDF9',          // Warm white panels
           ink: '#111111',            // Primary text
           black: '#080808',          // Dark sections
@@ -21,7 +21,12 @@ export default {
           maroon: '#7A3B3B',         // Supporting colour — only if needed
           muted: '#777777',          // Secondary text
           line: '#E8E4DF',           // Dividers — warm toned
-          blush: '#F0DDD0',          // Very subtle warm blush — sparingly
+          blush: '#E5F1DB',          // Very subtle warm blush -> subtle green
+          'blush-soft': '#F1F8EB',   // Soft pink fills -> soft green
+          'blush-deep': '#87C95B',   // Deeper pink hover -> light olive
+          purple: '#B35CE8',         // Chip accent
+          green: '#72B957',          // Chip accent
+          orange: '#F26A21',         // Chip accent
         },
       },
       fontFamily: {

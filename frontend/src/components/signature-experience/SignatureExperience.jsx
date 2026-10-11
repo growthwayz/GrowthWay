@@ -3,7 +3,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import './SignatureExperience.css';
-import Services from '../services/Services';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -196,7 +195,7 @@ export default function SignatureExperience() {
                <div className="sig-swatch" style={{background: 'var(--text-dark, #1F2915)'}}></div>
                <div className="sig-swatch" style={{background: 'var(--muted, #5C7051)'}}></div>
                <div className="sig-swatch" style={{background: 'var(--accent, #C5D86D)'}}></div>
-               <div className="sig-swatch" style={{background: 'var(--blush, #F2D5D9)'}}></div>
+               <div className="sig-swatch" style={{background: 'var(--blush, #E5F1DB)'}}></div>
             </div>
 
             <div className="sig-card sig-float" style={{right: '8%', bottom: '16%', '--z': '140px', '--r': '-10deg'}}>
@@ -356,7 +355,7 @@ export default function SignatureExperience() {
                 
                 {/* Massive "IMPACT" */}
                 <h2 style={{font: "normal clamp(7rem, 22vw, 18rem)/0.75 'Abril Fatface', serif", margin: '0', color: '#263326', letterSpacing: '-0.02em', textTransform: 'uppercase', textShadow: '0 20px 40px rgba(0,0,0,0.08)', zIndex: 2}}>
-                  IMPACT<span style={{color: '#E68AA1'}}>.</span>
+                  IMPACT<span style={{color: '#5C9E31'}}>.</span>
                 </h2>
 
               </div>

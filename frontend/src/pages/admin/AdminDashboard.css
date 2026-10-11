@@ -1,0 +1,504 @@
+/* ============================================
+   ADMIN ANALYTICS DASHBOARD — EDITORIAL CMS
+   Clean architectural cards, live pipeline visualizers,
+   and executive telemetry.
+   ============================================ */
+
+.ad-wrapper {
+  padding: 40px 48px;
+  max-width: 1540px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .ad-wrapper {
+    padding: 24px 20px;
+  }
+}
+
+/* ── Top Header ── */
+.ad-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+@media (min-width: 768px) {
+  .ad-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.ad-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: #E5F1DB;
+  border: 1px solid #CDE2BF;
+  border-radius: 100px;
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #2D5814;
+  margin-bottom: 8px;
+}
+
+.ad-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #5C9E31;
+}
+
+.ad-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: #111111;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ad-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: #777777;
+  margin-top: 4px;
+}
+
+.ad-filters {
+  display: flex;
+  gap: 8px;
+}
+
+.ad-filter-pill {
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #666666;
+  background: #FFFFFF;
+  border: 1px solid #E2DDD5;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ad-filter-pill.active {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+}
+
+/* ── KPI Grid ── */
+.ad-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 36px;
+}
+
+.ad-kpi-card {
+  background: #FFFFFF;
+  border: 1px solid #E2DDD5;
+  border-radius: 4px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.ad-kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: #5C9E31;
+}
+
+.ad-kpi-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.ad-kpi-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888888;
+}
+
+.ad-kpi-trend {
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #5C9E31;
+  background: #E5F1DB;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ad-kpi-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+
+.ad-kpi-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+/* ── Visual Analytics Grid ── */
+.ad-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+@media (max-width: 1024px) {
+  .ad-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ad-chart-card {
+  background: #FFFFFF;
+  border: 1px solid #E2DDD5;
+  border-radius: 4px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+}
+
+.ad-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #F0ECE6;
+  padding-bottom: 14px;
+}
+
+.ad-chart-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111111;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.ad-chart-meta {
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.7rem;
+  color: #999999;
+}
+
+/* Pipeline Stage Funnel */
+.ad-pipeline-funnel {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 640px) {
+  .ad-pipeline-funnel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ad-stage-box {
+  background: #FAF8F5;
+  border: 1px solid #EAE6E1;
+  border-radius: 3px;
+  padding: 14px 12px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.ad-stage-box.active {
+  border-color: #5C9E31;
+  background: #F4F8EF;
+}
+
+.ad-stage-count {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.ad-stage-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #777777;
+}
+
+/* Distribution Bars */
+.ad-bars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ad-bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ad-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #333333;
+}
+
+.ad-bar-track {
+  width: 100%;
+  height: 8px;
+  background: #F0ECE6;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.ad-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: #111111;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ad-bar-fill.olive {
+  background: #5C9E31;
+}
+
+/* ── Live Leads Table ── */
+.ad-table-card {
+  background: #FFFFFF;
+  border: 1px solid #E2DDD5;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+}
+
+.ad-table-header {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-bottom: 1px solid #EAE6E1;
+}
+
+@media (min-width: 768px) {
+  .ad-table-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.ad-table-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ad-tab-btn {
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #666666;
+  background: #FAF8F5;
+  border: 1px solid #E2DDD5;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ad-tab-btn.active {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+}
+
+.ad-table-container {
+  overflow-x: auto;
+}
+
+.ad-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ad-table th {
+  padding: 14px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888888;
+  background: #FAF8F5;
+  border-bottom: 1px solid #EAE6E1;
+}
+
+.ad-table td {
+  padding: 18px 24px;
+  border-bottom: 1px solid #F0ECE6;
+  vertical-align: middle;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+}
+
+.ad-table tr:hover td {
+  background: #FCFBF9;
+}
+
+.ad-client-brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #111111;
+}
+
+.ad-client-name {
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+.ad-tag-pill {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #FAF8F5;
+  border: 1px solid #E2DDD5;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  color: #444444;
+  margin: 2px 4px 2px 0;
+}
+
+.ad-status-select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #D6D0C7;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #FFFFFF;
+  cursor: pointer;
+  outline: none;
+}
+
+.ad-status-select.new {
+  background: #E5F1DB;
+  color: #2D5814;
+  border-color: #B9DCA2;
+}
+
+.ad-status-select.contacted {
+  background: #E8F0FE;
+  color: #1A56DB;
+  border-color: #C3D9FF;
+}
+
+.ad-status-select.proposal {
+  background: #FEF3C7;
+  color: #92400E;
+  border-color: #FDE68A;
+}
+
+.ad-status-select.won {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+}
+
+.ad-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ad-action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background: #FAF8F5;
+  border: 1px solid #E2DDD5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333333;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.ad-action-icon:hover {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+}
+
+/* Modal Drawer for Brief View */
+.ad-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.ad-modal-card {
+  background: #FFFFFF;
+  border-radius: 4px;
+  max-width: 620px;
+  width: 100%;
+  padding: 36px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+  position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.ad-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #888888;
+  cursor: pointer;
+}

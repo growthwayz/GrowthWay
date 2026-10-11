@@ -31,44 +31,18 @@ const ContactIcon = () => (
   </svg>
 );
 
-const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
-  const itemRef = useRef(null);
+const NavItem = ({ name, href, active, icon: Icon }) => {
   const [isFocused, setIsFocused] = useState(false);
-
-  let scale = 1;
-  let translateY = 0;
-  let isHovered = false;
-
-  if (mouseX !== null && itemRef.current) {
-    const rect = itemRef.current.getBoundingClientRect();
-    const itemCenterX = rect.left + rect.width / 2;
-    const distance = Math.abs(mouseX - itemCenterX);
-
-    // Max distance for interaction
-    const maxDistance = 120;
-
-    if (distance < maxDistance) {
-      // Ease function for smooth falloff
-      const ease = Math.max(0, 1 - distance / maxDistance);
-      scale = 1 + ease * 0.15; // up to 1.15
-      translateY = ease * -4; // up to -4px
-
-      // Determine if this is the "hovered" item
-      isHovered = distance < (rect.width / 2 + 15);
-    }
-  }
+  const [isHovered, setIsHovered] = useState(false);
 
   const effectiveHover = isHovered || isFocused;
 
-  // Handle prefers-reduced-motion
-  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) {
-    scale = 1;
-    translateY = 0;
-  }
-
   const handleClick = (e) => {
     e.preventDefault();
+    if (window.location.pathname !== '/') {
+      window.location.href = '/' + href;
+      return;
+    }
     const target = document.querySelector(href);
     if (target) {
       const targetTop = target.getBoundingClientRect().top + window.scrollY;
@@ -76,18 +50,15 @@ const NavItem = ({ name, href, active, mouseX, icon: Icon }) => {
         top: targetTop,
         behavior: 'smooth'
       });
-      // Optionally update the URL silently
       window.history.pushState(null, '', href);
     }
   };
 
   return (
     <div
-      ref={itemRef}
       className={`nav-item-container ${effectiveHover ? 'is-hovered' : ''} ${active ? 'nav-item-active' : ''}`}
-      style={{
-        transform: `translateY(${translateY}px) scale(${scale})`
-      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="nav-hover-capsule"></div>
       <a
@@ -156,8 +127,15 @@ export default function Navbar() {
       >
         {/* Logo */}
         <div className="flex-shrink-0 z-50">
-          <a href="/" className="text-[20px] font-display font-extrabold tracking-tight text-[#171717] hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm">
-            Growthway<span className="text-[#641F2B]">.</span>
+          <a href="/" className="flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm group">
+            <img
+              src="/logo-icon.png"
+              alt="Growth Way"
+              className="w-7 h-7 rounded-[6px] object-cover shadow-sm group-hover:scale-105 transition-transform"
+            />
+            <span className="text-[19px] font-display font-extrabold tracking-tight text-[#171717]">
+              Growth<span className="font-semibold text-gw-olive">Way</span>
+            </span>
           </a>
         </div>
 
@@ -169,7 +147,6 @@ export default function Navbar() {
               name={link.name}
               href={link.href}
               active={link.active}
-              mouseX={mouseX}
               icon={link.icon}
             />
           ))}
@@ -178,7 +155,7 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center z-50">
           <a
-            href="/#start-project"
+            href="/contact"
             className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#3D4A36]"
           >
             START A PROJECT
@@ -226,7 +203,7 @@ export default function Navbar() {
           ))}
           <div className={`mobile-nav-item delay-5 mt-12`}>
             <a
-              href="/#start-project"
+              href="/contact"
               className="inline-flex items-center gap-2 cta-button px-8 py-4 text-lg font-medium"
               onClick={() => setIsMobileMenuOpen(false)}
             >
