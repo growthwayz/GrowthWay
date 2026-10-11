@@ -1,3 +1,5 @@
+> Current implementation/status: see [CMS guide](docs/CMS_GUIDE.md), [missing inputs](docs/MISSING_INPUTS.md) and [deployment guide](docs/DEPLOYMENT.md). Earlier defaults and completion claims below are historical. Credentials have been removed from this document.
+
 # Growthway Website Implementation Worklog
 
 ## Session: Sequence 8 + Sequences 46–55 | 2026-10-11
@@ -160,8 +162,8 @@
 
 ### Deployment Readiness & Production Credentials Setup
 - **Credentials Configured:**
-  - **MongoDB Atlas Cluster0:** Connected and verified using live URI `mongodb+srv://growthway84_db_user:qxrFblZCoii6vgei@cluster0.whxtgfc.mongodb.net/?appName=Cluster0`.
-  - **Cloudinary:** Configured with API Key `674479137456112` and API Secret `KWETojeyu2uL_cXyAD2thrcI7rY`. Upgraded `POST /api/admin/media/sign` to generate real cryptographic SHA upload signatures.
+  - **MongoDB Atlas Cluster0:** Connected and verified using live URI `<MONGODB_URL_IN_PRIVATE_ENV>`.
+  - **Cloudinary:** Configured with API Key `674479137456112` and API Secret `<CLOUDINARY_API_SECRET_IN_PRIVATE_ENV>`. Upgraded `POST /api/admin/media/sign` to generate real cryptographic SHA upload signatures.
 - **Service & Deployment API Created (`/api/service`):**
   1. `GET /api/service/health` — Comprehensive readiness probe checking live Atlas connection, collection document counts, and third-party integrations (Cloudinary, SMTP, WhatsApp, AI).
   2. `POST /api/service/seed` — Idempotent migration and seeding endpoint that primes MongoDB Atlas with all 8 services, 9 industries, portfolio projects, site settings, and database indexes.

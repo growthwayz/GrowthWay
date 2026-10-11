@@ -623,3 +623,11 @@
   border-color: #111111;
   color: #111111;
 }
+
+/* Let form columns and labels shrink inside tablet and phone layouts. */
+.lf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lf-field, .lf-section-header > div { min-width: 0; }
+.lf-label { flex-wrap: wrap; }
+.lf-step-index, .lf-chip-check { flex-shrink: 0; }
+.lf-chips-grid { grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); }
+@media (max-width: 640px) { .lf-grid { grid-template-columns: minmax(0, 1fr); } }

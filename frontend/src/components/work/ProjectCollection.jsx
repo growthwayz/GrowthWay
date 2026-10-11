@@ -24,7 +24,7 @@ const SplitProject = ({ project, index }) => (
 
       {/* Mini stats row */}
       {project.stats && (
-        <div className="flex gap-6 mb-10 reveal reveal-delay-2">
+        <div className="flex flex-wrap gap-6 mb-10 reveal reveal-delay-2">
           {Object.entries(project.stats).map(([key, value]) => (
             <div key={key}>
               <span className="font-display text-2xl md:text-3xl font-bold text-gw-ink">{value}</span>
@@ -47,7 +47,7 @@ const SplitProject = ({ project, index }) => (
     <div className={`${index % 2 === 0 ? 'order-1 md:order-2' : 'order-1 md:order-1'} reveal-scale`}>
       <TiltCard>
         <Link to={`/work/${project.slug}`} className="block aspect-[4/5] bg-gw-black">
-          <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover" />
+          <img src={project.image} alt={project.imageAlt || project.title} loading="lazy" className="w-full h-full object-cover" />
         </Link>
       </TiltCard>
     </div>
@@ -62,13 +62,13 @@ const PortraitProject = ({ project }) => (
     <div className="w-full md:w-5/12 reveal-scale">
       <TiltCard>
         <Link to={`/work/${project.slug}`} className="block aspect-[3/4] bg-gw-black">
-          <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover" />
+          <img src={project.image} alt={project.imageAlt || project.title} loading="lazy" className="w-full h-full object-cover" />
         </Link>
       </TiltCard>
     </div>
     <div className="w-full md:w-5/12 flex flex-col items-start">
        <div className="flex items-center gap-3 mb-4 reveal">
-         <span className="text-gw-olive font-display font-bold text-7xl md:text-8xl">0{project.id}</span>
+         <span className="text-gw-olive font-display font-bold text-7xl md:text-8xl">{project.id}</span>
          <span className="text-gw-muted/30">—</span>
          <span className="text-xs uppercase tracking-luxury text-gw-olive/80">{project.metadata.location}</span>
        </div>
@@ -86,7 +86,7 @@ const PortraitProject = ({ project }) => (
 
        {/* Stats */}
        {project.stats && (
-         <div className="flex gap-6 mb-10 reveal reveal-delay-2">
+         <div className="flex flex-wrap gap-6 mb-10 reveal reveal-delay-2">
            {Object.entries(project.stats).map(([key, value]) => (
              <div key={key}>
                <span className="font-display text-2xl md:text-3xl font-bold text-gw-ink">{value}</span>
@@ -128,7 +128,7 @@ const DarkProject = ({ project }) => (
 
         {/* Stats */}
         {project.stats && (
-          <div className="flex gap-8 mb-12 reveal reveal-delay-2">
+          <div className="flex flex-wrap gap-8 mb-12 reveal reveal-delay-2">
             {Object.entries(project.stats).map(([key, value]) => (
               <div key={key}>
                 <span className="font-display text-2xl md:text-3xl font-bold text-gw-white">{value}</span>
@@ -166,7 +166,7 @@ const DarkProject = ({ project }) => (
       <div className="lg:col-span-7 reveal-scale">
         <TiltCard>
           <Link to={`/work/${project.slug}`} className="block aspect-video bg-gw-charcoal">
-            <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover" />
+            <img src={project.image} alt={project.imageAlt || project.title} loading="lazy" className="w-full h-full object-cover" />
           </Link>
         </TiltCard>
       </div>
@@ -193,7 +193,7 @@ const TypographyProject = ({ project }) => (
     <div className="w-full max-w-5xl mx-auto z-0 relative reveal-scale">
       <TiltCard>
         <div className="aspect-[21/9] bg-gw-black">
-          <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover" />
+          <img src={project.image} alt={project.imageAlt || project.title} loading="lazy" className="w-full h-full object-cover" />
         </div>
       </TiltCard>
     </div>

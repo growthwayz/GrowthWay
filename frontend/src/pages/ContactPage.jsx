@@ -1,7 +1,4 @@
 import { useEffect } from 'react';
-import Navbar from '../components/navigation/Navbar';
-import Footer from '../components/footer/Footer';
-import CustomCursor from '../components/CustomCursor';
 import LeadForm from '../components/forms/LeadForm';
 
 export default function ContactPage() {
@@ -11,22 +8,20 @@ export default function ContactPage() {
 
   return (
     <div
-      className="min-h-screen font-sans text-gw-ink flex flex-col"
+      className="gw-contact min-h-screen font-sans text-gw-ink flex flex-col"
       style={{
         backgroundColor: '#FAF8F5',
         backgroundImage:
           'linear-gradient(180deg, rgba(92,158,49,0.04) 0%, rgba(250,248,245,0) 500px)',
       }}
     >
-      <CustomCursor />
-      <Navbar />
 
       <main className="flex-1" style={{ paddingTop: '120px' }}>
         {/* Top Architectural Banner */}
         <section className="py-12 md:py-20 px-6 md:px-12 lg:px-20 max-w-[1480px] mx-auto border-b border-[#EAE6E1]">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="max-w-[760px]">
-              <div className="flex items-center gap-3 sm:gap-4 text-xs font-bold tracking-[0.25em] text-gw-muted uppercase mb-6">
+              <div className="flex items-center flex-wrap gap-3 sm:gap-4 text-xs font-bold tracking-[0.25em] text-gw-muted uppercase mb-6">
                 <img src="/logo-icon.png" alt="" className="w-5 h-5 rounded-[4px] object-cover shadow-sm" />
                 <span className="w-8 h-[1.5px] bg-gw-olive" />
                 <span>Studio Commission Intake</span>
@@ -54,10 +49,10 @@ export default function ContactPage() {
 
         {/* Two-Column Editorial Briefing Canvas */}
         <section className="py-16 md:py-24 px-6 md:px-12 lg:px-20 max-w-[1480px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 xl:gap-24 items-start">
             
             {/* Left Column: Studio Intelligence & Coordinates */}
-            <div className="lg:col-span-5 flex flex-col gap-12 sticky top-32">
+            <div className="lg:col-span-5 min-w-0 flex flex-col gap-12 lg:sticky lg:top-32">
               <div>
                 <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-gw-muted block mb-3 font-mono">
                   00 // Studio Coordinates
@@ -148,14 +143,14 @@ export default function ContactPage() {
               </div>
 
               {/* Architectural Grid Stamp */}
-              <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-widest text-[#A8A29A] pt-4 border-t border-[#EAE6E1]">
+              <div className="flex items-center justify-between flex-wrap gap-3 text-[11px] font-mono uppercase tracking-widest text-[#A8A29A] pt-4 border-t border-[#EAE6E1]">
                 <span>Vol. 2026 // Agency Core</span>
                 <span>Security: 256-Bit SSL Encrypted</span>
               </div>
             </div>
 
             {/* Right Column: Art-Directed Editorial LeadForm */}
-            <div className="lg:col-span-7 bg-[#FFFFFF] border border-[#E2DDD5] p-8 md:p-14 rounded-sm shadow-xl relative">
+            <div className="contact-form-panel lg:col-span-7 min-w-0 bg-[#FFFFFF] border border-[#E2DDD5] p-6 md:p-10 xl:p-14 rounded-sm shadow-xl relative">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gw-olive via-[#A4D481] to-gw-olive opacity-80" />
               <LeadForm />
             </div>
@@ -164,7 +159,6 @@ export default function ContactPage() {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }

@@ -264,3 +264,16 @@
   .services-wrapper .modal-caps-list { padding: 1.5rem; }
   .services-wrapper .modal-caps-list li { font-size: 1rem; }
 }
+
+@media (max-width: 1024px) {
+ .services-wrapper { overflow-x: clip; }
+ .services-wrapper .services-sticky-hud { overflow: clip; }
+ .services-wrapper .grain { inset: 0; animation: none; }
+ .services-wrapper .svc-item { padding: 2rem 1.25rem; }
+ .services-wrapper .svc-title { min-width: 0; overflow-wrap: anywhere; }
+ .services-wrapper .svc-title i { flex-shrink: 0; }
+ .services-wrapper .modal-hero-title { font-size: clamp(2.25rem, 8vw, 5rem); overflow-wrap: anywhere; }
+ .services-wrapper .modal-hero-img { height: auto; max-height: 50svh; }
+}
+
+.services-wrapper { overflow-x: clip; }
