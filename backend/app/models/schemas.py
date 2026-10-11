@@ -26,7 +26,9 @@ class ProjectOut(BaseModel):
     industry: str
     services: list[str] = []
     coverImage: str = ""
+    coverImageAlt: str = ""
     gallery: list[str] = []
+    galleryCaptions: list[str] = []
     challenge: str = ""
     strategy: str = ""
     execution: str = ""
@@ -45,6 +47,7 @@ class IndustryOut(BaseModel):
     name: str
     shortLine: str = ""
     image: str = ""
+    imageAlt: str = ""
     order: int = 0
 
 class IndustryInDB(ContentBase, IndustryOut):
@@ -56,6 +59,7 @@ class IndustryInDB(ContentBase, IndustryOut):
 class ClientOut(BaseModel):
     name: str
     logo: str = ""
+    logoAlt: str = ""
     url: Optional[str] = None
     order: int = 0
 
@@ -84,6 +88,7 @@ class TeamMemberOut(BaseModel):
     name: str
     role: str
     photo: str = ""
+    photoAlt: str = ""
     bio: str = ""
     order: int = 0
 

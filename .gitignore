@@ -1,14 +1,101 @@
-# Frontend
+# ==============================================================================
+# GrowthWay — Project .gitignore
+# ==============================================================================
+
+# ── Environment & Secret Files ────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.env
+backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# Keep example templates committed
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# ── Node.js / Frontend ────────────────────────────────────────────────────────
+node_modules/
 frontend/node_modules/
 frontend/dist/
+dist/
+.vite/
+frontend/.vite/
+.npm/
+*.tsbuildinfo
 
-# Backend
+# IMPORTANT: Ensure frontend source libraries and assets are ALWAYS tracked
+!frontend/src/lib/
+!frontend/src/lib/**
+
+# Node logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Python / Backend ──────────────────────────────────────────────────────────
 backend/.venv/
-backend/__pycache__/
-backend/**/*.py[cod]
+.venv/
+venv/
+env/
+ENV/
 
-# Environment files
-.env
-.env.*
-!.env.example
-Growthway_Implementation_Worklog.md
+# Byte-compiled / cache files
+__pycache__/
+backend/**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ── Scratch & Temporary Files ─────────────────────────────────────────────────
+scratch/
+frontend/read_excel.cjs
+frontend/scratch_measure.cjs
+*.log
+.tempmediaStorage/
+backend/*.log
+
+# ── Operating System & IDE Artifacts ──────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDEs & Editors
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~

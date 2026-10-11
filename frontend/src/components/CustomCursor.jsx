@@ -7,7 +7,8 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isTouchDevice || prefersReducedMotion) return;
 
     // Add global body class to hide default cursor
     document.body.classList.add('custom-cursor-enabled');
@@ -62,7 +63,6 @@ export default function CustomCursor() {
       document.body.classList.remove('cursor-hover');
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('mouseout', handleMouseOut);
       document.removeEventListener('mouseout', handleMouseOut);
     };
   }, []);

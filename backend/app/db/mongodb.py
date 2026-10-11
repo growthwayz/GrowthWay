@@ -292,18 +292,21 @@ class InMemoryDatabase:
         ]
 
         services_data = [
-            {"slug": "branding", "title": "Branding & Identity", "description": "Logo, voice, and visual systems.", "order": 1, "published": True},
-            {"slug": "web-design", "title": "Web Design & UX", "description": "Digital experiences that convert.", "order": 2, "published": True},
-            {"slug": "social-media", "title": "Social Media Strategy", "description": "Engaging your audience where they are.", "order": 3, "published": True},
-            {"slug": "content-production", "title": "Content Production", "description": "High-quality photo and video.", "order": 4, "published": True},
-            {"slug": "seo-marketing", "title": "SEO & Performance Marketing", "description": "Data-driven growth strategies.", "order": 5, "published": True},
+            {"slug": "social-media-strategy", "title": "Social Media Strategy & Management", "description": "Strategy, planning, content direction, and ongoing social media management to grow your brand's presence.", "capabilities": ["Platform Strategy & Content Calendar", "Community Management", "Engagement Growth", "Performance Reporting"], "order": 1, "published": True},
+            {"slug": "content-creation-reels", "title": "Content Creation & Reels", "description": "Creative content, short-form videos, reels, and platform-focused visual storytelling that captures attention.", "capabilities": ["Short-Form Video Production", "Reels & Stories", "Platform-Native Content", "Visual Storytelling"], "order": 2, "published": True},
+            {"slug": "branding-design", "title": "Branding & Design", "description": "Brand identity, visual direction, design systems, and creative assets that make your brand unforgettable.", "capabilities": ["Logo & Visual Identity", "Design Systems & Guidelines", "Creative Assets & Collateral", "Brand Voice & Messaging"], "order": 3, "published": True},
+            {"slug": "digital-marketing-meta-ads", "title": "Digital Marketing / Meta Ads", "description": "Paid campaigns and digital marketing focused on reaching the right audience and supporting measurable growth.", "capabilities": ["Meta Ads (Facebook & Instagram)", "Audience Targeting & Retargeting", "Campaign Creative & Copywriting", "Analytics & Reporting"], "order": 4, "published": True},
+            {"slug": "website-development", "title": "Website Development", "description": "Modern, responsive websites designed around brand positioning, usability, and conversion.", "capabilities": ["Custom Web Design & Development", "Mobile-First & Responsive", "CMS Integration", "Performance & SEO Optimisation"], "order": 5, "published": True},
+            {"slug": "brand-product-shoots", "title": "Brand & Product Shoots", "description": "Professional photography and video content for products, brands, and campaigns.", "capabilities": ["Product Photography", "Brand Campaign Shoots", "Lifestyle & Lookbook", "Video Content for Campaigns"], "order": 6, "published": True},
+            {"slug": "event-campaign-content", "title": "Event & Campaign Content", "description": "On-ground event coverage and campaign content designed for digital distribution and maximum reach.", "capabilities": ["Event Photography & Videography", "Live Coverage & Reels", "Campaign Content Production", "Multi-Platform Distribution"], "order": 7, "published": True},
+            {"slug": "personal-brand-growth", "title": "Personal Brand Growth", "description": "Content, positioning, and digital strategy for founders, creators, and professionals building their personal brand.", "capabilities": ["Personal Brand Strategy", "Content Direction & Creation", "Social Media Presence", "Thought Leadership Content"], "order": 8, "published": True},
         ]
 
         clients_data = [
-            {"name": "Aura", "logo": "/logo-icon.png", "order": 1, "published": True},
-            {"name": "Verve", "logo": "/logo-icon.png", "order": 2, "published": True},
-            {"name": "Kairo", "logo": "/logo-icon.png", "order": 3, "published": True},
-            {"name": "Apex", "logo": "/logo-icon.png", "order": 4, "published": True},
+            {"name": "Aura", "logo": "/logo-icon.png", "order": 1, "published": True, "approved": True},
+            {"name": "Verve", "logo": "/logo-icon.png", "order": 2, "published": True, "approved": True},
+            {"name": "Kairo", "logo": "/logo-icon.png", "order": 3, "published": True, "approved": True},
+            {"name": "Apex", "logo": "/logo-icon.png", "order": 4, "published": True, "approved": True},
         ]
 
         testimonials_data = [
@@ -354,7 +357,11 @@ class InMemoryDatabase:
         settings_data = {
             "siteName": "GrowthWay",
             "contactEmail": "hello@growthway.in",
+            "email": "hello@growthway.in",
+            "whatsappNumber": "+91 98765 43210",
             "phone": "+91 98765 43210",
+            "instagram": "https://instagram.com/growthway",
+            "linkedin": "https://linkedin.com/company/growthway",
             "published": True,
             "whyGrowthway": {
                 "intro": "Everything your brand needs to grow — strategy, creativity, and execution, all under one roof.",
@@ -374,7 +381,8 @@ class InMemoryDatabase:
         self._collections["clients"] = InMemoryCollection("clients", clients_data)
         self._collections["testimonials"] = InMemoryCollection("testimonials", testimonials_data)
         self._collections["team"] = InMemoryCollection("team", team_data)
-        self._collections["settings"] = InMemoryCollection("settings", [settings_data])
+        # NOTE: must be 'site_settings' — matches /api/site-settings route
+        self._collections["site_settings"] = InMemoryCollection("site_settings", [settings_data])
 
     def __getattr__(self, name):
         if name not in self._collections:
@@ -392,18 +400,37 @@ async def connect_db() -> None:
     settings = get_settings()
 
     try:
-        # Short timeout to avoid hanging startup if local Mongo isn't running
+        # 5 second timeout for Atlas SRV resolution and TLS handshake
         test_client = AsyncIOMotorClient(
             settings.MONGODB_URL,
-            serverSelectionTimeoutMS=1200,
-            connectTimeoutMS=1200
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=5000
         )
         await test_client.admin.command("ping")
         _client = test_client
         _db = _client[settings.MONGODB_DB_NAME]
         print(f"[OK] Connected to Live MongoDB: {settings.MONGODB_DB_NAME}")
+        
+        # Verify and seed default collections on deployment if empty
+        try:
+            from app.db.seeds import seed_database
+            seed_res = await seed_database(_db, force=False)
+            print(f"[OK] Live MongoDB primed: {seed_res['counts']}")
+        except Exception as seed_err:
+            print(f"[WARN] Live DB seed check notice: {seed_err}")
+
+        # Initialize query performance indexes (Seq 48)
+        try:
+            await _db.projects.create_index([("slug", 1)], unique=True, sparse=True)
+            await _db.projects.create_index([("published", 1), ("order", 1)])
+            await _db.services.create_index([("slug", 1)], unique=True, sparse=True)
+            await _db.leads.create_index([("createdAt", -1)])
+            await _db.leads.create_index([("status", 1)])
+            print("[OK] Database indexes verified")
+        except Exception as idx_err:
+            print(f"[WARN] Index creation skipped: {idx_err}")
     except Exception as exc:
-        print(f"[INFO] MongoDB not reachable. Initializing high-fidelity In-Memory Studio Database.")
+        print(f"[INFO] MongoDB Atlas not reachable ({exc}). Initializing high-fidelity In-Memory Studio Database.")
         _db = InMemoryDatabase()
         print("[OK] High-Fidelity In-Memory Studio Database active with live telemetry seed leads.")
 
@@ -425,3 +452,15 @@ def get_db():
         # Lazy fallback
         _db = InMemoryDatabase()
     return _db
+
+
+def get_client() -> AsyncIOMotorClient | None:
+    """Return the live Motor client handle if connected."""
+    global _client
+    return _client
+
+
+def is_live_connection() -> bool:
+    """Return True if connected to live MongoDB cluster."""
+    global _client
+    return _client is not None

@@ -213,16 +213,54 @@ async def update_lead_status(
     return {"id": lead_id, "status": new_status, "updated": True}
 
 
+@router.get("/site-settings")
+async def get_admin_site_settings(current_admin: str = Depends(get_current_admin)):
+    """Return site settings document for admin inspection and editing."""
+    db = get_db()
+    doc = await db.site_settings.find_one({}, {"_id": 0})
+    return doc or {}
+
+
+@router.put("/site-settings")
+async def update_admin_site_settings(
+    payload: dict = Body(...),
+    current_admin: str = Depends(get_current_admin)
+):
+    """Update editable copy and site settings (Sequence 8)."""
+    db = get_db()
+    # Remove any forbidden internal fields
+    payload.pop("_id", None)
+    
+    # Check if a document already exists
+    existing = await db.site_settings.find_one({})
+    if existing:
+        res = await db.site_settings.update_one({}, {"$set": payload})
+    else:
+        await db.site_settings.insert_one(payload)
+        
+    doc = await db.site_settings.find_one({}, {"_id": 0})
+    return {"status": "ok", "settings": doc}
+
+
 @router.post("/media/sign")
 async def sign_cloudinary_upload(current_admin: str = Depends(get_current_admin)):
     """Return signed config for direct Cloudinary upload (Item 42)"""
+    import time
+    import cloudinary.utils
     settings = get_settings()
     if not settings.CLOUDINARY_API_KEY:
         raise HTTPException(status_code=500, detail="Cloudinary not configured")
     
+    timestamp = int(time.time())
+    params_to_sign = {"timestamp": timestamp}
+    signature = "dummy_signature"
+    if settings.CLOUDINARY_API_SECRET:
+        signature = cloudinary.utils.api_sign_request(params_to_sign, settings.CLOUDINARY_API_SECRET)
+
     return {
-        "signature": "dummy_signature",
-        "timestamp": 123456789,
+        "signature": signature,
+        "timestamp": timestamp,
         "api_key": settings.CLOUDINARY_API_KEY,
-        "cloud_name": settings.CLOUDINARY_CLOUD_NAME
+        "cloud_name": settings.CLOUDINARY_CLOUD_NAME or "growthway"
     }
+

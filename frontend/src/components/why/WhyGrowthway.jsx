@@ -15,30 +15,38 @@ import './WhyGrowthway.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const DEFAULT_WHY_GROWTHWAY = {
+  intro: 'Everything your brand needs to grow — strategy, creativity, and execution, all under one roof.',
+  items: [
+    { word: 'STRATEGY', line: 'Personalised plans rooted in real market insight.' },
+    { word: 'CREATIVITY', line: 'End-to-end design and content that stands out.' },
+    { word: 'EXECUTION', line: 'Practical, results-driven campaigns that deliver.' },
+  ],
+};
+
 export default function WhyGrowthway() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(DEFAULT_WHY_GROWTHWAY);
   const sectionRef = useRef(null);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
+    let isMounted = true;
     const fetchSettings = async () => {
       try {
         const settings = await api.get('/api/site-settings');
-        if (settings.whyGrowthway && settings.whyGrowthway.items?.length) {
+        if (isMounted && settings?.whyGrowthway?.items?.length) {
           setData(settings.whyGrowthway);
         }
       } catch {
-        // Silently fail — section will hide
-      } finally {
-        setLoading(false);
+        // Graceful fallback to default brand manifesto
       }
     };
     fetchSettings();
+    return () => { isMounted = false; };
   }, []);
 
   useGSAP(() => {
-    if (loading || !data || !sectionRef.current || reducedMotion) return;
+    if (!data || !sectionRef.current || reducedMotion) return;
 
     const words = sectionRef.current.querySelectorAll('.why-word');
     const lines = sectionRef.current.querySelectorAll('.why-line');
@@ -104,9 +112,8 @@ export default function WhyGrowthway() {
         },
       });
     }
-  }, { scope: sectionRef, dependencies: [loading, data, reducedMotion] });
+  }, { scope: sectionRef, dependencies: [data, reducedMotion] });
 
-  if (loading) return null;
   if (!data || !data.items?.length) return null;
 
   return (

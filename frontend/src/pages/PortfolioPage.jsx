@@ -118,13 +118,13 @@ const PortfolioPage = () => {
       {/* ── FOOTER ── */}
       <footer className="footer-gradient text-gw-white py-32 md:py-48 px-6 md:px-18 relative overflow-hidden">
         {/* Ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gw-pink/[0.05] blur-[180px] pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gw-olive/[0.05] blur-[180px] pointer-events-none"></div>
         
         <div className="max-w-[1440px] mx-auto relative z-10 flex flex-col items-center text-center">
           <span className="text-[9px] uppercase tracking-luxury text-gw-white/20 mb-10 reveal">Let's create something extraordinary</span>
           
           <h2 className="font-display text-5xl md:text-7xl lg:text-[100px] uppercase tracking-[-0.04em] font-bold mb-6 leading-[0.9] reveal reveal-delay-1">
-            Ready to<br/><span className="bg-gradient-to-r from-gw-blush-soft to-gw-pink bg-clip-text text-transparent">grow</span>?
+            Ready to<br/><span className="bg-gradient-to-r from-gw-blush-soft to-gw-olive bg-clip-text text-transparent">grow</span>?
           </h2>
           
           <p className="text-gw-white/30 text-lg max-w-lg mb-6 text-balance reveal reveal-delay-2">
@@ -170,3 +170,4 @@ const PortfolioPage = () => {
 };
 
 export default PortfolioPage;
+
