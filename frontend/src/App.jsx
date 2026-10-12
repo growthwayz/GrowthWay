@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/navigation/Navbar'
 import Footer from './components/footer/Footer'
-import CustomCursor from './components/CustomCursor'
 import SignatureExperience from './components/signature-experience/SignatureExperience'
 import Hero from './components/hero/Hero'
 import PortfolioPage from './pages/PortfolioPage'
@@ -75,6 +74,7 @@ function Home() {
 function App() {
   const location = useLocation()
   const isAdminRoute = location.pathname.startsWith('/admin')
+  const isWorkRoute = location.pathname === '/work'
 
   return (
     <div
@@ -94,7 +94,6 @@ function App() {
         Skip to main content
       </a>
 
-      {!isAdminRoute && <CustomCursor />}
       {!isAdminRoute && <Navbar />}
 
       <main id="main-content" tabIndex="-1" className="outline-none">
@@ -105,7 +104,7 @@ function App() {
         }>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/work" element={<PortfolioPage />} />
+            <Route path="/work" element={<PortfolioPage standalone />} />
             <Route path="/work/:slug" element={<ProjectDetail />} />
             <Route path="/contact" element={<ContactPage />} />
             
@@ -131,9 +130,7 @@ function App() {
 
       {!isAdminRoute && (
         <>
-          <div id="contact">
-            <Footer />
-          </div>
+          {!isWorkRoute && <div id="contact"><Footer /></div>}
           <ChatWidget />
           <WhatsAppFloat />
         </>

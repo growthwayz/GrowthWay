@@ -187,7 +187,7 @@ export default function Services() {
   const activeServiceModalData = servicesData.find(s => s.id === activeModalId);
 
   return (
-    <div className="services-wrapper cursor-none" id="services-section">
+    <div className="services-wrapper" id="services-section">
       <div className="grain"></div>
 
       {/* Sticky HUD Container (Acts like fixed but only inside Services) */}

@@ -1,30 +1,12 @@
 import React, { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SelectedWorkIntro from '../components/work/SelectedWorkIntro';
 import PortfolioFilter from '../components/work/PortfolioFilter';
 import FeaturedProject from '../components/work/FeaturedProject';
 import ProjectCollection from '../components/work/ProjectCollection';
 import { usePublicCms, portfolioProject } from '../lib/publicCms';
 import MicroInteractions from '../components/MicroInteractions';
-import { stats, clientLogos } from '../data/projects';
-
-/* ── Luxury Stats Bar ── */
-const StatsBar = () => (
-  <section className="bg-gw-black text-gw-white py-16 md:py-20 border-t border-gw-white/[0.04]">
-    <div className="max-w-[1440px] mx-auto px-5 md:px-18">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-        {stats.map((stat, i) => (
-          <div key={i} className={`text-center reveal reveal-delay-${i + 1}`}>
-            <span className="font-display text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-b from-gw-white to-gw-white/50 bg-clip-text text-transparent">
-              {stat.number}
-            </span>
-            <p className="text-[9px] uppercase tracking-luxury text-gw-white/25 mt-3">{stat.label}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
 
 /* ── Marquee Ticker ── */
 const MarqueeTicker = () => {
@@ -49,29 +31,8 @@ const MarqueeTicker = () => {
   );
 };
 
-/* ── Trusted By Section ── */
-const TrustedBy = () => (
-  <section className="bg-gw-canvas pb-8 md:pb-12">
-    <div className="max-w-[1440px] mx-auto px-5 md:px-18">
-      <div className="py-12 md:py-16 border-y border-gw-line/30 reveal">
-        <p className="text-[9px] uppercase tracking-luxury text-gw-muted/30 text-center mb-10">Trusted by industry leaders</p>
-        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
-          {clientLogos.map((logo, i) => (
-            <span 
-              key={i} 
-              className="font-display text-lg md:text-xl font-bold text-gw-ink/[0.08] hover:text-gw-ink/20 transition-colors duration-500 interactive-hover"
-            >
-              {logo}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
 /* ── MAIN PAGE ── */
-const PortfolioPage = () => {
+const PortfolioPage = ({ standalone = false }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const { data: records, loading, error } = usePublicCms('/api/projects');
   const { data: categoryRecords } = usePublicCms('/api/categories');
@@ -86,30 +47,56 @@ const PortfolioPage = () => {
 
   const featuredProject = filteredProjects.find(p => p.featured) || filteredProjects[0];
   const remainingProjects = filteredProjects.filter(p => p.id !== featuredProject?.id);
+  const showFallback = !loading && projects.length === 0;
+  const isUnavailable = showFallback && Boolean(error);
 
   return (
-    <div className="gw-portfolio bg-gw-canvas min-h-screen text-gw-ink relative overflow-x-hidden">
+    <div className={`gw-portfolio bg-gw-canvas min-h-screen text-gw-ink relative overflow-x-hidden ${!projects.length ? 'gw-portfolio-empty' : ''}`}>
       <MicroInteractions />
 
       {/* ── HERO ── */}
-      <SelectedWorkIntro />
-
-      {/* ── STATS BAR ── */}
-      <StatsBar />
+      <SelectedWorkIntro empty={showFallback} unavailable={isUnavailable} />
 
       {/* ── MARQUEE TICKER ── */}
       <MarqueeTicker />
 
       {/* ── FILTER ── */}
-      <PortfolioFilter 
-        categories={categories} 
-        activeCategory={activeCategory} 
-        onSelect={setActiveCategory} 
-      />
+      {projects.length > 0 && (
+        <PortfolioFilter
+          categories={categories}
+          activeCategory={activeCategory}
+          onSelect={setActiveCategory}
+        />
+      )}
 
       {loading && <p role="status" className="px-5 py-16 text-center text-gw-muted">Loading selected work…</p>}
-      {error && <p role="alert" className="px-5 py-16 text-center text-gw-muted">{error}</p>}
-      {!loading && !error && !filteredProjects.length && <p className="px-5 py-16 text-center text-gw-muted">{activeCategory === 'All' ? 'Selected work will appear here when published.' : 'No projects in this category yet.'}</p>}
+      {error && projects.length > 0 && <p role="alert" className="px-5 py-16 text-center text-gw-muted">{error}</p>}
+      {showFallback && (
+        <section className="gw-work-empty" aria-labelledby="gw-work-empty-title">
+          <div className="gw-work-empty-topline">
+            <span>THE COLLECTION</span>
+            <span>IDEAS → IMPACT</span>
+          </div>
+          <div className="gw-work-empty-content">
+            <div className="gw-work-empty-art" aria-hidden="true">
+              <span>G</span><span>W</span>
+              <div className="gw-work-empty-art-caption">CREATE / CONNECT / GROW</div>
+            </div>
+            <div className="gw-work-empty-copy">
+              <span className="gw-work-empty-kicker">SELECTED WORK / {isUnavailable ? 'UNAVAILABLE' : 'COMING SOON'}</span>
+              <h2 id="gw-work-empty-title">{isUnavailable ? <>Work is<br /><em>out of view.</em></> : <>The work is<br /><em>taking shape.</em></>}</h2>
+              <p role={isUnavailable ? 'alert' : undefined}>{isUnavailable
+                ? 'We could not load our projects right now. Please check back shortly, or explore our services and get in touch.'
+                : 'Our project collection is being prepared. Until it is ready, explore what we do or tell us what you are building.'}</p>
+              <div className="gw-work-empty-actions">
+                <a href="/#services" className="gw-work-empty-primary">Explore our services <ArrowUpRight size={18} aria-hidden="true" /></a>
+                <Link to="/contact" className="gw-work-empty-secondary">Start a conversation <ArrowUpRight size={17} aria-hidden="true" /></Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+      {!loading && !error && projects.length > 0 && !filteredProjects.length && <p className="px-5 py-16 text-center text-gw-muted">No projects in this category yet.</p>}
 
       {/* ── FEATURED PROJECT ── */}
       {featuredProject && (
@@ -121,11 +108,8 @@ const PortfolioPage = () => {
         <ProjectCollection projects={remainingProjects} />
       )}
 
-      {/* ── TRUSTED BY ── */}
-      <TrustedBy />
-      
       {/* ── FOOTER ── */}
-      <footer className="footer-gradient text-gw-white py-32 md:py-48 px-6 md:px-18 relative overflow-hidden">
+      {standalone && <footer className="footer-gradient text-gw-white py-32 md:py-48 px-6 md:px-18 relative overflow-hidden">
         {/* Ambient glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gw-olive/[0.05] blur-[180px] pointer-events-none"></div>
         
@@ -143,10 +127,10 @@ const PortfolioPage = () => {
             Whether you're launching something new or reimagining what exists — we'd love to hear your story.
           </p>
 
-          <button className="group btn-shimmer text-white px-12 py-5 rounded-full uppercase font-semibold text-sm tracking-editorial interactive-hover reveal reveal-delay-3 flex items-center gap-3 hover:scale-105 transition-transform duration-400 shadow-[0_20px_60px_rgba(233,91,159,0.3)]">
+          <Link to="/contact" className="group btn-shimmer text-white px-12 py-5 rounded-full uppercase font-semibold text-sm tracking-editorial interactive-hover reveal reveal-delay-3 flex items-center gap-3 hover:scale-105 transition-transform duration-400 shadow-[0_20px_60px_rgba(233,91,159,0.3)]">
             Start a Project
             <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </button>
+          </Link>
 
           {/* Footer meta */}
           <div className="mt-28 md:mt-36 w-full">
@@ -160,11 +144,10 @@ const PortfolioPage = () => {
                 </span>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-8 text-[10px] uppercase tracking-luxury text-gw-white/15">
-                <span className="interactive-hover hover:text-gw-white/40 transition-colors">Instagram</span>
-                <span className="interactive-hover hover:text-gw-white/40 transition-colors">LinkedIn</span>
-                <span className="interactive-hover hover:text-gw-white/40 transition-colors">Behance</span>
-                <span className="interactive-hover hover:text-gw-white/40 transition-colors">Dribbble</span>
+              <div className="flex flex-wrap justify-center gap-8 text-[10px] uppercase tracking-luxury text-gw-white/40">
+                <Link to="/" className="hover:text-gw-white transition-colors">Home</Link>
+                <a href="/#services" className="hover:text-gw-white transition-colors">Services</a>
+                <Link to="/contact" className="hover:text-gw-white transition-colors">Contact</Link>
               </div>
 
               <span className="text-[9px] uppercase tracking-luxury text-gw-white/15">
@@ -173,7 +156,7 @@ const PortfolioPage = () => {
             </div>
           </div>
         </div>
-      </footer>
+      </footer>}
     </div>
   );
 };
