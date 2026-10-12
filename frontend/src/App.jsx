@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/navigation/Navbar'
 import Footer from './components/footer/Footer'
-import CustomCursor from './components/CustomCursor'
 import SignatureExperience from './components/signature-experience/SignatureExperience'
 import Hero from './components/hero/Hero'
 import PortfolioPage from './pages/PortfolioPage'
@@ -94,7 +93,6 @@ function App() {
         Skip to main content
       </a>
 
-      {!isAdminRoute && <CustomCursor />}
       {!isAdminRoute && <Navbar />}
 
       <main id="main-content" tabIndex="-1" className="outline-none">

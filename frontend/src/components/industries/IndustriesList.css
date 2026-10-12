@@ -3,10 +3,9 @@
    ============================================ */
 
 .ind-section {
-  padding: 96px 0 120px;
+  padding: 72px 0 44px;
   background: #FAF8F5;
   position: relative;
-  overflow: hidden;
 }
 
 .ind-container {
@@ -17,17 +16,17 @@
 
 @media (max-width: 1024px) {
   .ind-container { padding: 0 40px; }
-  .ind-section { padding: 72px 0 96px; }
+  .ind-section { padding: 60px 0 40px; }
 }
 
 @media (max-width: 768px) {
   .ind-container { padding: 0 20px; }
-  .ind-section { padding: 56px 0 72px; }
+  .ind-section { padding: 48px 0 36px; }
 }
 
 /* ── Header ── */
 .ind-header {
-  margin-bottom: 64px;
+  margin-bottom: 44px;
 }
 
 .ind-eyebrow {
@@ -63,8 +62,8 @@
 /* ── Layout ── */
 .ind-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
   align-items: start;
 }
 
@@ -84,12 +83,13 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 20px 0;
+  padding: 16px 0;
   border-bottom: 1px solid #E8E4DF;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s ease;
   position: relative;
   outline: none;
+  opacity: 0.85;
 }
 
 .ind-item:first-child {
@@ -102,7 +102,7 @@
 }
 
 .ind-item.faded {
-  opacity: 0.35;
+  opacity: 0.65;
 }
 
 .ind-item.active {

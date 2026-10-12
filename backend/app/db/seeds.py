@@ -24,7 +24,7 @@ async def seed_database(db, force=False):
     if not existing_settings or existing_settings.get('updatedBy') == 'seed':
         settings = get_settings()
         data = SiteSettingsOut(whatsappNumber=settings.WHATSAPP_NUMBER, siteUrl=settings.SITE_URL, gaMeasurementId=settings.GA_MEASUREMENT_ID).model_dump()
-        data['whyGrowthway'] = {'intro': 'A new agency built on practical experience and a clear, collaborative approach.', 'items': [{'word': 'Clarity', 'line': 'Strategy before execution.'}, {'word': 'Craft', 'line': 'Content and design with purpose.'}, {'word': 'Collaboration', 'line': 'A direct relationship with the people doing the work.'}]}
+        data['whyGrowthway'] = {'intro': 'Everything your brand needs to grow — strategy, creativity, and execution, all under one roof.', 'items': [{'word': 'STRATEGY', 'line': 'Personalised plans rooted in real market insight.'}, {'word': 'CREATIVITY', 'line': 'End-to-end design and content that stands out.'}, {'word': 'EXECUTION', 'line': 'Practical, results-driven campaigns that deliver.'}]}
         data['process'] = [{'title': title, 'description': desc} for title, desc in [('Discover', 'Understand your brand, audience and goals.'), ('Strategise', 'Agree on direction, priorities and a practical plan.'), ('Create', 'Develop content, design and digital experiences.'), ('Launch', 'Publish and deliver the agreed work.'), ('Optimise', 'Review performance and improve the next iteration.')]]
         replacement = {**data, 'updatedAt': now(), 'updatedBy': 'defaults', 'revision': 1}
         if existing_settings:
