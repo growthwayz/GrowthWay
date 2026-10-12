@@ -109,32 +109,63 @@
   }
 }
 
-@keyframes scrollDown {
-  0% {
-    transform: translateY(-100%);
-  }
-
-  100% {
-    transform: translateY(200%);
-  }
-}
-
 /* ─── Responsive hero layout ─── */
 
-/* Showreel card: reduce height on mobile */
-@media (max-width: 1023px) {
-  .gw-hero { height: auto; }
-  .gw-hero .hero-stage { position: relative; height: auto; min-height: 100svh; overflow: visible; }
-  .gw-hero .hero-ui { position: relative; height: auto; opacity: 1 !important; }
-  .gw-hero .hero-intro-layer { display: none; }
-  .gw-hero .hero-presentation { flex: none; padding-top: 128px; padding-bottom: 48px; }
-  .gw-hero .hero-eyebrow { flex-wrap: wrap; row-gap: 8px; }
-  .gw-hero .hero-showreel { height: auto; aspect-ratio: 16 / 9; max-width: 720px; }
+/* Position left text content cleanly below navbar on desktop */
+@media (min-width: 1024px) {
+  .gw-hero .hero-content-col {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
 }
+
+@media (min-width: 1280px) {
+  .gw-hero .hero-content-col {
+    margin-top: 0.25rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .gw-hero .hero-content-col {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .gw-hero {
+    height: auto;
+    min-height: 100svh;
+  }
+  .gw-hero .hero-presentation {
+    flex: none;
+    padding-top: 88px;
+    padding-bottom: 40px;
+  }
+  .gw-hero .hero-eyebrow {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .gw-hero .hero-showreel {
+    height: auto;
+    max-width: 600px;
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
-  .gw-hero .hero-presentation { padding-left: 20px; padding-right: 20px; }
-  .gw-hero .hero-eyebrow { font-size: 10px; letter-spacing: .15em; }
-  .gw-hero .hero-presentation h1 { font-size: clamp(2.75rem, 13vw, 4rem) !important; }
+  .gw-hero .hero-presentation {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 80px;
+    padding-bottom: 32px;
+  }
+  .gw-hero .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: .15em;
+  }
+  .gw-hero .hero-presentation h1 {
+    font-size: clamp(2.2rem, 11vw, 3.5rem) !important;
+  }
 }
 
 /* Reduced motion: disable cube spin */

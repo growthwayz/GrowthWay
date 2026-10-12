@@ -18,11 +18,41 @@ gsap.registerPlugin(ScrollTrigger);
 const DEFAULT_WHY_GROWTHWAY = {
   intro: 'Everything your brand needs to grow — strategy, creativity, and execution, all under one roof.',
   items: [
-    { word: 'STRATEGY', line: 'Personalised plans rooted in real market insight.' },
-    { word: 'CREATIVITY', line: 'End-to-end design and content that stands out.' },
-    { word: 'EXECUTION', line: 'Practical, results-driven campaigns that deliver.' },
+    {
+      word: 'STRATEGY',
+      line: 'Personalised plans rooted in real market insight.',
+      tags: ['Audience Insight', 'Brand Architecture', 'Growth Roadmap'],
+      proof: 'Strategy before execution — every decision tied to commercial revenue.',
+    },
+    {
+      word: 'CREATIVITY',
+      line: 'End-to-end design and content that stands out in crowded feeds.',
+      tags: ['High-Retention Video', 'Visual Identity', 'Motion Graphics'],
+      proof: 'Scroll-stopping creative engineered to convert attention into affinity.',
+    },
+    {
+      word: 'EXECUTION',
+      line: 'Practical, results-driven campaigns that deliver verified growth.',
+      tags: ['Performance Campaigns', 'Paid Social / Meta Ads', 'Rapid Sprints'],
+      proof: 'Agile sprints with direct founder-level accountability and zero bureaucracy.',
+    },
   ],
 };
+
+const PILLAR_METADATA = [
+  {
+    tags: ['Audience Insight', 'Brand Architecture', 'Growth Roadmap'],
+    proof: 'Strategy before execution — every decision tied to commercial revenue.',
+  },
+  {
+    tags: ['High-Retention Video', 'Visual Identity', 'Motion Graphics'],
+    proof: 'Scroll-stopping creative engineered to convert attention into affinity.',
+  },
+  {
+    tags: ['Performance Campaigns', 'Paid Social / Meta Ads', 'Rapid Sprints'],
+    proof: 'Agile sprints with direct founder-level accountability and zero bureaucracy.',
+  },
+];
 
 export default function WhyGrowthway() {
   const [data, setData] = useState(DEFAULT_WHY_GROWTHWAY);
@@ -35,7 +65,12 @@ export default function WhyGrowthway() {
       try {
         const settings = await api.get('/api/site-settings');
         if (isMounted && settings?.whyGrowthway?.items?.length) {
-          setData(settings.whyGrowthway);
+          // If backend has the official manifesto or customized items, use it; otherwise preserve DEFAULT_WHY_GROWTHWAY
+          if (settings.whyGrowthway.intro && !settings.whyGrowthway.intro.includes('A new agency built on practical experience')) {
+            setData(settings.whyGrowthway);
+          } else {
+            setData(DEFAULT_WHY_GROWTHWAY);
+          }
         }
       } catch {
         // Graceful fallback to default brand manifesto
@@ -48,65 +83,34 @@ export default function WhyGrowthway() {
   useGSAP(() => {
     if (!data || !sectionRef.current || reducedMotion) return;
 
-    const words = sectionRef.current.querySelectorAll('.why-word');
-    const lines = sectionRef.current.querySelectorAll('.why-line');
-    const nums = sectionRef.current.querySelectorAll('.why-num');
+    const rows = sectionRef.current.querySelectorAll('.why-row');
     const intro = sectionRef.current.querySelector('.why-intro');
 
     if (intro) {
       gsap.from(intro, {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      });
-    }
-
-    if (words.length) {
-      gsap.from(words, {
-        y: 60,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.12,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: words[0],
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      });
-    }
-
-    if (nums.length) {
-      gsap.from(nums, {
-        x: -20,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: words[0] || sectionRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      });
-    }
-
-    if (lines.length) {
-      gsap.from(lines, {
         y: 20,
         opacity: 0,
-        duration: 0.7,
-        stagger: 0.12,
-        delay: 0.3,
-        ease: 'power3.out',
+        duration: 0.6,
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
         scrollTrigger: {
-          trigger: words[0] || sectionRef.current,
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+
+    if (rows.length) {
+      gsap.from(rows, {
+        y: 30,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
+        scrollTrigger: {
+          trigger: rows[0] || sectionRef.current,
           start: 'top 85%',
           toggleActions: 'play none none none',
         },
@@ -124,27 +128,51 @@ export default function WhyGrowthway() {
         <div className="why-header">
           <div className="why-eyebrow">
             <span className="why-eyebrow-line" />
-            <span>02 // The Manifesto</span>
+            <span>The Manifesto</span>
           </div>
-          <span className="why-corner-tag">PRINCIPLES · VOL. 2026</span>
+          <span className="why-corner-tag">PRINCIPLES // ALL UNDER ONE ROOF</span>
         </div>
 
         {data.intro && (
-          <p className="why-intro">{data.intro}</p>
+          <h2 className="why-intro">{data.intro}</h2>
         )}
 
         <div className="why-manifesto">
-          {data.items.map((item, i) => (
-            <div key={i} className="why-row group">
-              <div className="why-row-inner">
-                <span className="why-num">0{i + 1}</span>
-                <div className="why-content">
-                  <h3 className="why-word">{item.word}</h3>
-                  <p className="why-line">{item.line}</p>
+          {data.items.map((item, i) => {
+            const meta = PILLAR_METADATA[i] || {};
+            const tags = item.tags || meta.tags || [];
+            const proof = item.proof || meta.proof || '';
+
+            return (
+              <div key={i} className="why-row group">
+                <div className="why-row-inner">
+                  <div className="why-num-wrap">
+                    <span className="why-num">0{i + 1}</span>
+                    <span className="why-num-dot" />
+                  </div>
+
+                  <div className="why-content">
+                    <div className="why-top-line">
+                      <h3 className="why-word">{item.word}</h3>
+                      {proof && (
+                        <span className="why-proof-badge">{proof}</span>
+                      )}
+                    </div>
+
+                    <p className="why-line">{item.line}</p>
+
+                    {tags.length > 0 && (
+                      <div className="why-tags">
+                        {tags.map((tag, tagIndex) => (
+                          <span key={tagIndex} className="why-tag">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Bottom Architectural Stamp */}
