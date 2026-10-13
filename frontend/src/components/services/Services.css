@@ -32,12 +32,16 @@
 /* =========================================
    MAXIMALIST BACKGROUND & TEXTURES
    ========================================= */
+/* GPU-cached static grain pattern (0% CPU calculation) */
 .services-wrapper .grain {
-  position: absolute; inset: -100%; z-index: 900; pointer-events: none; opacity: 0.35; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-  animation: grain 1.5s steps(2) infinite;
+  position: absolute;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
-@keyframes grain { 0% { transform: translate(0, 0); } 20% { transform: translate(-2%, 2%); } 40% { transform: translate(2%, -2%); } 60% { transform: translate(-2%, -2%); } 80% { transform: translate(2%, 2%); } 100% { transform: translate(0, 0); } }
 
 /* Grid lines everywhere */
 .services-wrapper .master-grid {
@@ -55,11 +59,11 @@
   opacity: 0.15; z-index: 0; pointer-events: none; white-space: nowrap;
 }
 
-/* Abstract Blobs */
-.services-wrapper .ambient-blob { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
-.services-wrapper .blob-1 { background: var(--accent); width: 70vw; height: 70vw; top: -30%; right: -20%; opacity: 0.12; }
-.services-wrapper .blob-2 { background: var(--blush); width: 50vw; height: 50vw; bottom: -20%; left: -10%; opacity: 0.08; }
-.services-wrapper .blob-3 { background: #4A5D3A; width: 40vw; height: 40vw; top: 40%; left: 30%; opacity: 0.1; }
+/* Abstract Ambient Blobs — GPU Native Radial Gradients with 0 CPU Blur */
+.services-wrapper .ambient-blob { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; }
+.services-wrapper .blob-1 { background: radial-gradient(circle, rgba(197, 216, 109, 0.14) 0%, rgba(197, 216, 109, 0) 70%); width: 70vw; height: 70vw; top: -30%; right: -20%; }
+.services-wrapper .blob-2 { background: radial-gradient(circle, rgba(229, 241, 219, 0.09) 0%, rgba(229, 241, 219, 0) 70%); width: 50vw; height: 50vw; bottom: -20%; left: -10%; }
+.services-wrapper .blob-3 { background: radial-gradient(circle, rgba(74, 93, 58, 0.12) 0%, rgba(74, 93, 58, 0) 70%); width: 40vw; height: 40vw; top: 40%; left: 30%; }
 
 /* =========================================
    PERIMETER FRAMING & HUD ELEMENTS
@@ -96,7 +100,7 @@
 
 /* --- DENSE INTERACTIVE LIST --- */
 .services-wrapper .services-list { display: flex; flex-direction: column; position: relative; border-left: 1px solid var(--line); }
-.services-wrapper .svc-item { display: block; border-bottom: 1px solid var(--line); padding: 3rem 2rem; cursor: pointer; position: relative; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); margin-left: -1px; overflow: hidden; background: rgba(13, 18, 7, 0.4); backdrop-filter: blur(10px); }
+.services-wrapper .svc-item { display: block; border-bottom: 1px solid var(--line); padding: 3rem 2rem; cursor: pointer; position: relative; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-left: -1px; overflow: hidden; background: rgba(13, 18, 7, 0.7); }
 
 /* Massive background number per item */
 .services-wrapper .svc-item::before { content: attr(data-num); position: absolute; right: -5%; top: 50%; transform: translateY(-50%); font: 700 12rem var(--sp); color: rgba(255,255,255,0.02); pointer-events: none; transition: all 0.5s; }
@@ -125,7 +129,7 @@
 /* --- 3D COLLAGE STAGE (MAXIMALIST) --- */
 .services-wrapper .services-media-viewport { position: sticky; top: 0; height: 100vh; perspective: 1600px; transform-style: preserve-3d; display: flex; align-items: center; justify-content: center; pointer-events: none; }
 .services-wrapper .media-stage { position: relative; width: 100%; max-width: clamp(400px, 45vw, 650px); aspect-ratio: 1 / 1; transform-style: preserve-3d; pointer-events: auto; }
-.services-wrapper .media-group { position: absolute; inset: 0; opacity: 0; visibility: hidden; pointer-events: none; transform-style: preserve-3d; transition: opacity 0.5s ease, visibility 0.5s; }
+.services-wrapper .media-group { position: absolute; inset: 0; opacity: 0; visibility: hidden; pointer-events: none; transform-style: preserve-3d; transition: opacity 0.4s ease, visibility 0.4s; contain: layout style; }
 .services-wrapper .media-group.active { opacity: 1; visibility: visible; pointer-events: auto; }
 
 /* Giant 3D Background Number */
@@ -142,7 +146,7 @@
 .services-wrapper .tape::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px); }
 
 /* Main Glass Panel */
-.services-wrapper .media-glass { position: absolute; left: -10%; bottom: 5%; background: rgba(20, 26, 14, 0.8); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(197, 216, 109, 0.5); border-radius: 16px; padding: 3rem; width: 85%; box-shadow: 0 40px 80px rgba(0,0,0,0.7), inset 0 0 40px rgba(255,255,255,0.02); transform: translateZ(150px) rotateX(15deg) translateY(30px); opacity: 0; transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1); z-index: 10; }
+.services-wrapper .media-glass { position: absolute; left: -10%; bottom: 5%; background: rgba(20, 26, 14, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(197, 216, 109, 0.5); border-radius: 16px; padding: 3rem; width: 85%; box-shadow: 0 40px 80px rgba(0,0,0,0.7), inset 0 0 40px rgba(255,255,255,0.02); transform: translateZ(150px) rotateX(15deg) translateY(30px); opacity: 0; transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); z-index: 10; will-change: transform, opacity; }
 .services-wrapper .media-group.active .media-glass { transform: translateZ(250px) rotateX(0deg) translateY(0); opacity: 1; transition-delay: 0.2s; }
 .services-wrapper .tags { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
 .services-wrapper .tag { border: 1px solid rgba(197, 216, 109, 0.4); padding: 6px 12px; border-radius: 6px; font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); font-weight: 700; background: var(--accent); box-shadow: 0 4px 10px rgba(197, 216, 109, 0.2); }
@@ -206,8 +210,8 @@
 /* =========================================
    FULL-SCREEN SERVICE DETAIL MODAL 
    ========================================= */
-.services-wrapper .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--ink); z-index: 3000; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto; overflow-x: hidden; background-image: radial-gradient(circle at top right, var(--soft), var(--ink)); }
-.services-wrapper .modal-overlay.is-open { transform: translateY(0); }
+.services-wrapper .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--ink); z-index: 3000; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s; overflow-y: auto; overflow-x: hidden; background-image: radial-gradient(circle at top right, var(--soft), var(--ink)); visibility: hidden; pointer-events: none; }
+.services-wrapper .modal-overlay.is-open { transform: translateY(0); visibility: visible; pointer-events: auto; }
 .services-wrapper .modal-header-bar { position: sticky; top: 0; left: 0; width: 100%; z-index: 3010; display: flex; justify-content: space-between; align-items: center; padding: 2rem 4vw; background: linear-gradient(to bottom, rgba(13, 18, 7, 0.9) 20%, transparent 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .services-wrapper .modal-close { font-family: var(--mono); color: var(--accent); font-size: 0.85rem; letter-spacing: 0.15em; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; background: rgba(197, 216, 109, 0.1); border: 1px solid var(--accent); padding: 10px 20px; border-radius: 99px; transition: all 0.3s; }
 .services-wrapper .modal-close:hover { background: var(--accent); color: var(--ink); }

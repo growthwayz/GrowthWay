@@ -1,10 +1,10 @@
 import React from 'react';
 
-const SelectedWorkIntro = ({ empty = false, unavailable = false }) => {
+const SelectedWorkIntro = () => {
   return (
     <section className="hero theme-dark">
       {/* Side rotated text */}
-      <div className="side-text">GROWTHWAY // PORTFOLIO</div>
+      <div className="side-text">EST. 2026 // GLOBAL</div>
       
       {/* Giant faint background number */}
       <div className="hero-bg-number">01</div>
@@ -12,11 +12,37 @@ const SelectedWorkIntro = ({ empty = false, unavailable = false }) => {
       {/* Main foreground content */}
       <div className="hero-content">
         <h1 className="hero-title">SELECTED<br/><span>WORK</span></h1>
-        <p className="hero-subtitle">{unavailable
-          ? 'Our selected work is temporarily unavailable. You can still explore what we do.'
-          : empty
-            ? 'Ideas to impact. Explore what we create while our project collection takes shape.'
-            : 'Ideas to Impact. We build immersive visual systems and brand experiences that command attention in the digital era.'}</p>
+
+        {/* Bottom Split: Left Editorial Content + Right Subtitle */}
+        <div className="hero-bottom-bar">
+          <div className="hero-bottom-left">
+            <div className="hero-status-pill">
+              <span className="hero-status-dot" />
+              <span>COMMISSIONS OPEN // 2026</span>
+            </div>
+
+            <p className="hero-left-desc">
+              High-conviction creative engineering. We partner with ambitious founders to build <strong>distinct brand identities</strong>, <strong>cinematic media</strong>, and scalable growth systems that turn attention into market dominance.
+            </p>
+
+            <div className="hero-disciplines-row">
+              <span className="hero-discipline-tag">01 BRAND ARCHITECTURE</span>
+              <span className="hero-discipline-tag">02 HIGH-RETENTION MEDIA</span>
+              <span className="hero-discipline-tag">03 PERFORMANCE CAMPAIGNS</span>
+            </div>
+          </div>
+
+          <div className="hero-bottom-right">
+            <p className="hero-subtitle">
+              Ideas to Impact. We build immersive visual systems and brand experiences that command attention in the digital era.
+            </p>
+            <div className="hero-scroll-cue">
+              <span className="hero-cue-line" />
+              <span>EXPLORE CASE STUDIES</span>
+              <span className="hero-cue-arrow">↓</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

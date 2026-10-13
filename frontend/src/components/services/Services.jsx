@@ -136,17 +136,46 @@ export default function Services() {
     return () => { isMounted = false; };
   }, []);
 
-  // Micro-parallax on stage for desktop
+  // Micro-parallax on stage for desktop — CPU optimized via requestAnimationFrame
   useEffect(() => {
+    let animId = null;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let isMoving = false;
+
     const handleMouseMove = (e) => {
-      if (window.innerWidth > 1024 && stageRef.current) {
-        const x = (e.clientX / window.innerWidth - 0.5) * 8; 
-        const y = (e.clientY / window.innerHeight - 0.5) * -8;
-        stageRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+      if (window.innerWidth <= 1024) return;
+      targetX = (e.clientX / window.innerWidth - 0.5) * 8;
+      targetY = (e.clientY / window.innerHeight - 0.5) * -8;
+      if (!isMoving) {
+        isMoving = true;
+        animId = requestAnimationFrame(updateParallax);
       }
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    const updateParallax = () => {
+      // Smooth lerp (linear interpolation) for silky motion without CPU event flooding
+      currentX += (targetX - currentX) * 0.15;
+      currentY += (targetY - currentY) * 0.15;
+
+      if (stageRef.current) {
+        stageRef.current.style.transform = `rotateY(${currentX.toFixed(2)}deg) rotateX(${currentY.toFixed(2)}deg)`;
+      }
+
+      if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+        animId = requestAnimationFrame(updateParallax);
+      } else {
+        isMoving = false;
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (animId) cancelAnimationFrame(animId);
+    };
   }, []);
 
   // Handle body overflow and Escape key when modal is open

@@ -5,11 +5,11 @@ import TiltCard from './TiltCard';
 
 const FeaturedProject = ({ project }) => {
   return (
-    <section className="pt-28 md:pt-40 bg-gw-canvas">
+    <section className="pt-10 md:pt-14 pb-12 md:pb-16 border-b border-gw-line/40 bg-gw-canvas">
       <div className="max-w-[1440px] mx-auto px-5 md:px-18">
         
         {/* Intro Meta */}
-        <div className="flex items-center gap-4 mb-20 reveal">
+        <div className="flex items-center gap-4 mb-12 md:mb-16 reveal">
           <span className="text-xs uppercase tracking-luxury text-gw-olive font-semibold">Featured Project</span>
           <div className="h-px bg-gw-olive/30 flex-grow max-w-40"></div>
           <span className="text-xs uppercase tracking-editorial text-gw-muted/60 hidden md:block">{project.metadata.year}</span>
