@@ -9,7 +9,7 @@ const PHASES = [
     quote: 'Find the white space.',
     quoteTheme: 'olive',
     image: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=600&auto=format&fit=crop',
-    figure: 'Fig. 01 — Spark',
+    figure: 'Spark',
     tags: ['Discovery', 'Market Research', 'Audience Insights'],
     description: 'We identify unseen opportunities, uncover cultural nuances, and establish the strategic spark behind your brand.'
   },
@@ -20,7 +20,7 @@ const PHASES = [
     quote: 'Audience first. Always.',
     quoteTheme: 'cream',
     image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=600&auto=format&fit=crop',
-    figure: 'Fig. 02 — Map',
+    figure: 'Map',
     tags: ['Brand Positioning', 'Architecture', 'Growth Roadmap'],
     description: 'Translating raw ambition into clear, actionable direction. We align creative purpose with commercial milestones.'
   },
@@ -31,7 +31,7 @@ const PHASES = [
     quote: 'Make them feel something.',
     quoteTheme: 'olive',
     image: 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=600&auto=format&fit=crop',
-    figure: 'Fig. 03 — Palette',
+    figure: 'Palette',
     tags: ['Visual Identity', 'Design Systems', 'Storytelling'],
     description: 'Distinctive typography, art direction, and digital experiences engineered to cut through noise and command attention.'
   },
@@ -42,7 +42,7 @@ const PHASES = [
     quote: 'Precision in every detail.',
     quoteTheme: 'dark',
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600&auto=format&fit=crop',
-    figure: 'Fig. 04 — Launch',
+    figure: 'Launch',
     tags: ['Content Production', 'Engineering', 'Rollout'],
     description: 'High-speed delivery across film, campaigns, and web engineering. Built with rigorous craft and zero compromises.'
   },
@@ -53,7 +53,7 @@ const PHASES = [
     quote: 'Real brands. Real impact.',
     quoteTheme: 'cream',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop',
-    figure: 'Fig. 05 — Scale',
+    figure: 'Scale',
     tags: ['Brand Equity', 'Performance', 'Sustainable Reach'],
     description: 'Measurable expansion in market share, engagement, and enduring recall. The final outcome that drives your next chapter.'
   }
@@ -69,28 +69,16 @@ export default function SignatureExperience() {
       <div className="sig-marquee-grid" aria-hidden="true" />
 
       {/* Section Header */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 md:pt-12 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
         <div>
           <div className="flex items-center gap-3 text-xs font-bold tracking-[0.25em] text-gw-muted uppercase mb-4">
             <span className="w-8 h-[1.5px] bg-gw-olive" />
             <span>Our Methodology // Process</span>
-            <span className="text-[#D6D0C7]">/</span>
-            <span className="font-mono text-gw-olive">01 — 05 CYCLE</span>
           </div>
 
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-gw-ink leading-[1.05]">
             Ideas to <span className="text-outline-dark">Impact</span><span className="text-gw-olive">.</span>
           </h2>
-        </div>
-
-        <div className="flex flex-col md:items-end gap-2 text-sm text-gw-muted max-w-md">
-          <p className="leading-relaxed">
-            A continuous loop from initial spark to verified commercial outcomes. Hover over any phase to pause and inspect.
-          </p>
-          <div className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-gw-olive font-semibold pt-1">
-            <span className="w-2 h-2 rounded-full bg-gw-olive animate-pulse" />
-            <span>Continuous Infinite Stream (A → E)</span>
-          </div>
         </div>
       </div>
 

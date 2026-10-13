@@ -7,7 +7,7 @@ import TiltCard from './TiltCard';
    LAYOUT 1: Split (Text left, Image right — alternating)
    ───────────────────────────────────────── */
 const SplitProject = ({ project, index }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center py-24 md:py-32 border-b border-gw-line/40">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center py-12 md:py-16 border-b border-gw-line/40">
     <div className={`flex flex-col items-start ${index % 2 === 0 ? 'order-2 md:order-1 md:pr-16' : 'order-2 md:order-2 md:pl-16'}`}>
       
       {/* Project number & location */}
@@ -58,7 +58,7 @@ const SplitProject = ({ project, index }) => (
    LAYOUT 2: Portrait (Centered image + editorial text)
    ───────────────────────────────────────── */
 const PortraitProject = ({ project }) => (
-  <div className="py-24 md:py-36 border-b border-gw-line/40 flex flex-col md:flex-row gap-12 md:gap-28 justify-center items-center">
+  <div className="py-12 md:py-16 border-b border-gw-line/40 flex flex-col md:flex-row gap-12 md:gap-28 justify-center items-center">
     <div className="w-full md:w-5/12 reveal-scale">
       <TiltCard>
         <Link to={`/work/${project.slug}`} className="block aspect-[3/4] bg-gw-black">
@@ -110,7 +110,7 @@ const PortraitProject = ({ project }) => (
    LAYOUT 3: Dark (Full-width band with testimonial)
    ───────────────────────────────────────── */
 const DarkProject = ({ project }) => (
-  <div className="py-28 md:py-36 bg-gw-black text-gw-white -mx-5 md:-mx-18 px-5 md:px-18 relative overflow-hidden">
+  <div className="py-14 md:py-18 bg-gw-black text-gw-white -mx-5 md:-mx-18 px-5 md:px-18 relative overflow-hidden">
     {/* Ambient glow */}
     <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-gw-olive/[0.03] blur-[120px] pointer-events-none"></div>
 
@@ -178,7 +178,7 @@ const DarkProject = ({ project }) => (
    LAYOUT 4: Typography (Big title + wide image)
    ───────────────────────────────────────── */
 const TypographyProject = ({ project }) => (
-  <div className="py-28 md:py-40 border-b border-gw-line/40 relative group">
+  <div className="py-14 md:py-18 border-b border-gw-line/40 relative group">
     <Link to={`/work/${project.slug}`} className="block absolute inset-0 z-10"></Link>
     
     {/* Editorial label above */}

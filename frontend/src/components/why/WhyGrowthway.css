@@ -3,15 +3,14 @@
    ============================================ */
 
 .why-section {
-  padding: 64px 0 88px;
+  padding: 56px 0 28px;
   background: #FAF8F5;
   position: relative;
   border-top: 1px solid #EAE6E1;
-  border-bottom: 1px solid #EAE6E1;
 }
 
-@media (max-width: 1024px) { .why-section { padding: 52px 0 64px; } }
-@media (max-width: 768px) { .why-section { padding: 44px 0 52px; } }
+@media (max-width: 1024px) { .why-section { padding: 48px 0 24px; } }
+@media (max-width: 768px) { .why-section { padding: 40px 0 20px; } }
 
 .why-container {
   max-width: 1440px;
@@ -199,7 +198,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 28px;
   font-family: 'Space Grotesk', monospace, sans-serif;
   font-size: 0.7rem;
   letter-spacing: 0.15em;

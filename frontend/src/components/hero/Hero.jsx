@@ -75,7 +75,7 @@ export default function Hero() {
             <span className="w-8 h-[1.5px] bg-gw-olive" />
             <span>Creative Growth Agency</span>
             <span className="text-[#D6D0C7]">/</span>
-            <span className="font-mono text-gw-olive">MUMBAI · GLOBAL</span>
+            <span className="font-mono text-gw-olive">GORAKHPUR · UP</span>
           </div>
 
           {/* Master Headline */}

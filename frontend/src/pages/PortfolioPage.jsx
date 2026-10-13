@@ -7,25 +7,7 @@ import FeaturedProject from '../components/work/FeaturedProject';
 import ProjectCollection from '../components/work/ProjectCollection';
 import { usePublicCms, portfolioProject } from '../lib/publicCms';
 import MicroInteractions from '../components/MicroInteractions';
-import { stats, clientLogos } from '../data/projects';
-
-/* ── Luxury Stats Bar ── */
-const StatsBar = () => (
-  <section className="bg-gw-black text-gw-white py-16 md:py-20 border-t border-gw-white/[0.04]">
-    <div className="max-w-[1440px] mx-auto px-5 md:px-18">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-        {stats.map((stat, i) => (
-          <div key={i} className={`text-center reveal reveal-delay-${i + 1}`}>
-            <span className="font-display text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-b from-gw-white to-gw-white/50 bg-clip-text text-transparent">
-              {stat.number}
-            </span>
-            <p className="text-[9px] uppercase tracking-luxury text-gw-white/25 mt-3">{stat.label}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
+import { clientLogos } from '../data/projects';
 
 /* ── Marquee Ticker ── */
 const MarqueeTicker = () => {
@@ -52,15 +34,15 @@ const MarqueeTicker = () => {
 
 /* ── Trusted By Section ── */
 const TrustedBy = () => (
-  <section className="bg-gw-canvas pb-8 md:pb-12">
+  <section className="bg-gw-canvas pb-2 md:pb-4">
     <div className="max-w-[1440px] mx-auto px-5 md:px-18">
-      <div className="py-12 md:py-16 border-y border-gw-line/30 reveal">
-        <p className="text-[9px] uppercase tracking-luxury text-gw-muted/30 text-center mb-10">Trusted by industry leaders</p>
-        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
+      <div className="py-8 md:py-10 border-y border-gw-line/30 reveal">
+        <p className="text-[9px] uppercase tracking-luxury text-gw-muted/40 text-center mb-6">Trusted by industry leaders</p>
+        <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-6 md:gap-8 px-2">
           {clientLogos.map((logo, i) => (
             <span 
               key={i} 
-              className="font-display text-lg md:text-xl font-bold text-gw-ink/[0.08] hover:text-gw-ink/20 transition-colors duration-500 interactive-hover"
+              className="font-display text-sm md:text-base lg:text-lg font-bold uppercase tracking-wider text-gw-ink/20 hover:text-gw-ink/60 transition-colors duration-500 interactive-hover whitespace-nowrap"
             >
               {logo}
             </span>
@@ -96,9 +78,6 @@ const PortfolioPage = () => {
 
       {/* ── HERO ── */}
       <SelectedWorkIntro />
-
-      {/* ── STATS BAR ── */}
-      <StatsBar />
 
       {/* ── MARQUEE TICKER ── */}
       <MarqueeTicker />
