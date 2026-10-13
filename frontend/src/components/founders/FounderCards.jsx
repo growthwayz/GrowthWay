@@ -10,6 +10,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import useReducedMotion from '../../hooks/useReducedMotion';
+import { usePublicCms } from '../../lib/publicCms';
 import priyankaPhoto from '../../assets/Priyanka Barnwal.jpeg';
 import './FounderCards.css';
 
@@ -18,6 +19,13 @@ gsap.registerPlugin(ScrollTrigger);
 export default function FounderCards() {
   const sectionRef = useRef(null);
   const reducedMotion = useReducedMotion();
+  const { data: teamMembers } = usePublicCms('/api/team');
+
+  const founder = (teamMembers || []).find(m => m.name?.toLowerCase().includes('priyanka')) || teamMembers?.[0];
+  const photoSrc = founder?.photo || priyankaPhoto;
+  const founderName = founder?.name || 'Priyanka Barnwal';
+  const founderRole = founder?.role || 'Founder, Creative Director & Strategic Lead';
+  const founderBio = founder?.bio;
 
   useGSAP(() => {
     if (!sectionRef.current || reducedMotion) return;
@@ -77,8 +85,8 @@ export default function FounderCards() {
           <div className="fc-single-media-col">
             <div className="fc-single-img-wrap group">
               <img
-                src={priyankaPhoto}
-                alt="Priyanka Barnwal — Founder & Creative Director at Growthway"
+                src={photoSrc}
+                alt={`${founderName} — ${founderRole} at Growthway`}
                 className="fc-single-img"
                 loading="lazy"
               />
@@ -98,8 +106,8 @@ export default function FounderCards() {
               <span>EXECUTIVE CREATIVE DIRECTION</span>
             </div>
 
-            <h3 className="fc-founder-name">Priyanka Barnwal</h3>
-            <p className="fc-founder-role">Founder, Creative Director & Strategic Lead</p>
+            <h3 className="fc-founder-name">{founderName}</h3>
+            <p className="fc-founder-role">{founderRole}</p>
 
             {/* Core Conviction Quote */}
             <blockquote className="fc-founder-quote">
@@ -109,7 +117,13 @@ export default function FounderCards() {
             {/* Editorial Biography — Stylized Art Direction */}
             <div className="fc-founder-bio-card">
               <p className="fc-founder-bio">
-                <span className="fc-bio-highlight">Priyanka is the creative heartbeat</span> and founding visionary of GrowthWay. With an instinctive eye for <span className="fc-bio-accent">cinematography</span>, <span className="fc-bio-accent">high-retention visual storytelling</span>, and <span className="fc-bio-accent">brand architecture</span>, she bridges the gap between raw artistic expression and measurable commercial growth.
+                {founderBio ? (
+                  <span>{founderBio}</span>
+                ) : (
+                  <>
+                    <span className="fc-bio-highlight">Priyanka is the creative heartbeat</span> and founding visionary of GrowthWay. With an instinctive eye for <span className="fc-bio-accent">cinematography</span>, <span className="fc-bio-accent">high-retention visual storytelling</span>, and <span className="fc-bio-accent">brand architecture</span>, she bridges the gap between raw artistic expression and measurable commercial growth.
+                  </>
+                )}
               </p>
             </div>
 

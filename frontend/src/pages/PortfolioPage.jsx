@@ -33,25 +33,32 @@ const MarqueeTicker = () => {
 };
 
 /* ── Trusted By Section ── */
-const TrustedBy = () => (
-  <section className="bg-gw-canvas pb-2 md:pb-4">
-    <div className="max-w-[1440px] mx-auto px-5 md:px-18">
-      <div className="py-8 md:py-10 border-y border-gw-line/30 reveal">
-        <p className="text-[9px] uppercase tracking-luxury text-gw-muted/40 text-center mb-6">Trusted by industry leaders</p>
-        <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-6 md:gap-8 px-2">
-          {clientLogos.map((logo, i) => (
-            <span 
-              key={i} 
-              className="font-display text-sm md:text-base lg:text-lg font-bold uppercase tracking-wider text-gw-ink/20 hover:text-gw-ink/60 transition-colors duration-500 interactive-hover whitespace-nowrap"
-            >
-              {logo}
-            </span>
-          ))}
+const TrustedBy = () => {
+  const { data: clients } = usePublicCms('/api/clients');
+  const activeLogos = clients && clients.length > 0 
+    ? clients.map(c => c.name) 
+    : clientLogos;
+
+  return (
+    <section className="bg-gw-canvas pb-2 md:pb-4">
+      <div className="max-w-[1440px] mx-auto px-5 md:px-18">
+        <div className="py-8 md:py-10 border-y border-gw-line/30 reveal">
+          <p className="text-[9px] uppercase tracking-luxury text-gw-muted/40 text-center mb-6">Trusted by industry leaders</p>
+          <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-between items-center gap-6 md:gap-8 px-2">
+            {activeLogos.map((logo, i) => (
+              <span 
+                key={i} 
+                className="font-display text-sm md:text-base lg:text-lg font-bold uppercase tracking-wider text-gw-ink/20 hover:text-gw-ink/60 transition-colors duration-500 interactive-hover whitespace-nowrap"
+              >
+                {logo}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 /* ── MAIN PAGE ── */
 const PortfolioPage = () => {

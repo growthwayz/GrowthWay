@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePublicCms } from '../../lib/publicCms';
 import './SignatureExperience.css';
 
 const PHASES = [
@@ -60,8 +61,23 @@ const PHASES = [
 ];
 
 export default function SignatureExperience() {
-  // Seamless loop by duplicating the 5 phases: A, B, C, D, E -> A, B, C, D, E
-  const loopCards = [...PHASES, ...PHASES];
+  const { data: settings } = usePublicCms('/api/site-settings');
+
+  // If custom process steps exist in site settings, merge dynamically; otherwise maintain luxury baseline PHASES
+  const activePhases = (settings?.process && settings.process.length >= 3)
+    ? settings.process.map((step, idx) => {
+        const baseline = PHASES[idx % PHASES.length];
+        return {
+          ...baseline,
+          title: step.title || baseline.title,
+          description: step.description || baseline.description,
+          image: step.image || baseline.image,
+        };
+      })
+    : PHASES;
+
+  // Seamless loop by duplicating phases: A, B, C, D, E -> A, B, C, D, E
+  const loopCards = [...activePhases, ...activePhases];
 
   return (
     <section className="sig-marquee-section relative w-full overflow-hidden" id="about">

@@ -38,7 +38,12 @@ export default function GalleryEditor({ data, setData, onBusy, onPick }) {
     finally { onBusy(false); setMessage(''); }
   }
   return <div className="wide admin-gallery">
-    <h3>Project gallery</h3><p>Add images, check their descriptions, then save the project.</p>
+    <h3>Project gallery</h3>
+    <div className="admin-media-dimensions-badge">
+      <span className="admin-dim-icon">📐</span>
+      <span className="admin-dim-text">Recommended: 1600 × 1000 px or matching project aspect ratio (Landscape/Portrait, max 10 MB each)</span>
+    </div>
+    <p>Add images, check their descriptions, then save the project.</p>
     <label>Upload gallery images<input type="file" multiple accept=".jpg,.jpeg,.png,.webp,.gif,.avif" onChange={upload} /></label>
     <button type="button" className="secondary" onClick={onPick}>Add existing image</button>
     {message && <p role="status">{message}</p>}{error && <p role="alert" className="admin-error">{error}</p>}

@@ -14,3 +14,24 @@
  .admin-pager { flex-wrap: wrap; justify-content: flex-start; }
  .admin-main { overflow-wrap: anywhere; }
 }
+
+.admin-media-dimensions-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5ec;
+  border: 1px solid #d4e2cb;
+  color: #3b661d;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin: 2px 0 6px;
+  letter-spacing: 0.01em;
+  width: fit-content;
+}
+
+.admin-media-dimensions-badge .admin-dim-icon {
+  font-size: 13px;
+  opacity: 0.85;
+}
