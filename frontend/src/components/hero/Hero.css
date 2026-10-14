@@ -113,19 +113,29 @@
 
 /* Position left text content cleanly below navbar on desktop */
 @media (min-width: 1024px) {
+  .gw-hero {
+    align-items: flex-start;
+    padding-top: 108px !important;
+  }
   .gw-hero .hero-content-col {
     align-self: flex-start;
-    margin-top: 0.5rem;
+    margin-top: 0;
   }
 }
 
 @media (min-width: 1280px) {
+  .gw-hero {
+    padding-top: 108px !important;
+  }
   .gw-hero .hero-content-col {
-    margin-top: 0.25rem;
+    margin-top: 0;
   }
 }
 
 @media (min-width: 1536px) {
+  .gw-hero {
+    padding-top: 108px !important;
+  }
   .gw-hero .hero-content-col {
     margin-top: 0;
   }
@@ -135,10 +145,11 @@
   .gw-hero {
     height: auto;
     min-height: 100svh;
+    padding-top: 84px !important;
   }
   .gw-hero .hero-presentation {
     flex: none;
-    padding-top: 88px;
+    padding-top: 24px;
     padding-bottom: 40px;
   }
   .gw-hero .hero-eyebrow {
@@ -153,10 +164,13 @@
 }
 
 @media (max-width: 480px) {
+  .gw-hero {
+    padding-top: 80px !important;
+  }
   .gw-hero .hero-presentation {
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: 80px;
+    padding-top: 18px;
     padding-bottom: 32px;
   }
   .gw-hero .hero-eyebrow {

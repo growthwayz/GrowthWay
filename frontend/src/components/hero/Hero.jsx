@@ -50,7 +50,7 @@ export default function Hero() {
   }
 
   return (
-    <div className="gw-hero w-full min-h-screen relative flex items-center justify-center theme-bg pt-24 pb-8 lg:pt-28 lg:pb-10 overflow-hidden">
+    <div className="gw-hero w-full min-h-screen relative flex items-start justify-center theme-bg pt-20 pb-8 lg:pt-26 lg:pb-10 overflow-hidden">
       {/* 3D decorative cube layer */}
       <div className="scene-3d bg-parallax-layer" aria-hidden="true">
         <div className="cube-wrapper hidden md:block">
