@@ -128,22 +128,30 @@ class AIService:
                    'knowledge': [{'id': d.metadata['record_id'], 'text': d.page_content,
                                   'version': d.metadata['version']} for d in documents],
                    'available_services': services}
-        answer = await self._invoke(self.answer_chain, {'data': json.dumps(payload, ensure_ascii=False)}, 'generation')
-        if answer.outcome != 'answer':
-            logger.info('Chat fallback: %s', answer.outcome)
-            return fallback(answer.outcome)
-        if not answer.answerable:
-            logger.info('Chat fallback: missing_information')
-            return fallback()
-        rejection = answer_rejection_reason(answer, documents, [s['slug'] for s in services])
-        if rejection:
-            logger.info('Chat answer rejected: %s', rejection)
-            return fallback('validation')
-        review = await self._invoke(self.review_chain, {'data': json.dumps(
-            {**payload, 'proposed_answer': answer.model_dump()}, ensure_ascii=False)}, 'review')
-        if not (review.safe and review.supported and review.in_scope):
-            logger.info('Chat review rejected: safe=%s supported=%s in_scope=%s',
-                        review.safe, review.supported, review.in_scope)
-            return fallback('validation' if review.in_scope else 'out_of_scope')
-        return ChatResponse(reply=answer.reply, suggestions=SUGGESTIONS, cta='/contact',
-                            sources=list(dict.fromkeys(answer.evidence_ids))[:8])
+        for attempt in range(2):
+            answer = await self._invoke(self.answer_chain, {'data': json.dumps(payload, ensure_ascii=False)}, 'generation')
+            if answer.outcome != 'answer':
+                logger.info('Chat fallback: %s', answer.outcome)
+                return fallback(answer.outcome)
+            if not answer.answerable:
+                logger.info('Chat fallback: missing_information')
+                return fallback()
+            rejection = answer_rejection_reason(answer, documents, [s['slug'] for s in services])
+            if rejection:
+                logger.info('Chat answer rejected: %s', rejection)
+            else:
+                review = await self._invoke(self.review_chain, {'data': json.dumps(
+                    {**payload, 'proposed_answer': answer.model_dump()}, ensure_ascii=False)}, 'review')
+                if review.safe and review.supported and review.in_scope:
+                    return ChatResponse(reply=answer.reply, suggestions=SUGGESTIONS, cta='/contact',
+                                        sources=list(dict.fromkeys(answer.evidence_ids))[:8])
+                logger.info('Chat review rejected: safe=%s supported=%s in_scope=%s',
+                            review.safe, review.supported, review.in_scope)
+                if not review.in_scope:
+                    return fallback('out_of_scope')
+                rejection = 'review'
+            if attempt == 0:
+                # Retry once inside the same request deadline. Do not forward rejected
+                # prose or bypass either validation stage on the replacement answer.
+                payload['correction_reason'] = rejection
+        return fallback('validation')

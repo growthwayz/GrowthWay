@@ -99,6 +99,39 @@ class ServiceTests(unittest.IsolatedAsyncioTestCase):
         self.retrieve.assert_not_called()
         self.service.answer_chain.ainvoke.assert_not_awaited()
 
+    async def test_start_project_repairs_copied_url_and_keeps_evidence(self):
+        data = request(); data.message = 'How do I start a project?'
+        self.retrieve.return_value = [Document(
+            page_content='Open https://example.com/contact and describe your project.',
+            metadata={'record_id': 'FAQ14', 'version': '1.1'})]
+        bad = GeneratedAnswer(reply='Open https://example.com/contact and describe your project.',
+                              evidence_ids=['FAQ14'], service_slugs=[], answerable=True)
+        good = bad.model_copy(update={'reply': 'Open the contact page and describe your project.'})
+        self.service.answer_chain.ainvoke.side_effect = [bad, good]
+        result = await self.service.ask_ai(data)
+        self.assertEqual(result.reply, good.reply)
+        self.assertEqual(result.cta, '/contact')
+        self.assertEqual(result.sources, ['FAQ14'])
+        self.service.review_chain.ainvoke.assert_awaited_once()
+        repair = json.loads(self.service.answer_chain.ainvoke.call_args.args[0]['data'])
+        self.assertEqual(repair['correction_reason'], 'contact_or_markup')
+
+    async def test_repair_still_rejects_unverified_answers_and_is_bounded(self):
+        self.service.answer_chain.ainvoke.return_value.evidence_ids = ['UNKNOWN']
+        result = await self.service.ask_ai(request())
+        self.assertEqual(result.reply, fallback('validation').reply)
+        self.assertEqual(self.service.answer_chain.ainvoke.await_count, 2)
+        self.service.review_chain.ainvoke.assert_not_awaited()
+
+    async def test_review_rejection_rechecks_replacement(self):
+        self.service.review_chain.ainvoke.side_effect = [
+            AnswerReview(supported=False, safe=True, in_scope=True),
+            AnswerReview(supported=True, safe=True, in_scope=True)]
+        result = await self.service.ask_ai(request())
+        self.assertIn('Lucknow', result.reply)
+        self.assertEqual(self.service.answer_chain.ainvoke.await_count, 2)
+        self.assertEqual(self.service.review_chain.ainvoke.await_count, 2)
+
     async def test_greeting_with_question_still_uses_knowledge(self):
         data = request(); data.message = 'Hi, where is Growthway based?'
         result = await self.service.ask_ai(data)
