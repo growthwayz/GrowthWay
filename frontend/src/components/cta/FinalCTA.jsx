@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -100,7 +101,7 @@ export default function FinalCTA() {
 
   const whatsappUrl = settings?.whatsappNumber
     ? `https://wa.me/${settings.whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent("Hi Growthway! I'd like to discuss a project commission.")}`
-    : "https://wa.me/919876543210?text=Hi%20Growthway!%20I'd%20like%20to%20discuss%20a%20project%20commission.";
+    : "https://wa.me/917607012896?text=Hi%20Growthway!%20I'd%20like%20to%20discuss%20a%20project%20commission.";
 
   return (
     <section ref={sectionRef} className="final-cta" aria-label="Start a project">
@@ -123,16 +124,16 @@ export default function FinalCTA() {
         </h2>
 
         <div className="final-cta-actions cta-meta">
-          <a
+          <Link
             ref={btnRef}
-            href="/contact"
+            to="/contact"
             className="final-cta-primary group"
           >
-            <span>Start a Project</span>
-            <span className="final-cta-arrow group-hover:translate-x-1.5 transition-transform duration-300">
-              →
+            <span>START A PROJECT</span>
+            <span className="final-cta-circle">
+              <span className="final-cta-arrow">→</span>
             </span>
-          </a>
+          </Link>
 
           <a
             href={whatsappUrl}
@@ -140,16 +141,16 @@ export default function FinalCTA() {
             rel="noopener noreferrer"
             className="final-cta-whatsapp group"
           >
-            <span>WhatsApp Direct</span>
-            <span className="group-hover:translate-x-1 transition-transform duration-200">
-              →
+            <span>WHATSAPP DIRECT</span>
+            <span className="final-cta-circle final-cta-circle-wa">
+              <span className="final-cta-arrow">→</span>
             </span>
           </a>
         </div>
 
         {/* Foot Stamps */}
         <div className="final-cta-foot-stamps cta-meta">
-          <span>Mumbai · Bangalore · Global Ventures</span>
+          <span>Gorakhpur · UP · Global Ventures</span>
           <span>Discovery Review &lt; 24h</span>
         </div>
 

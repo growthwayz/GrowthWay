@@ -2,7 +2,7 @@ import React from 'react';
 
 const PortfolioFilter = ({ categories, activeCategory, onSelect }) => {
   return (
-    <div className="filter-bar bg-gw-canvas/80 border-b border-gw-line/50 py-5 sticky top-0 z-40">
+    <div id="portfolio-filter" className="filter-bar bg-gw-canvas/80 border-b border-gw-line/50 py-5 sticky top-0 z-40">
       <div className="max-w-[1440px] mx-auto px-5 md:px-18">
         <div className="flex justify-center w-full">
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 pb-1 md:pb-0">

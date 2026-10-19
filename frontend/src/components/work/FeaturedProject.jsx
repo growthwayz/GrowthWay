@@ -5,7 +5,7 @@ import TiltCard from './TiltCard';
 
 const FeaturedProject = ({ project }) => {
   return (
-    <section className="pt-10 md:pt-14 pb-12 md:pb-16 border-b border-gw-line/40 bg-gw-canvas">
+    <section id={`project-${project.slug}`} className="pt-10 md:pt-14 pb-12 md:pb-16 border-b border-gw-line/40 bg-gw-canvas scroll-mt-28">
       <div className="max-w-[1440px] mx-auto px-5 md:px-18">
         
         {/* Intro Meta */}
@@ -45,28 +45,24 @@ const FeaturedProject = ({ project }) => {
               {project.longDescription}
             </p>
 
-            {/* Project Stats */}
-            {project.stats && (
-              <div className="flex flex-wrap gap-8 mb-14 reveal reveal-delay-3">
-                {Object.entries(project.stats).map(([key, value]) => (
-                  <div key={key} className="text-center">
-                    <span className="font-display text-3xl font-bold text-gw-ink">{value}</span>
-                    <p className="text-[10px] uppercase tracking-luxury text-gw-muted/70 mt-1.5">{key}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
             <Link 
               to={`/work/${project.slug}`}
-              className="group inline-flex items-center gap-5 text-xs font-semibold uppercase tracking-editorial text-gw-ink hover:text-gw-olive transition-colors duration-400 w-fit interactive-hover reveal reveal-delay-4"
+              onClick={() => {
+                sessionStorage.setItem('gw_return_scroll', String(window.scrollY));
+                sessionStorage.setItem('gw_return_target', `project-${project.slug}`);
+              }}
+              state={{ 
+                from: 'work', 
+                returnTo: window.location.pathname === '/work' ? '/work' : '/#work', 
+                returnTarget: `project-${project.slug}`,
+                returnScrollY: window.scrollY,
+                returnLabel: 'Back to Selected Work' 
+              }}
+              className="case-study-pill-btn group reveal reveal-delay-4"
             >
-              <span className="relative pb-1">
-                View Case Study
-                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gw-ink group-hover:bg-gw-olive transition-colors"></span>
-              </span>
-              <span className="w-11 h-11 rounded-full border border-gw-line flex items-center justify-center group-hover:border-gw-olive group-hover:bg-gw-olive group-hover:text-white transition-all duration-400">
-                <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform duration-300" />
+              <span>VIEW CASE STUDY</span>
+              <span className="case-study-disc">
+                <ArrowRight className="w-4 h-4 case-study-arrow" />
               </span>
             </Link>
           </div>
@@ -74,7 +70,21 @@ const FeaturedProject = ({ project }) => {
           {/* Right: Large Visual */}
           <div className="lg:col-span-8 order-1 lg:order-2 reveal-scale">
             <TiltCard>
-              <Link to={`/work/${project.slug}`} className="block aspect-[4/3] md:aspect-[16/10] bg-gw-black">
+              <Link 
+                to={`/work/${project.slug}`}
+                onClick={() => {
+                  sessionStorage.setItem('gw_return_scroll', String(window.scrollY));
+                  sessionStorage.setItem('gw_return_target', `project-${project.slug}`);
+                }}
+                state={{ 
+                  from: 'work', 
+                  returnTo: window.location.pathname === '/work' ? '/work' : '/#work', 
+                  returnTarget: `project-${project.slug}`,
+                  returnScrollY: window.scrollY,
+                  returnLabel: 'Back to Selected Work' 
+                }}
+                className="block aspect-[4/3] md:aspect-[16/10] bg-gw-black"
+              >
                 <img 
                   src={project.image} 
                   alt={project.imageAlt || project.title}

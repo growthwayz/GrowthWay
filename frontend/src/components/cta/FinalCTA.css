@@ -109,49 +109,104 @@
 .final-cta-primary {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  background: #FFFDF9;
-  color: #080808;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  gap: 16px;
+  background: #FFFFFF;
+  color: #111111;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 20px 40px;
-  border-radius: 2px;
+  padding: 8px 8px 8px 26px;
+  border-radius: 9999px;
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
 .final-cta-primary:hover {
   background: #5C9E31;
   color: #FFFFFF;
-  box-shadow: 0 8px 32px rgba(92, 158, 49, 0.35);
   transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(92, 158, 49, 0.45);
+}
+
+.final-cta-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.final-cta-primary:hover .final-cta-circle {
+  background: #111111;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
+  transform: translateX(3px) scale(1.05);
+}
+
+.final-cta-primary:hover .final-cta-arrow {
+  color: #8FE44B;
 }
 
 .final-cta-arrow {
-  font-size: 1.1rem;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
   line-height: 1;
+  display: inline-block;
+  transition: color 0.25s ease;
 }
 
 .final-cta-whatsapp {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  color: rgba(255, 255, 255, 0.65);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   text-decoration: none;
-  padding: 18px 24px;
-  transition: color 0.2s;
+  padding: 8px 8px 8px 26px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
 .final-cta-whatsapp:hover {
-  color: #A4D481;
+  background: #25D366;
+  color: #FFFFFF;
+  border-color: #25D366;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(37, 211, 102, 0.45);
+}
+
+.final-cta-circle-wa {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.final-cta-circle-wa .final-cta-arrow {
+  color: #72B944;
+}
+
+.final-cta-whatsapp:hover .final-cta-circle-wa {
+  background: #111111;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
+  transform: translateX(3px) scale(1.05);
+}
+
+.final-cta-whatsapp:hover .final-cta-circle-wa .final-cta-arrow {
+  color: #25D366;
 }
 
 /* ── Foot Stamps ── */

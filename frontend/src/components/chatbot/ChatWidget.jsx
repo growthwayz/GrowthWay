@@ -227,7 +227,7 @@ export default function ChatWidget() {
             </a>
             <span className="chat-shortcut-sep">/</span>
             <a
-              href="https://wa.me/919876543210?text=Hi%20Growthway!%20I'd%20like%20to%20connect%20with%20a%20strategist."
+              href="https://wa.me/917607012896?text=Hi%20Growthway!%20I'd%20like%20to%20connect%20with%20a%20strategist."
               target="_blank"
               rel="noopener noreferrer"
               className="chat-shortcut-link"

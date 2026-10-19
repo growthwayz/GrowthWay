@@ -1,10 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { usePublicCms } from '../../lib/publicCms';
+import EmailDispatchModal from '../forms/EmailDispatchModal';
 import './Footer.css';
 
 export default function Footer() {
   const ribbonTextRef = useRef(null);
   const parallaxZoneRef = useRef(null);
   const parallaxElsRef = useRef([]);
+  const { data: settings } = usePublicCms('/api/site-settings');
+  const footerEmail = settings?.email || 'growthway75@gmail.com';
+  const footerPhone = settings?.phone || '+91 76070 12896';
+  const whatsappUrl = `https://wa.me/${(settings?.whatsappNumber || '917607012896').replace(/\D/g, '')}?text=${encodeURIComponent("Hi Growthway! Let's talk.")}`;
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   // Ribbon Animation
   useEffect(() => {
@@ -29,7 +37,7 @@ export default function Footer() {
           animationFrameId = requestAnimationFrame(tick);
         };
         tick();
-      } catch (e) {
+      } catch {
         // Fallback or ignore if getComputedTextLength fails
       }
     };
@@ -126,6 +134,17 @@ export default function Footer() {
     };
   }, []);
 
+  const handleScrollTo = (targetId) => (e) => {
+    if (window.location.pathname === '/') {
+      const el = document.getElementById(targetId);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.history.pushState(null, '', `#${targetId}`);
+      }
+    }
+  };
+
   const addParallaxRef = (el) => {
     if (el && !parallaxElsRef.current.includes(el)) {
       parallaxElsRef.current.push(el);
@@ -165,7 +184,7 @@ export default function Footer() {
               <line x1="2" y1="12" x2="22" y2="12" />
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
             </svg>
-            <div>MUMBAI, INDIA<br />19.0760° N<br />72.8777° E &rarr;</div>
+            <div>GORAKHPUR, UP<br />26.7606° N<br />83.3732° E &rarr;</div>
           </div>
 
           {/* Process Nodes */}
@@ -225,7 +244,7 @@ export default function Footer() {
           </div>
 
           <div ref={addParallaxRef} className="polaroid polaroid-2 cursor-hover parallax-el" data-speed="0.04" data-cap="DIGITAL">
-            <div style={{ width: '100%', height: '100%', background: '#111', borderRadius: '2px' }}></div>
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop" alt="Digital Media" loading="lazy" decoding="async" />
           </div>
 
           <div ref={addParallaxRef} className="polaroid polaroid-3 cursor-hover parallax-el" data-speed="-0.06" data-cap="CAMPAIGNS">
@@ -264,11 +283,11 @@ export default function Footer() {
             <div className="right-glass magnetic-card col-r1">
               <h4 className="card-heading">EXPLORE</h4>
               <ul className="link-list">
-                <li><a href="#work" className="cursor-hover"><span className="link-num">01</span> WORK</a></li>
-                <li><a href="#services" className="cursor-hover"><span className="link-num">02</span> SERVICES</a></li>
-                <li><a href="#about" className="cursor-hover"><span className="link-num">03</span> ABOUT</a></li>
-                <li><a href="#culture" className="cursor-hover"><span className="link-num">04</span> CULTURE</a></li>
-                <li><a href="#contact" className="cursor-hover"><span className="link-num">05</span> CONTACT</a></li>
+                <li><Link to="/#work" onClick={handleScrollTo('work')} className="cursor-hover"><span className="link-num">01</span> WORK</Link></li>
+                <li><Link to="/#services" onClick={handleScrollTo('services')} className="cursor-hover"><span className="link-num">02</span> SERVICES</Link></li>
+                <li><Link to="/#about" onClick={handleScrollTo('about')} className="cursor-hover"><span className="link-num">03</span> ABOUT</Link></li>
+                <li><Link to="/#why" onClick={handleScrollTo('why')} className="cursor-hover"><span className="link-num">04</span> WHY GROWTHWAY</Link></li>
+                <li><Link to="/contact" className="cursor-hover"><span className="link-num">05</span> CONTACT</Link></li>
               </ul>
             </div>
 
@@ -276,12 +295,12 @@ export default function Footer() {
             <div className="right-glass magnetic-card col-r2">
               <h4 className="card-heading">OUR SERVICES</h4>
               <ul className="link-list">
-                <li><a href="#services" className="cursor-hover">Branding & Identity</a></li>
-                <li><a href="#services" className="cursor-hover">Content Creation</a></li>
-                <li><a href="#services" className="cursor-hover">Social Media Mgmt</a></li>
-                <li><a href="#services" className="cursor-hover">Digital Campaigns</a></li>
-                <li><a href="#services" className="cursor-hover">Brand Shoots</a></li>
-                <li><a href="#services" className="cursor-hover">Web Development</a></li>
+                <li><Link to="/#services" onClick={handleScrollTo('services')} className="cursor-hover">Branding & Design</Link></li>
+                <li><Link to="/#services" onClick={handleScrollTo('services')} className="cursor-hover">Content Creation & Reels</Link></li>
+                <li><Link to="/#services" onClick={handleScrollTo('services')} className="cursor-hover">Social Media Strategy</Link></li>
+                <li><Link to="/#services" onClick={handleScrollTo('services')} className="cursor-hover">Digital Marketing / Meta Ads</Link></li>
+                <li><Link to="/#services" onClick={handleScrollTo('services')} className="cursor-hover">Brand & Product Shoots</Link></li>
+                <li><Link to="/#services" onClick={handleScrollTo('services')} className="cursor-hover">Website Development</Link></li>
               </ul>
             </div>
 
@@ -289,43 +308,50 @@ export default function Footer() {
             <div className="right-glass magnetic-card col-r3">
               <h4 className="card-heading">LET'S TALK</h4>
               <div>
-                <div className="contact-item">
+                <button
+                  type="button"
+                  onClick={() => setIsEmailModalOpen(true)}
+                  className="contact-item cursor-hover bg-transparent border-0 p-0 text-left cursor-pointer"
+                  style={{ font: 'inherit', color: 'inherit' }}
+                >
                   <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
-                  <span>hello@growthway.in</span>
-                </div>
-                <div className="contact-item">
+                  <span>{footerEmail}</span>
+                </button>
+                <a href={`tel:${footerPhone.replace(/\s+/g, '')}`} className="contact-item cursor-hover">
                   <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                  <span>+91 98765 43210</span>
-                </div>
+                  <span>{footerPhone}</span>
+                </a>
               </div>
 
-              <a href="#start-project" className="btn-whatsapp cursor-hover">
+              {whatsappUrl ? <a href={whatsappUrl} target="_blank" rel="noreferrer" className="btn-whatsapp cursor-hover">
                 <div className="text">
                   <span>CHAT ON</span>
                   <span>WHATSAPP</span>
                 </div>
                 <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg>
-              </a>
+              </a> : <Link to="/contact" className="btn-whatsapp cursor-hover"><div className="text"><span>START A</span><span>PROJECT</span></div></Link>}
             </div>
 
             {/* Column 4: Follow Us */}
             <div className="right-glass magnetic-card col-r4">
-              <div className="dark-polaroid-frame"></div>
+              <div className="dark-polaroid-frame">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=350&fit=crop" alt="Culture" loading="lazy" decoding="async" />
+              </div>
               <h4 className="card-heading">FOLLOW US</h4>
               <ul className="link-list">
-                <li><a href="#" className="cursor-hover">
+                <li><a href={settings?.instagram || 'https://www.instagram.com/growthwayyy?dlrf=M290YmR0NmY2N2Ri'} target="_blank" rel="noopener noreferrer" className="cursor-hover">
                   <div className="social-icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></div>
                   Instagram
                 </a></li>
-                <li><a href="#" className="cursor-hover">
+                <li><a href={settings?.linkedin || 'https://linkedin.com/company/growthway'} target="_blank" rel="noopener noreferrer" className="cursor-hover">
                   <div className="social-icon-box"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg></div>
                   LinkedIn
                 </a></li>
-                <li><a href="#" className="cursor-hover">
+                <li><a href={settings?.youtube || 'https://youtube.com/@growthwayxmedia?si=7bT6RQDyDz15t71o'} target="_blank" rel="noopener noreferrer" className="cursor-hover">
                   <div className="social-icon-box"><svg viewBox="0 0 24 24" className="fill-icon"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z" /><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff" /></svg></div>
                   YouTube
                 </a></li>
-                <li><a href="#" className="cursor-hover">
+                <li><a href={settings?.behance || 'https://behance.net/growthway'} target="_blank" rel="noopener noreferrer" className="cursor-hover">
                   <div className="social-icon-box"><svg viewBox="0 0 24 24" className="fill-icon"><path d="M8.22 10.97c1.33 0 2.22-.88 2.22-2.12 0-1.12-.8-1.95-2.03-1.95H4.27v4.07h3.95zm-.76 5.51c1.55 0 2.52-.96 2.52-2.3 0-1.42-1.05-2.26-2.52-2.26H4.27v4.56h3.19zM0 22h24V2H0v20zm12.3-9.98c0 1.76.54 3.03 1.55 3.84 1 .8 2.45 1.15 4.18 1.15 1.57 0 2.87-.27 3.86-.78V13.8c-.8.5-1.93.8-3.1.8-2.05 0-3.1-1.07-3.15-3.08h6.42v-.64c0-3.3-1.6-5.07-4.66-5.07-3.1 0-5.1 2.05-5.1 5.21zm2.34-11h4.94v1.85h-4.94V1.02zm5.06 6.94c0 1.25-.8 2.05-2.34 2.05h-2.3v-3.95c1.45 0 2.28.62 2.28 1.9z" /></svg></div>
                   Behance
                 </a></li>
@@ -341,11 +367,17 @@ export default function Footer() {
           <span>&copy; 2026 GROWTHWAY. ALL RIGHTS RESERVED.</span>
         </div>
         <div className="legal-links">
-          <a href="#" className="cursor-hover">PRIVACY POLICY</a>
-          <a href="#" className="cursor-hover">TERMS OF SERVICE</a>
+          <Link to="/privacy" className="cursor-hover">PRIVACY POLICY</Link>
+          <Link to="/terms" className="cursor-hover">TERMS OF SERVICE</Link>
         </div>
         <div className="intent-text">DESIGNED WITH INTENT. BUILT FOR IMPACT.</div>
       </div>
+
+      <EmailDispatchModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
+        email={footerEmail}
+      />
     </footer>
   );
 }

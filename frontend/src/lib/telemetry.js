@@ -3,7 +3,7 @@
  * Safely wraps analytics/GA4 calls without triggering ad-blocker filters.
  */
 
-const getMeasurementId = () => import.meta.env?.VITE_GA_MEASUREMENT_ID;
+const getMeasurementId = () => (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_GA_MEASUREMENT_ID : undefined);
 
 export const initTelemetry = () => {
   const id = getMeasurementId();
