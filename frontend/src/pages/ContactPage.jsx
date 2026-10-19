@@ -1,10 +1,23 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LeadForm from '../components/forms/LeadForm';
+import EmailDispatchModal from '../components/forms/EmailDispatchModal';
 
 export default function ContactPage() {
+  const navigate = useNavigate();
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <div
@@ -16,9 +29,28 @@ export default function ContactPage() {
       }}
     >
 
-      <main className="flex-1" style={{ paddingTop: '120px' }}>
+      <main className="flex-1" style={{ paddingTop: '100px' }}>
+        {/* Navigation Return */}
+        <div className="max-w-[1480px] mx-auto px-6 md:px-12 lg:px-20 pt-4 pb-2">
+          <button
+            type="button"
+            onClick={handleBack}
+            className="designer-back-btn group cursor-pointer"
+            aria-label="Back to Previous Page"
+          >
+            <span className="back-icon-disc">
+              <svg className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
+            </span>
+            <span className="back-label">Back to Previous</span>
+            <span className="back-tag">RETURN</span>
+          </button>
+        </div>
+
         {/* Top Architectural Banner */}
-        <section className="py-12 md:py-20 px-6 md:px-12 lg:px-20 max-w-[1480px] mx-auto border-b border-[#EAE6E1]">
+        <section className="py-10 md:py-16 px-6 md:px-12 lg:px-20 max-w-[1480px] mx-auto border-b border-[#EAE6E1]">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="max-w-[760px]">
               <div className="flex items-center flex-wrap gap-3 sm:gap-4 text-xs font-bold tracking-[0.25em] text-gw-muted uppercase mb-6">
@@ -72,21 +104,32 @@ export default function ContactPage() {
                     Headquarters & Studios
                   </span>
                   <span className="text-base font-semibold text-gw-ink">
-                    Mumbai · Bangalore · Remote Worldwide
+                    Gorakhpur · UP · Remote Worldwide
                   </span>
                 </div>
 
                 <div className="flex flex-col gap-1.5 border-b border-[#F0ECE6] pb-5">
-                  <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-gw-muted">
-                    Direct Email Dispatch
-                  </span>
-                  <a
-                    href="mailto:hello@growthway.agency"
-                    className="text-base font-semibold text-gw-ink hover:text-gw-olive transition-colors flex items-center justify-between group"
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-gw-muted">
+                      Direct Email Dispatch
+                    </span>
+                    <span className="text-[10px] font-mono text-gw-olive font-bold tracking-wider uppercase">
+                      Instant Compose
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsEmailModalOpen(true)}
+                    className="text-base font-semibold text-gw-ink hover:text-gw-olive transition-colors flex items-center justify-between group cursor-pointer text-left w-full focus:outline-none"
+                    aria-haspopup="dialog"
+                    title="Click to compose email via Gmail or default mail app"
                   >
-                    <span>hello@growthway.agency</span>
-                    <span className="group-hover:translate-x-1 transition-transform">→</span>
-                  </a>
+                    <span>growthway75@gmail.com</span>
+                    <span className="flex items-center gap-1.5 text-xs font-mono uppercase bg-[#F3EFEA] group-hover:bg-gw-olive group-hover:text-white px-2.5 py-1 rounded-sm transition-all shadow-2xs">
+                      <span>Compose</span>
+                      <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                    </span>
+                  </button>
                 </div>
 
                 <div className="flex flex-col gap-1.5 border-b border-[#F0ECE6] pb-5">
@@ -94,12 +137,44 @@ export default function ContactPage() {
                     Direct Telephone Line
                   </span>
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+917607012896"
                     className="text-base font-semibold text-gw-ink hover:text-gw-olive transition-colors flex items-center justify-between group"
                   >
-                    <span>+91 98765 43210</span>
+                    <span>+91 76070 12896</span>
                     <span className="group-hover:translate-x-1 transition-transform">→</span>
                   </a>
+                </div>
+
+                <div className="flex flex-col gap-2 border-b border-[#F0ECE6] pb-5">
+                  <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-gw-muted">
+                    Social & Media Channels
+                  </span>
+                  <div className="flex flex-col gap-2 pt-1">
+                    <a
+                      href="https://www.instagram.com/growthwayyy?dlrf=M290YmR0NmY2N2Ri"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-gw-ink hover:text-gw-olive transition-colors flex items-center justify-between group"
+                    >
+                      <span className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-gw-olive" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+                        Instagram (@growthwayyy)
+                      </span>
+                      <span className="group-hover:translate-x-1 transition-transform">↗</span>
+                    </a>
+                    <a
+                      href="https://youtube.com/@growthwayxmedia?si=7bT6RQDyDz15t71o"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-gw-ink hover:text-gw-olive transition-colors flex items-center justify-between group"
+                    >
+                      <span className="flex items-center gap-2">
+                        <svg className="w-4 h-4 text-gw-olive" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z" /><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff" /></svg>
+                        YouTube (@growthwayxmedia)
+                      </span>
+                      <span className="group-hover:translate-x-1 transition-transform">↗</span>
+                    </a>
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-1.5">
@@ -130,7 +205,7 @@ export default function ContactPage() {
                 </div>
 
                 <a
-                  href="https://wa.me/919876543210?text=Hi%20Growthway!%20I'd%20like%20to%20discuss%20a%20project%20commission."
+                  href="https://wa.me/917607012896?text=Hi%20Growthway!%20I'd%20like%20to%20discuss%20a%20project%20commission."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-gw-ink text-white p-3.5 rounded-full hover:bg-gw-olive transition-all flex items-center justify-center shrink-0 shadow-md group"
@@ -158,6 +233,13 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
+
+      {/* Direct Email Dispatch Concierge Modal */}
+      <EmailDispatchModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
+        email="growthway75@gmail.com"
+      />
 
     </div>
   );

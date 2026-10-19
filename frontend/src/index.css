@@ -783,3 +783,372 @@
  .mobile-menu-glass .cta-button { max-width: 100%; font-size: 14px; padding: 16px 20px; }
  .gw-portfolio .filter-bar button { white-space: normal; overflow-wrap: anywhere; }
 }
+
+/* Global Navigation & Header CTA Pill Button */
+.cta-button {
+  background: #111111;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  height: 38px;
+  padding: 4px 6px 4px 18px;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cta-button:hover {
+  background: #5C9E31 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(92, 158, 49, 0.4);
+  transform: translateY(-1px);
+}
+
+.cta-arrow-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 10px rgba(92, 158, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.cta-button:hover .cta-arrow-circle {
+  background: #111111 !important;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.35) !important;
+  transform: translateX(2px) scale(1.05);
+}
+
+.cta-arrow {
+  color: #0D1308;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-block;
+  transition: all 0.25s ease;
+}
+
+.cta-button:hover .cta-arrow {
+  color: #8FE44B !important;
+}
+
+.btn-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background: #111111;
+  color: #FFFFFF;
+  padding: 8px 8px 8px 24px;
+  border-radius: 9999px;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: fit-content;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  cursor: pointer;
+}
+
+.btn-capsule:hover {
+  background: #5C9E31 !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(92, 158, 49, 0.45);
+}
+
+.btn-capsule-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 12px rgba(92, 158, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.btn-capsule:hover .btn-capsule-circle {
+  background: #111111 !important;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35) !important;
+  transform: translateX(3px) scale(1.05);
+}
+
+.btn-capsule-arrow {
+  color: #0D1308;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-block;
+  transition: color 0.25s ease;
+}
+
+.btn-capsule:hover .btn-capsule-arrow {
+  color: #8FE44B !important;
+}
+
+/* White Pill Variant */
+.btn-capsule-white {
+  background: #FFFFFF;
+  color: #111111;
+}
+
+.btn-capsule-white .btn-capsule-circle {
+  background: #111111;
+  box-shadow: none;
+}
+
+.btn-capsule-white .btn-capsule-arrow {
+  color: #FFFFFF;
+}
+
+.btn-capsule-white:hover {
+  background: #5C9E31 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 32px rgba(92, 158, 49, 0.45);
+}
+
+.btn-capsule-white:hover .btn-capsule-circle {
+  background: #111111 !important;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+.btn-capsule-white:hover .btn-capsule-arrow {
+  color: #8FE44B !important;
+}
+
+/* Glass Pill Variant (WhatsApp) */
+.btn-capsule-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+.btn-capsule-glass .btn-capsule-circle {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-capsule-glass .btn-capsule-arrow {
+  color: #72B944;
+}
+
+.btn-capsule-glass:hover {
+  background: #5C9E31 !important;
+  color: #FFFFFF !important;
+  border-color: #5C9E31 !important;
+  box-shadow: 0 10px 32px rgba(92, 158, 49, 0.45);
+}
+
+.btn-capsule-glass:hover .btn-capsule-circle {
+  background: #111111 !important;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+.btn-capsule-glass:hover .btn-capsule-arrow {
+  color: #8FE44B !important;
+}
+
+/* ── Luxury Case Study Pill Buttons (Image 3 Redesign) ── */
+.case-study-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: #111111;
+  color: #FFFFFF;
+  padding: 8px 8px 8px 24px;
+  border-radius: 9999px;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: fit-content;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.case-study-pill-btn:hover {
+  background: #5C9E31 !important;
+  color: #FFFFFF !important;
+  border-color: #5C9E31 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(92, 158, 49, 0.45);
+}
+
+.case-study-disc {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 12px rgba(92, 158, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.case-study-pill-btn:hover .case-study-disc {
+  background: #111111 !important;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
+  transform: translateX(3px) scale(1.05);
+}
+
+.case-study-arrow {
+  color: #0D1308;
+  transition: all 0.25s ease;
+}
+
+.case-study-pill-btn:hover .case-study-arrow {
+  color: #8FE44B !important;
+}
+
+/* Light / Canvas variant for dark backgrounds */
+.case-study-pill-light {
+  background: #FFFFFF !important;
+  color: #111111 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.case-study-pill-light .case-study-disc {
+  background: #111111;
+}
+
+.case-study-pill-light .case-study-arrow {
+  color: #FFFFFF;
+}
+
+.case-study-pill-light:hover {
+  background: #5C9E31 !important;
+  color: #FFFFFF !important;
+  border-color: #5C9E31 !important;
+}
+
+.case-study-pill-light:hover .case-study-disc {
+  background: #111111 !important;
+}
+
+.case-study-pill-light:hover .case-study-arrow {
+  color: #8FE44B !important;
+}
+
+/* ── Project-Wide Designer Back Button ── */
+.designer-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #FFFFFF;
+  color: #171717;
+  padding: 5px 14px 5px 6px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.back-icon-disc {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #F4EFEA;
+  color: #171717;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.back-label {
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #171717;
+  transition: color 0.25s ease;
+}
+
+.back-tag {
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #5C9E31;
+  background: rgba(92, 158, 49, 0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+}
+
+.designer-back-btn:hover {
+  background: #5C9E31 !important;
+  border-color: #5C9E31 !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(92, 158, 49, 0.4);
+}
+
+.designer-back-btn:hover .back-icon-disc {
+  background: #111111 !important;
+  color: #8FE44B !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transform: translateX(-2px);
+}
+
+.designer-back-btn:hover .back-label {
+  color: #FFFFFF !important;
+}
+
+.designer-back-btn:hover .back-tag {
+  background: rgba(0, 0, 0, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+/* ── Universal Section Anchor Scroll Alignment (accounting for floating navbar) ── */
+#hero, #work, #about, #services, #industries, #why, #founders, #testimonials, #clients, #final-cta, #contact {
+  scroll-margin-top: 90px;
+}
+
+/* ── Smooth Hide of Fixed Floating Navbar on Case Study Bottom Region ── */
+header {
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.hide-top-nav-at-bottom header {
+  opacity: 0 !important;
+  transform: translateY(-120%) !important;
+  pointer-events: none !important;
+}
+
+
+

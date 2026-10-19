@@ -36,11 +36,22 @@ const SelectedWorkIntro = () => {
             <p className="hero-subtitle">
               Ideas to Impact. We build immersive visual systems and brand experiences that command attention in the digital era.
             </p>
-            <div className="hero-scroll-cue">
+            <button
+              type="button"
+              onClick={() => {
+                const target = document.getElementById('portfolio-filter') || document.querySelector('.filter-bar') || document.getElementById('work-showcase');
+                if (target) {
+                  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="hero-scroll-cue cursor-pointer text-left focus:outline-none focus:ring-1 focus:ring-gw-olive"
+              style={{ background: 'none', border: 'none', padding: 0 }}
+              aria-label="Scroll to case studies"
+            >
               <span className="hero-cue-line" />
               <span>EXPLORE CASE STUDIES</span>
               <span className="hero-cue-arrow">↓</span>
-            </div>
+            </button>
           </div>
         </div>
       </div>

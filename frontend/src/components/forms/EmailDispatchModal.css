@@ -1,0 +1,299 @@
+/* ── Email Dispatch Concierge Modal ── */
+.edm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(17, 24, 15, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: edmFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes edmFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.edm-dialog {
+  background: #FFFFFF;
+  border: 1px solid #E2DDD5;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: 0 25px 60px -15px rgba(23, 33, 16, 0.25);
+  padding: 32px;
+  position: relative;
+  animation: edmSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes edmSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.edm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.edm-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #5C9E31;
+  text-transform: uppercase;
+}
+
+.edm-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 6px rgba(92, 158, 49, 0.8);
+  animation: edmPulse 2s infinite ease-in-out;
+}
+
+@keyframes edmPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.edm-close-btn {
+  background: #F4F1EC;
+  border: 1px solid #E3DDD5;
+  color: #171717;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.edm-close-btn:hover {
+  background: #171717;
+  color: #FFFFFF;
+  border-color: #171717;
+}
+
+/* Recipient Box */
+.edm-recipient-box {
+  background: #F8F6F2;
+  border: 1px solid #E6E1D8;
+  border-left: 3px solid #5C9E31;
+  border-radius: 6px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.edm-recipient-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.edm-label {
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #7A756D;
+  text-transform: uppercase;
+}
+
+.edm-email-address {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #171717;
+  word-break: break-all;
+}
+
+.edm-copy-btn {
+  background: #FFFFFF;
+  border: 1px solid #D5CEBF;
+  color: #1F2915;
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.edm-copy-btn:hover {
+  background: #171717;
+  color: #FFFFFF;
+  border-color: #171717;
+}
+
+.edm-copy-btn.edm-copied {
+  background: #5C9E31;
+  color: #FFFFFF;
+  border-color: #5C9E31;
+}
+
+.edm-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.edm-subtext {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: #5A564F;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+}
+
+/* Actions list */
+.edm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.edm-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: #FFFFFF;
+  border: 1px solid #E2DDD5;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  color: #171717;
+}
+
+.edm-action-btn:hover {
+  border-color: #5C9E31;
+  background: #F8FBF5;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(92, 158, 49, 0.08);
+}
+
+.edm-action-btn.edm-primary {
+  background: #FAFCF8;
+  border-color: #CBE0BC;
+}
+
+.edm-action-btn.edm-primary:hover {
+  background: #F2F8EC;
+  border-color: #5C9E31;
+}
+
+.edm-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.edm-provider-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  background: #F0ECE4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #1F2915;
+}
+
+.edm-provider-icon.gmail-icon {
+  background: #FDE8E8;
+}
+
+.edm-provider-icon.outlook-icon {
+  background: #E5F2FF;
+}
+
+.edm-btn-title {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #171717;
+  letter-spacing: -0.01em;
+}
+
+.edm-btn-desc {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #7A756D;
+  margin-top: 2px;
+}
+
+.edm-arrow {
+  font-size: 1.15rem;
+  color: #7A756D;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.edm-action-btn:hover .edm-arrow {
+  transform: translateX(3px);
+  color: #5C9E31;
+}
+
+/* Footer note */
+.edm-footer-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', monospace, sans-serif;
+  font-size: 0.68rem;
+  color: #8C867D;
+  border-top: 1px solid #ECE7E0;
+  padding-top: 16px;
+  letter-spacing: 0.02em;
+}
+
+.edm-dot-static {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #5C9E31;
+  flex-shrink: 0;
+}

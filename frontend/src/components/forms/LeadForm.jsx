@@ -186,7 +186,7 @@ export default function LeadForm() {
     const whatsappText = encodeURIComponent(
       `Hello Growthway! I just submitted project brief #${referenceId} for ${formData.brand} (${formData.name}). Looking forward to connecting!`
     );
-    const whatsappFastTrackUrl = `https://wa.me/919876543210?text=${whatsappText}`;
+    const whatsappFastTrackUrl = `https://wa.me/917607012896?text=${whatsappText}`;
 
     return (
       <div className="lf-success-card" aria-live="polite">
@@ -343,7 +343,7 @@ export default function LeadForm() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="+91 98765 43210"
+              placeholder="+91 76070 12896"
               className="lf-input"
             />
             <span className="lf-line-focus" />
@@ -549,8 +549,8 @@ export default function LeadForm() {
           <span className="lf-submit-text">
             {status === 'submitting' ? 'Transmitting Brief...' : 'Transmit Project Brief'}
           </span>
-          <span className="lf-submit-arrow group-hover:translate-x-1.5 transition-transform duration-300">
-            →
+          <span className="lf-submit-circle">
+            <span className="lf-submit-arrow">→</span>
           </span>
         </button>
 

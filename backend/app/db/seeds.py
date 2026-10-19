@@ -23,7 +23,7 @@ async def seed_database(db, force=False):
     existing_settings = await db.site_settings.find_one({})
     if not existing_settings or existing_settings.get('updatedBy') == 'seed':
         settings = get_settings()
-        data = SiteSettingsOut(whatsappNumber=settings.WHATSAPP_NUMBER, siteUrl=settings.SITE_URL, gaMeasurementId=settings.GA_MEASUREMENT_ID).model_dump()
+        data = SiteSettingsOut(whatsappNumber=settings.WHATSAPP_NUMBER or '+917607012896', siteUrl=settings.SITE_URL, gaMeasurementId=settings.GA_MEASUREMENT_ID).model_dump()
         data['whyGrowthway'] = {'intro': 'Everything your brand needs to grow — strategy, creativity, and execution, all under one roof.', 'items': [{'word': 'STRATEGY', 'line': 'Personalised plans rooted in real market insight.'}, {'word': 'CREATIVITY', 'line': 'End-to-end design and content that stands out.'}, {'word': 'EXECUTION', 'line': 'Practical, results-driven campaigns that deliver.'}]}
         data['process'] = [{'title': title, 'description': desc} for title, desc in [('Discover', 'Understand your brand, audience and goals.'), ('Strategise', 'Agree on direction, priorities and a practical plan.'), ('Create', 'Develop content, design and digital experiences.'), ('Launch', 'Publish and deliver the agreed work.'), ('Optimise', 'Review performance and improve the next iteration.')]]
         replacement = {**data, 'updatedAt': now(), 'updatedBy': 'defaults', 'revision': 1}
@@ -32,9 +32,12 @@ async def seed_database(db, force=False):
             await db.site_settings.update_one({'_id': existing_settings['_id']}, {'$set': replacement})
         else:
             await db.site_settings.insert_one(replacement)
-    for order, name, role in [(1, 'Priyanka Barnwal', 'Founder'), (2, 'Ajay Ojha', 'Co-Founder')]:
+    for order, name, role, bio in [
+        (1, 'Priyanka Barnwal', 'Founder & Creative Director', 'Strategic visionary and on-ground creative director behind Growthway. Directing distinctive brand universes, high-retention cinematic media, and commercial growth roadmaps for ambitious category leaders.'),
+        (2, 'Ajay Ojha', 'Co-Founder', '')
+    ]:
         existing = await db.team.find_one({'name': name})
-        defaults = {'name': name, 'role': role, 'bio': '', 'photo': '', 'photoAlt': '', 'published': True, 'verified': True, 'isPlaceholder': False, 'order': order, 'createdBy': 'defaults', 'createdAt': now(), 'updatedAt': now(), 'revision': 1}
+        defaults = {'name': name, 'role': role, 'bio': bio, 'photo': '', 'photoAlt': '', 'published': True, 'verified': True, 'isPlaceholder': False, 'order': order, 'createdBy': 'defaults', 'createdAt': now(), 'updatedAt': now(), 'revision': 1}
         if existing and existing.get('createdBy') == 'seed':
             await db.migration_snapshots.insert_one({'collection': 'team', 'record': existing, 'createdAt': now(), 'reason': 'retire-demo-biography'})
             await db.team.update_one({'_id': existing['_id']}, {'$set': defaults})

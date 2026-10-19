@@ -321,34 +321,61 @@
 }
 
 .fc-cta-btn {
+  margin-top: 28px;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   background: #111111;
   color: #FFFFFF;
-  padding: 14px 28px;
-  border-radius: 4px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  padding: 8px 8px 8px 24px;
+  border-radius: 9999px;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  width: fit-content;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
 .fc-cta-btn:hover {
   background: #5C9E31;
   color: #FFFFFF;
+  border-color: #5C9E31;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(92, 158, 49, 0.28);
+  box-shadow: 0 10px 30px rgba(92, 158, 49, 0.45);
+}
+
+.fc-cta-arrow-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 12px rgba(92, 158, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.fc-cta-btn:hover .fc-cta-arrow-circle {
+  background: #111111;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
+  transform: translateX(3px) scale(1.05);
 }
 
 .fc-cta-arrow {
-  display: inline-block;
-  transition: transform 0.3s ease;
+  color: #0D1308;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  transition: color 0.25s ease;
 }
 
 .fc-cta-btn:hover .fc-cta-arrow {
-  transform: translateX(4px);
+  color: #8FE44B;
 }

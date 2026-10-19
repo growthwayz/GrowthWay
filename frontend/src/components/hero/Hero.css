@@ -113,19 +113,29 @@
 
 /* Position left text content cleanly below navbar on desktop */
 @media (min-width: 1024px) {
+  .gw-hero {
+    align-items: flex-start;
+    padding-top: 108px !important;
+  }
   .gw-hero .hero-content-col {
     align-self: flex-start;
-    margin-top: 0.5rem;
+    margin-top: 0;
   }
 }
 
 @media (min-width: 1280px) {
+  .gw-hero {
+    padding-top: 108px !important;
+  }
   .gw-hero .hero-content-col {
-    margin-top: 0.25rem;
+    margin-top: 0;
   }
 }
 
 @media (min-width: 1536px) {
+  .gw-hero {
+    padding-top: 108px !important;
+  }
   .gw-hero .hero-content-col {
     margin-top: 0;
   }
@@ -135,10 +145,11 @@
   .gw-hero {
     height: auto;
     min-height: 100svh;
+    padding-top: 84px !important;
   }
   .gw-hero .hero-presentation {
     flex: none;
-    padding-top: 88px;
+    padding-top: 24px;
     padding-bottom: 40px;
   }
   .gw-hero .hero-eyebrow {
@@ -153,10 +164,13 @@
 }
 
 @media (max-width: 480px) {
+  .gw-hero {
+    padding-top: 80px !important;
+  }
   .gw-hero .hero-presentation {
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: 80px;
+    padding-top: 18px;
     padding-bottom: 32px;
   }
   .gw-hero .hero-eyebrow {
@@ -174,3 +188,87 @@
     animation: none;
   }
 }
+
+/* ── Hero Capsule Buttons (Luxury Pill + Disc Arrow) ── */
+.hero-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 8px 8px 24px;
+  border-radius: 9999px;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: fit-content;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  cursor: pointer;
+}
+
+.hero-pill-primary {
+  background: #111111;
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.hero-pill-secondary {
+  background: rgba(0, 0, 0, 0.04);
+  color: #171717;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.hero-pill-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 12px rgba(92, 158, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.hero-pill-circle-sec {
+  background: #111111;
+  box-shadow: none;
+}
+
+.hero-pill-arrow {
+  color: #0D1308;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-block;
+  transition: color 0.25s ease;
+}
+
+.hero-pill-secondary .hero-pill-arrow {
+  color: #FFFFFF;
+}
+
+/* Hover States — Vibrant Signature Olive Pill with Sleek Dark Disc and Glowing Electric Arrow */
+.hero-pill-btn:hover {
+  background: #5C9E31;
+  color: #FFFFFF;
+  border-color: #5C9E31;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(92, 158, 49, 0.45);
+}
+
+.hero-pill-btn:hover .hero-pill-circle,
+.hero-pill-btn:hover .hero-pill-circle-sec {
+  background: #111111;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
+  transform: translateX(3px) scale(1.05);
+}
+
+.hero-pill-btn:hover .hero-pill-arrow {
+  color: #8FE44B;
+}
+

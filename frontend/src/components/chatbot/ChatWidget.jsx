@@ -144,6 +144,24 @@ export default function ChatWidget() {
               value={inputValue} maxLength={2000} onChange={event => setInputValue(event.target.value)} disabled={loading} />
             <button type="submit" className="chat-send" disabled={!inputValue.trim() || loading} aria-label="Send message">→</button>
           </form>
+
+          {/* Quick Handoff Links */}
+          <div className="chat-shortcuts">
+            <a href="/contact" className="chat-shortcut-link">
+              <span>Start Project Brief</span>
+              <span>→</span>
+            </a>
+            <span className="chat-shortcut-sep">/</span>
+            <a
+              href="https://wa.me/917607012896?text=Hi%20Growthway!%20I'd%20like%20to%20connect%20with%20a%20strategist."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chat-shortcut-link"
+            >
+              <span>WhatsApp Direct</span>
+              <span>→</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -3,11 +3,27 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import TiltCard from './TiltCard';
 
+/* ── Helper for exact return targeting ── */
+const createProjectLinkProps = (slug) => ({
+  to: `/work/${slug}`,
+  onClick: () => {
+    sessionStorage.setItem('gw_return_scroll', String(window.scrollY));
+    sessionStorage.setItem('gw_return_target', `project-${slug}`);
+  },
+  state: {
+    from: 'work',
+    returnTo: typeof window !== 'undefined' && window.location.pathname === '/work' ? '/work' : '/#work',
+    returnTarget: `project-${slug}`,
+    returnScrollY: typeof window !== 'undefined' ? window.scrollY : 0,
+    returnLabel: 'Back to Selected Work',
+  },
+});
+
 /* ─────────────────────────────────────────
    LAYOUT 1: Split (Text left, Image right — alternating)
    ───────────────────────────────────────── */
 const SplitProject = ({ project, index }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center py-12 md:py-16 border-b border-gw-line/40">
+  <div id={`project-${project.slug}`} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 items-center py-12 md:py-16 border-b border-gw-line/40 scroll-mt-28">
     <div className={`flex flex-col items-start ${index % 2 === 0 ? 'order-2 md:order-1 md:pr-16' : 'order-2 md:order-2 md:pl-16'}`}>
       
       {/* Project number & location */}
@@ -22,31 +38,22 @@ const SplitProject = ({ project, index }) => (
       <p className="text-base md:text-lg text-gw-charcoal/80 leading-relaxed mb-4 max-w-sm reveal reveal-delay-2">{project.description}</p>
       <p className="text-sm md:text-base text-gw-charcoal/60 leading-relaxed mb-10 max-w-sm reveal reveal-delay-2">{project.longDescription}</p>
 
-      {/* Mini stats row */}
-      {project.stats && (
-        <div className="flex flex-wrap gap-6 mb-10 reveal reveal-delay-2">
-          {Object.entries(project.stats).map(([key, value]) => (
-            <div key={key}>
-              <span className="font-display text-2xl md:text-3xl font-bold text-gw-ink">{value}</span>
-              <p className="text-[10px] uppercase tracking-luxury text-gw-muted/70 mt-1">{key}</p>
-            </div>
-          ))}
-        </div>
-      )}
-      
-      <Link to={`/work/${project.slug}`} className="group inline-flex items-center gap-4 text-xs font-semibold uppercase tracking-editorial hover:text-gw-olive transition-colors duration-400 interactive-hover reveal reveal-delay-3">
-        <span className="relative pb-1">
-          Case Study
-          <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gw-ink group-hover:bg-gw-olive transition-colors"></span>
-        </span>
-        <span className="w-10 h-10 rounded-full border border-gw-line flex items-center justify-center group-hover:border-gw-olive group-hover:bg-gw-olive group-hover:text-white transition-all duration-400">
-          <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" />
+      <Link 
+        {...createProjectLinkProps(project.slug)}
+        className="case-study-pill-btn group reveal reveal-delay-3"
+      >
+        <span>VIEW CASE STUDY</span>
+        <span className="case-study-disc">
+          <ArrowRight className="w-4 h-4 case-study-arrow" />
         </span>
       </Link>
     </div>
     <div className={`${index % 2 === 0 ? 'order-1 md:order-2' : 'order-1 md:order-1'} reveal-scale`}>
       <TiltCard>
-        <Link to={`/work/${project.slug}`} className="block aspect-[4/5] bg-gw-black">
+        <Link 
+          {...createProjectLinkProps(project.slug)}
+          className="block aspect-[4/5] bg-gw-black"
+        >
           <img src={project.image} alt={project.imageAlt || project.title} loading="lazy" className="w-full h-full object-cover" />
         </Link>
       </TiltCard>
@@ -58,10 +65,13 @@ const SplitProject = ({ project, index }) => (
    LAYOUT 2: Portrait (Centered image + editorial text)
    ───────────────────────────────────────── */
 const PortraitProject = ({ project }) => (
-  <div className="py-12 md:py-16 border-b border-gw-line/40 flex flex-col md:flex-row gap-12 md:gap-28 justify-center items-center">
+  <div id={`project-${project.slug}`} className="py-12 md:py-16 border-b border-gw-line/40 flex flex-col md:flex-row gap-12 md:gap-28 justify-center items-center scroll-mt-28">
     <div className="w-full md:w-5/12 reveal-scale">
       <TiltCard>
-        <Link to={`/work/${project.slug}`} className="block aspect-[3/4] bg-gw-black">
+        <Link 
+          {...createProjectLinkProps(project.slug)}
+          className="block aspect-[3/4] bg-gw-black"
+        >
           <img src={project.image} alt={project.imageAlt || project.title} loading="lazy" className="w-full h-full object-cover" />
         </Link>
       </TiltCard>
@@ -84,24 +94,15 @@ const PortraitProject = ({ project }) => (
          ))}
        </div>
 
-       {/* Stats */}
-       {project.stats && (
-         <div className="flex flex-wrap gap-6 mb-10 reveal reveal-delay-2">
-           {Object.entries(project.stats).map(([key, value]) => (
-             <div key={key}>
-               <span className="font-display text-2xl md:text-3xl font-bold text-gw-ink">{value}</span>
-               <p className="text-[10px] uppercase tracking-luxury text-gw-muted/70 mt-1">{key}</p>
-             </div>
-           ))}
-         </div>
-       )}
-
-       <Link to={`/work/${project.slug}`} className="group inline-flex items-center gap-4 text-xs font-semibold uppercase tracking-editorial interactive-hover reveal reveal-delay-3">
-        <span className="w-11 h-11 rounded-full border border-gw-line flex items-center justify-center group-hover:border-gw-olive group-hover:bg-gw-olive group-hover:text-white transition-all duration-400">
-          <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" />
-        </span>
-        <span className="group-hover:text-gw-olive transition-colors duration-300">Explore Project</span>
-      </Link>
+       <Link 
+         {...createProjectLinkProps(project.slug)}
+         className="case-study-pill-btn group reveal reveal-delay-3"
+       >
+         <span>VIEW CASE STUDY</span>
+         <span className="case-study-disc">
+           <ArrowRight className="w-4 h-4 case-study-arrow" />
+         </span>
+       </Link>
     </div>
   </div>
 );
@@ -110,7 +111,7 @@ const PortraitProject = ({ project }) => (
    LAYOUT 3: Dark (Full-width band with testimonial)
    ───────────────────────────────────────── */
 const DarkProject = ({ project }) => (
-  <div className="py-14 md:py-18 bg-gw-black text-gw-white -mx-5 md:-mx-18 px-5 md:px-18 relative overflow-hidden">
+  <div id={`project-${project.slug}`} className="py-14 md:py-18 bg-gw-black text-gw-white -mx-5 md:-mx-18 px-5 md:px-18 relative overflow-hidden scroll-mt-28">
     {/* Ambient glow */}
     <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-gw-olive/[0.03] blur-[120px] pointer-events-none"></div>
 
@@ -126,46 +127,22 @@ const DarkProject = ({ project }) => (
         <p className="text-base md:text-lg text-gw-white/80 leading-relaxed mb-4 max-w-md reveal reveal-delay-2">{project.description}</p>
         <p className="text-sm md:text-base text-gw-white/60 leading-relaxed mb-10 max-w-md reveal reveal-delay-2">{project.longDescription}</p>
 
-        {/* Stats */}
-        {project.stats && (
-          <div className="flex flex-wrap gap-8 mb-12 reveal reveal-delay-2">
-            {Object.entries(project.stats).map(([key, value]) => (
-              <div key={key}>
-                <span className="font-display text-2xl md:text-3xl font-bold text-gw-white">{value}</span>
-                <p className="text-[10px] uppercase tracking-luxury text-gw-white/50 mt-1">{key}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Testimonial */}
-        {project.testimonial && (
-          <div className="mb-14 reveal reveal-delay-3">
-            <div className="luxury-rule mb-6 w-16"></div>
-            <blockquote className="pull-quote text-gw-white/70 text-base italic leading-relaxed mb-4 max-w-sm pl-1">
-              {project.testimonial.quote}
-            </blockquote>
-            <div className="flex items-center gap-2 text-[10px] uppercase tracking-luxury text-gw-white/30">
-              <span className="text-gw-olive/60">{project.testimonial.author}</span>
-              <span>·</span>
-              <span>{project.testimonial.title}</span>
-            </div>
-          </div>
-        )}
-        
-        <Link to={`/work/${project.slug}`} className="group inline-flex items-center gap-4 text-xs font-semibold uppercase tracking-editorial text-gw-white hover:text-gw-olive transition-colors duration-400 interactive-hover reveal reveal-delay-3">
-          <span className="relative pb-1">
-            Launch Project
-            <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gw-white/20 group-hover:bg-gw-olive transition-colors"></span>
-          </span>
-          <span className="w-11 h-11 rounded-full border border-gw-white/15 flex items-center justify-center group-hover:border-gw-olive group-hover:bg-gw-olive transition-all duration-400">
-            <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        <Link 
+          {...createProjectLinkProps(project.slug)}
+          className="case-study-pill-btn case-study-pill-light group reveal reveal-delay-3"
+        >
+          <span>VIEW CASE STUDY</span>
+          <span className="case-study-disc">
+            <ArrowUpRight className="w-4 h-4 case-study-arrow" />
           </span>
         </Link>
       </div>
       <div className="lg:col-span-7 reveal-scale">
         <TiltCard>
-          <Link to={`/work/${project.slug}`} className="block aspect-video bg-gw-charcoal">
+          <Link 
+            {...createProjectLinkProps(project.slug)}
+            className="block aspect-video bg-gw-charcoal"
+          >
             <img src={project.image} alt={project.imageAlt || project.title} loading="lazy" className="w-full h-full object-cover" />
           </Link>
         </TiltCard>
@@ -178,8 +155,11 @@ const DarkProject = ({ project }) => (
    LAYOUT 4: Typography (Big title + wide image)
    ───────────────────────────────────────── */
 const TypographyProject = ({ project }) => (
-  <div className="py-14 md:py-18 border-b border-gw-line/40 relative group">
-    <Link to={`/work/${project.slug}`} className="block absolute inset-0 z-10"></Link>
+  <div id={`project-${project.slug}`} className="py-14 md:py-18 border-b border-gw-line/40 relative group scroll-mt-28">
+    <Link 
+      {...createProjectLinkProps(project.slug)}
+      className="block absolute inset-0 z-10"
+    ></Link>
     
     {/* Editorial label above */}
     <div className="text-center mb-4 relative z-20 pointer-events-none reveal">
@@ -206,12 +186,12 @@ const TypographyProject = ({ project }) => (
         </div>
         <div className="flex items-center gap-6">
           <p className="text-sm uppercase tracking-editorial text-gw-muted/80">{project.categories.join(' · ')}</p>
-          <span className="text-xs uppercase tracking-editorial font-semibold flex items-center gap-3 group-hover:text-gw-olive transition-colors duration-500 pointer-events-auto">
-            View
-            <span className="w-8 h-8 rounded-full border border-gw-line flex items-center justify-center group-hover:border-gw-olive group-hover:bg-gw-olive group-hover:text-white transition-all duration-400">
-              <ArrowUpRight className="w-3.5 h-3.5" />
+          <Link {...createProjectLinkProps(project.slug)} className="case-study-pill-btn group pointer-events-auto">
+            <span>VIEW CASE STUDY</span>
+            <span className="case-study-disc">
+              <ArrowUpRight className="w-3.5 h-3.5 case-study-arrow" />
             </span>
-          </span>
+          </Link>
         </div>
       </div>
     </div>
