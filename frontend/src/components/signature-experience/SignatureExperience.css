@@ -1,0 +1,172 @@
+/* ==========================================================================
+   SIGNATURE EXPERIENCE — STYLE 1: CONTINUOUS INFINITE HORIZONTAL STREAM
+   High-performance GPU-accelerated right-to-left marquee loop (A → B → C → D → E)
+   ========================================================================== */
+
+.sig-marquee-section {
+  background-color: #FAF8F5;
+  color: #1F2915;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Subtle background grid */
+.sig-marquee-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(#E8EBE0 1px, transparent 1px),
+    linear-gradient(90deg, #E8EBE0 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.45;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 85%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Typography Accent */
+.text-outline-dark {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #1F2915;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+}
+
+/* Edge Fade Gradients for Seamless Entrance/Exit */
+.sig-fade-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: clamp(40px, 8vw, 120px);
+  background: linear-gradient(90deg, #FAF8F5 20%, rgba(250, 248, 245, 0) 100%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.sig-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: clamp(40px, 8vw, 120px);
+  background: linear-gradient(270deg, #FAF8F5 20%, rgba(250, 248, 245, 0) 100%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Continuous Infinite Marquee Track */
+.sig-marquee-wrapper {
+  overflow-x: hidden;
+  display: flex;
+  user-select: none;
+}
+
+.sig-marquee-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: marqueeRightToLeft 40s linear infinite;
+  will-change: transform;
+}
+
+/* Pause animation on hover so the user can comfortably read any card */
+.sig-marquee-wrapper:hover .sig-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeRightToLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Process Card Styling */
+.sig-process-card {
+  width: clamp(310px, 26vw, 420px);
+  flex-shrink: 0;
+  background: #FFFFFF;
+  border: 1px solid #E3E7D9;
+  border-radius: 4px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 
+    0 10px 30px -10px rgba(31, 41, 21, 0.08),
+    0 1px 3px rgba(31, 41, 21, 0.04);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+}
+
+.sig-process-card:hover {
+  transform: translateY(-4px);
+  border-color: #5C9E31;
+  box-shadow: 
+    0 20px 40px -12px rgba(92, 158, 49, 0.15),
+    0 4px 12px rgba(31, 41, 21, 0.06);
+}
+
+/* Sticky Note Accent on Cards */
+.sig-card-sticky {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: 'Caveat', cursive, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.1;
+  padding: 6px 12px;
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: rotate(3deg);
+  transition: transform 0.3s ease;
+  z-index: 5;
+}
+
+.sig-process-card:hover .sig-card-sticky {
+  transform: rotate(-2deg) scale(1.05);
+}
+
+.sig-sticky-olive {
+  background: #C5D86D;
+  color: #1F2915;
+}
+
+.sig-sticky-cream {
+  background: #FDF9D9;
+  color: #1F2915;
+}
+
+.sig-sticky-dark {
+  background: #1F2915;
+  color: #FFFFFF;
+}
+
+/* Reduced Motion: Fallback to smooth scrollable reel */
+@media (prefers-reduced-motion: reduce) {
+  .sig-marquee-track {
+    animation: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1rem;
+  }
+  .sig-process-card {
+    scroll-snap-align: start;
+  }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .sig-marquee-track {
+    gap: 1rem;
+    animation-duration: 30s;
+  }
+  .sig-process-card {
+    width: 290px;
+    padding: 1.25rem;
+  }
+}

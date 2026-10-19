@@ -1,0 +1,9 @@
+/* =========================================
+   CUSTOM CURSOR (Disabled)
+   Native operating system mouse pointer is used.
+   ========================================= */
+
+.custom-cursor-dot,
+.custom-cursor-ring {
+  display: none !important;
+}

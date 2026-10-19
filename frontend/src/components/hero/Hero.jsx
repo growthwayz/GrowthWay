@@ -1,281 +1,210 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Hero.css'
-import heroVideo from "./videos/sample.mp4";
+import heroVideo from '../../assets/introvidio1.mp4'
+import { videoUrl } from '../../lib/media'
+import { usePublicCms } from '../../lib/publicCms'
+
 const PLACEHOLDER_VIDEO = heroVideo
 
 export default function Hero() {
-  const videoLayerRef = useRef(null)
-  const impactTargetRef = useRef(null)
-  const maskTextRef = useRef(null)
-  const uiLayerRef = useRef(null)
-  const scrollHintRef = useRef(null)
-  const cachedMetricsRef = useRef(null)
-  const tickingRef = useRef(false)
+  const showreelVideoRef = useRef(null)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(true)
+  const { data: settings } = usePublicCms('/api/site-settings')
+  const hero = settings?.hero
+  const videoSource = hero?.videoUrl && hero.videoPermissionApproved ? videoUrl(hero.videoUrl) : PLACEHOLDER_VIDEO
 
+  // Ensure showreel video autoplays and matches muted state
   useEffect(() => {
-    const videoLayer = videoLayerRef.current
-    const targetEl = impactTargetRef.current
-    const maskText = maskTextRef.current
-    const uiLayer = uiLayerRef.current
-    const scrollHint = scrollHintRef.current
-
-    function initMetrics() {
-      // Reset transforms so getBoundingClientRect reads the natural unscaled layout
-      maskText.style.transform = 'scale3d(1, 1, 1)'
-
-      const rect = targetEl.getBoundingClientRect()
-      const computed = window.getComputedStyle(targetEl)
-
-      // Calculate mathematically perfect center points instead of guessing baselines
-      const centerX = rect.left + (rect.width / 2)
-      const centerY = rect.top + (rect.height / 2)
-
-      cachedMetricsRef.current = {
-        centerX: centerX,
-        centerY: centerY,
-        fontSize: computed.fontSize,
-        letterSpacing: computed.letterSpacing,
-      }
-
-      // Align from exact center
-      maskText.setAttribute('x', centerX)
-      maskText.setAttribute('y', centerY)
-      maskText.setAttribute('text-anchor', 'middle')
-      maskText.setAttribute('dominant-baseline', 'middle')
-
-      // Inject identical font properties
-      maskText.style.fontSize = cachedMetricsRef.current.fontSize
-      maskText.style.fontFamily = computed.fontFamily
-      maskText.style.fontWeight = computed.fontWeight
-      maskText.style.letterSpacing = cachedMetricsRef.current.letterSpacing
-      maskText.textContent = targetEl.getAttribute('data-text') // Ensures text matches
-
-      // FIX: Forces SVG to render smoothly during massive scales
-      maskText.setAttribute('text-rendering', 'geometricPrecision')
-      maskText.style.willChange = 'transform'
-      
-      // Use fill-box to ensure origin percentages are relative to the text bounding box.
-      // 35% 50% targets a solid part of the text (e.g. the stem of 'P').
-      // Scaling from a solid point guarantees the video covers the entire screen at scale=250.
-      maskText.style.transformBox = 'fill-box'
-      maskText.style.transformOrigin = '35% 50%'
-
-      updateFrame()
+    if (showreelVideoRef.current) {
+      showreelVideoRef.current.defaultMuted = true
+      showreelVideoRef.current.muted = isMuted
+      showreelVideoRef.current.play().catch(() => {})
     }
+  }, [videoSource])
 
-    function updateFrame() {
-      if (!cachedMetricsRef.current) return
-
-      const scrollY = window.scrollY
-      const distance = window.innerHeight * 2
-      let p = Math.max(0, Math.min(1, scrollY / distance))
-      const easeP = 1 - Math.pow(1 - p, 3)
-
-      // Base scale 250 ensures it always covers the edges of ultra-wide monitors
-      const scale = 1 + (250 - 1) * (1 - easeP)
-
-      // Always keep clipPath applied to avoid a visual "pop" at p < 0.01
-      videoLayer.style.clipPath = 'url(#video-mask)'
-      videoLayer.style.webkitClipPath = 'url(#video-mask)'
-
-      // scale3d forces hardware GPU acceleration for buttery smooth scaling
-      maskText.style.transform = `scale3d(${scale}, ${scale}, 1)`
-
-      // Fade in the underlying UI as you scroll
-      uiLayer.style.opacity = Math.min(1, easeP * 1.5)
-      scrollHint.style.opacity = Math.max(0, 1 - (p * 5))
-
-      // THE FIX: Seamless text crossfade
-      // Instead of them rendering on top of each other and glitching,
-      // the video handles the text shape until the very end, then crossfades instantly.
-      if (p > 0.85) {
-        // Smoothly maps progress over the last 15% of the scroll
-        const crossfade = (p - 0.85) * (1 / 0.15) // 0 to 1
-        videoLayer.style.opacity = Math.max(0, 1 - crossfade)
-        targetEl.style.opacity = crossfade
-      } else {
-        videoLayer.style.opacity = 1
-        targetEl.style.opacity = 0 // Completely hides DOM text while video is covering it
-      }
-
-      tickingRef.current = false
-    }
-
-    const onScroll = () => {
-      if (!tickingRef.current) {
-        window.requestAnimationFrame(updateFrame)
-        tickingRef.current = true
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', initMetrics)
-
-    // Ensure fonts are fully loaded before calculating width/height bounding boxes
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
-        initMetrics()
-        // Brief timeout fallback for older browsers
-        setTimeout(initMetrics, 150)
-      })
+  const toggleShowreel = () => {
+    if (!showreelVideoRef.current) return
+    if (showreelVideoRef.current.paused) {
+      showreelVideoRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
     } else {
-      initMetrics()
+      showreelVideoRef.current.pause()
+      setIsPlaying(false)
     }
+  }
 
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', initMetrics)
-    }
-  }, [])
+  const handlePlay = () => {
+    setIsPlaying(true)
+  }
+
+  const handlePause = () => {
+    setIsPlaying(false)
+  }
+
+  const toggleMute = (e) => {
+    e.stopPropagation()
+    if (!showreelVideoRef.current) return
+    const nextMuted = !isMuted
+    showreelVideoRef.current.muted = nextMuted
+    setIsMuted(nextMuted)
+  }
 
   return (
-    <>
-      {/* Page 1: scroll-driven video intro */}
-      <div className="h-[300vh] w-full relative">
-        <div className="sticky top-0 w-full h-screen overflow-hidden theme-bg">
-
-          {/* SVG clipPath definition */}
-          <svg className="absolute w-0 h-0 pointer-events-none">
-            <defs>
-              <clipPath id="video-mask" clipPathUnits="userSpaceOnUse">
-                <text
-                  ref={maskTextRef}
-                  fontFamily="'Inter', sans-serif"
-                  fontWeight="900"
-                  fill="white"
-                />
-              </clipPath>
-            </defs>
-          </svg>
-
-          {/* Video layer */}
-          <div
-            ref={videoLayerRef}
-            className="absolute inset-0 w-full h-full z-40 pointer-events-none origin-center"
-          >
-            <video
-              src={PLACEHOLDER_VIDEO}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Scroll hint */}
-          <div
-            ref={scrollHintRef}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/90 text-xs font-bold tracking-[0.3em] uppercase z-50 flex flex-col items-center gap-3"
-          >
-            Scroll to Explore
-            <div className="w-[2px] h-12 bg-white/20 overflow-hidden relative rounded-full">
-              <div className="absolute top-0 left-0 w-full h-1/2 bg-white animate-[scrollDown_1.5s_infinite]" />
-            </div>
-          </div>
-
-          {/* UI layer (hero content) */}
-          <div
-            ref={uiLayerRef}
-            className="w-full h-full flex flex-col absolute inset-0 z-10 opacity-0 pointer-events-auto"
-          >
-            {/* Nav */}
-            <nav className="w-full flex items-center justify-between px-6 md:px-[5vw] py-6 relative z-50">
-              <a href="#" className="text-2xl font-display font-black tracking-tight flex items-center">
-                GROWTH<span className="text-gw-olive">WAY</span>
-              </a>
-
-              <a
-                href="#"
-                className="hidden sm:inline-block border border-gw-line px-6 py-2.5 text-xs font-bold tracking-wider uppercase rounded-sm hover:bg-gw-black hover:text-white transition-all duration-300"
-              >
-                Start a Project
-              </a>
-            </nav>
-
-            {/* Main content */}
-            <main className="flex-1 w-full flex flex-col lg:flex-row items-center justify-center lg:justify-between px-6 md:px-[5vw] pb-6 lg:pb-0 relative gap-6 lg:gap-8 overflow-y-auto lg:overflow-visible">
-              <div className="w-full lg:w-[55%] flex flex-col justify-center z-10 pt-2 sm:pt-6 lg:pt-0 relative">
-                {/* 3D cube */}
-                <div className="scene-3d bg-parallax-layer">
-                  <div className="cube-wrapper hidden md:block">
-                    <div className="cube-face face-front" />
-                    <div className="cube-face face-back" />
-                    <div className="cube-face face-right" />
-                    <div className="cube-face face-left" />
-                    <div className="cube-face face-top" />
-                    <div className="cube-face face-bottom" />
-                  </div>
-                </div>
-
-                {/* Eyebrow */}
-                <div className="flex items-center gap-4 text-xs font-bold tracking-[0.2em] text-gw-muted uppercase mb-6 sm:mb-8">
-                  <span className="w-10 h-[1px] bg-gw-olive" />
-                  Creative Growth Agency
-                </div>
-
-                <h1
-                  className="flex flex-col font-display font-bold uppercase leading-[0.85] tracking-[-0.05em] mb-4 sm:mb-8"
-                  style={{ fontSize: 'clamp(2.5rem, 11vw, 9rem)' }}
-                >
-                  <span className="text-gw-ink inline-block overflow-hidden pb-1 leading-[0.75] align-bottom">IDEAS TO</span>
-                  <div className="relative flex items-center flex-wrap gap-3 sm:gap-4 mt-2">
-                    <span
-                      ref={impactTargetRef}
-                      id="impact-target"
-                      className="text-outline inline-block"
-                      data-text="IMPACT"
-                    >
-                      IMPACT
-                    </span>
-                    <div className="inline-flex items-center gap-2 bg-gw-olive-dark text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-xl whitespace-nowrap mt-3 sm:mt-0 relative sm:-top-4 lg:-top-6">
-                      <span className="w-2 h-2 rounded-full bg-gw-olive-light animate-pulse" />
-                      Open for Projects
-                    </div>
-                  </div>
-                </h1>
-
-                {/* Description */}
-                <p className="text-gw-muted text-sm sm:text-base lg:text-lg max-w-md leading-relaxed mb-6 sm:mb-10 font-body">
-                  We help brands turn ideas into meaningful digital presence. Strategy, content, branding, campaigns and execution — all under one roof.
-                </p>
-
-                {/* CTA — white bg, black text per design doc section 7 */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pointer-events-auto">
-                  <a
-                    href="#"
-                    className="bg-gw-ink text-white px-8 py-4 text-xs sm:text-sm font-bold tracking-widest uppercase hover:bg-gw-charcoal transition-colors duration-300 shadow-xl flex items-center gap-3 group rounded-sm"
-                  >
-                    Start a Project
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                  </a>
-                </div>
-              </div>
-
-              {/* Showreel card */}
-              <div className="w-full lg:w-[45%] h-[28vh] sm:h-[40vh] lg:h-[75vh] flex items-center justify-center relative mt-2 sm:mt-8 lg:mt-0">
-                <div className="w-full max-w-[550px] h-full max-h-[700px] bg-gw-charcoal rounded-lg shadow-2xl relative flex flex-col items-center justify-center cursor-pointer overflow-hidden border border-white/5 group">
-                  <div className="absolute inset-0 bg-grid-pattern opacity-50 z-0" />
-                  <div className="flex flex-col items-center gap-6 z-10 transition-transform duration-500 group-hover:scale-105">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-gray-400/50 flex items-center justify-center hover:bg-white transition-colors duration-500 relative text-white hover:text-gw-olive-dark">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-1 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                    <span className="text-gw-muted text-xs font-bold tracking-[0.3em] uppercase">Showreel</span>
-                  </div>
-                </div>
-              </div>
-            </main>
-          </div>
-
+    <div className="gw-hero w-full min-h-screen relative flex items-center justify-center theme-bg pt-24 pb-8 lg:pt-28 lg:pb-10 overflow-hidden">
+      {/* 3D decorative cube layer */}
+      <div className="scene-3d bg-parallax-layer" aria-hidden="true">
+        <div className="cube-wrapper hidden md:block">
+          <div className="cube-face face-front" />
+          <div className="cube-face face-back" />
+          <div className="cube-face face-right" />
+          <div className="cube-face face-left" />
+          <div className="cube-face face-top" />
+          <div className="cube-face face-bottom" />
         </div>
       </div>
 
-      {/* Page 2: Next Section */}
-      <div className="h-screen flex items-center justify-center theme-bg border-t border-gw-line">
-        <p className="text-gw-olive-light font-bold tracking-widest uppercase">Next Section</p>
-      </div>
-    </>
+      {/* Main hero presentation canvas */}
+      <main className="hero-presentation w-full max-w-[1520px] mx-auto flex flex-col lg:flex-row items-center justify-between px-6 sm:px-8 lg:px-12 xl:px-16 relative gap-8 lg:gap-10 xl:gap-14 z-10">
+        
+        {/* Left Column: Typography & Conversion Core */}
+        <div className="hero-content-col w-full lg:w-[52%] flex flex-col justify-start lg:self-start z-10">
+          
+          {/* Eyebrow with official emblem badge */}
+          <div className="hero-eyebrow flex items-center gap-3 sm:gap-4 text-xs font-bold tracking-[0.25em] text-gw-muted uppercase mb-3.5 sm:mb-4">
+            <img src="/logo-icon.png" alt="" className="w-5 h-5 rounded-[4px] object-cover shadow-sm" />
+            <span className="w-8 h-[1.5px] bg-gw-olive" />
+            <span>Creative Growth Agency</span>
+            <span className="text-[#D6D0C7]">/</span>
+            <span className="font-mono text-gw-olive">GORAKHPUR · UP</span>
+          </div>
+
+          {/* Master Headline */}
+          <h1
+            className="flex flex-col font-display font-bold uppercase leading-[0.92] tracking-[-0.03em] mb-4 sm:mb-5"
+            style={{ fontSize: 'clamp(2.5rem, 5.2vw, 5.4rem)' }}
+          >
+            <span className="text-gw-ink inline-block overflow-hidden leading-[0.85] align-bottom">
+              IDEAS TO
+            </span>
+            <div className="relative flex items-center flex-wrap gap-3 sm:gap-4 mt-2 sm:mt-2.5">
+              <span
+                id="impact-target"
+                className="text-outline inline-block text-gw-ink"
+                data-text="IMPACT"
+              >
+                IMPACT
+              </span>
+              <div className="inline-flex items-center gap-2 bg-gw-ink text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg whitespace-nowrap">
+                <span className="w-2 h-2 rounded-full bg-gw-olive animate-pulse" />
+                <span>Open for Projects</span>
+              </div>
+            </div>
+          </h1>
+
+          {/* Description */}
+          <p className="text-gw-muted text-sm sm:text-base lg:text-lg max-w-lg leading-relaxed mb-6 sm:mb-7 font-body">
+            We partner with ambitious brands to transform vision into high-conviction digital presence. Strategy, identity, campaigns, and engineering — synthesized under one roof.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-row flex-wrap items-center gap-4 sm:gap-5">
+            <a
+              href="/contact"
+              className="bg-gw-ink text-white px-7 sm:px-8 py-3.5 sm:py-4 text-xs sm:text-sm font-bold tracking-widest uppercase hover:bg-gw-olive transition-colors duration-300 shadow-xl flex items-center gap-3 group rounded-sm"
+            >
+              <span>Start a Project</span>
+              <span className="group-hover:translate-x-1.5 transition-transform duration-300">→</span>
+            </a>
+
+            <a
+              href="#work"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-bold tracking-widest uppercase text-gw-ink border border-[#D6D0C7] hover:border-gw-ink rounded-sm transition-all"
+            >
+              <span>Explore Selected Work</span>
+              <span>↓</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Right Column: Video Showreel Showcase */}
+        <div className="hero-showreel w-full lg:w-[40%] flex items-center justify-center lg:justify-end relative mt-6 lg:mt-0 lg:self-center">
+          <div
+            onClick={toggleShowreel}
+            role="button"
+            tabIndex={0}
+            aria-label={isPlaying ? 'Pause showreel' : 'Play showreel'}
+            onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleShowreel(); } }}
+            className="w-full max-w-[440px] sm:max-w-[470px] xl:max-w-[500px] aspect-[1080/1232] bg-white rounded-xl sm:rounded-2xl shadow-2xl relative flex items-center justify-center cursor-pointer overflow-hidden border border-black/10 group"
+          >
+            {/* Direct uncropped video player */}
+            <video
+              ref={showreelVideoRef}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              src={videoSource}
+              poster={hero?.poster || undefined}
+              preload="metadata"
+              autoPlay
+              loop
+              muted={isMuted}
+              playsInline
+              className="w-full h-full object-contain block select-none transition-transform duration-500 group-hover:scale-[1.01]"
+            />
+
+            {/* Unmute / Mute Audio Button */}
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={isMuted ? "Unmute showreel audio" : "Mute showreel audio"}
+              className="absolute top-3.5 right-3.5 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white text-[11px] font-mono uppercase tracking-wider transition-all duration-300 hover:scale-105 shadow-xl"
+            >
+              {isMuted ? (
+                <>
+                  <svg className="w-3.5 h-3.5 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <line x1="23" y1="9" x2="17" y2="15" />
+                    <line x1="17" y1="9" x2="23" y2="15" />
+                  </svg>
+                  <span className="font-bold">UNMUTE</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-3.5 h-3.5 text-gw-olive" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                  </svg>
+                  <span className="font-bold text-gw-olive">MUTE</span>
+                </>
+              )}
+            </button>
+
+            {/* Play/Pause Button Badge — reveals on hover when playing, persists when paused */}
+            <div className={`absolute z-20 flex flex-col items-center gap-2.5 transition-all duration-300 pointer-events-none ${isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}>
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-white/40 bg-black/55 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-white group-hover:text-gw-ink transition-all duration-300 shadow-2xl">
+                {isPlaying ? (
+                  <svg className="w-5 h-5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16" />
+                    <rect x="14" y="4" width="4" height="16" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 sm:w-5 sm:h-5 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                )}
+              </div>
+              <span className="text-white/90 text-[10px] font-bold tracking-[0.22em] uppercase font-mono bg-black/40 px-2 py-0.5 rounded-sm backdrop-blur-xs">
+                {isPlaying ? 'PAUSE SHOWREEL' : 'PLAY SHOWREEL'}
+              </span>
+            </div>
+
+            {/* Corner Badge */}
+            <div className="absolute bottom-3.5 left-4 z-20 text-[10px] font-mono uppercase tracking-widest text-gw-ink/70 bg-white/85 backdrop-blur-sm px-2 py-0.5 rounded-sm border border-black/5 shadow-xs">
+              GROWTHWAY // SHOWREEL 2026
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
   )
 }

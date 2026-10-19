@@ -105,8 +105,7 @@ export const projects = [
 ];
 
 export const clientLogos = [
-  'Aura Beauty', 'Lumina Festival', 'Noir Athletics', 'Elevate', 'Zenith Roasters',
-  'Vogue', 'Nike', 'Dior', 'Tesla', 'Apple'
+  'Aura Beauty', 'Lumina Festival', 'Noir Athletics', 'Elevate', 'Zenith Roasters'
 ];
 
 export const stats = [

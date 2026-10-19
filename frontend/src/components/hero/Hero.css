@@ -71,11 +71,8 @@
   position: absolute;
   width: 120px;
   height: 120px;
-  border: 1px solid rgba(92, 158, 49, 0.40);
-  /* gw-olive */
-  background: rgba(92, 158, 49, 0.05);
-  /* gw-olive */
-  backdrop-filter: blur(2px);
+  border: 1px solid rgba(92, 158, 49, 0.35);
+  background: rgba(92, 158, 49, 0.06);
 }
 
 .face-front {
@@ -112,22 +109,62 @@
   }
 }
 
-@keyframes scrollDown {
-  0% {
-    transform: translateY(-100%);
-  }
+/* ─── Responsive hero layout ─── */
 
-  100% {
-    transform: translateY(200%);
+/* Position left text content cleanly below navbar on desktop */
+@media (min-width: 1024px) {
+  .gw-hero .hero-content-col {
+    align-self: flex-start;
+    margin-top: 0.5rem;
   }
 }
 
-/* ─── Responsive hero layout ─── */
+@media (min-width: 1280px) {
+  .gw-hero .hero-content-col {
+    margin-top: 0.25rem;
+  }
+}
 
-/* Showreel card: reduce height on mobile */
-@media (max-width: 640px) {
-  .hero-showreel {
-    height: 40vh;
+@media (min-width: 1536px) {
+  .gw-hero .hero-content-col {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .gw-hero {
+    height: auto;
+    min-height: 100svh;
+  }
+  .gw-hero .hero-presentation {
+    flex: none;
+    padding-top: 88px;
+    padding-bottom: 40px;
+  }
+  .gw-hero .hero-eyebrow {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .gw-hero .hero-showreel {
+    height: auto;
+    max-width: 600px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .gw-hero .hero-presentation {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 80px;
+    padding-bottom: 32px;
+  }
+  .gw-hero .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: .15em;
+  }
+  .gw-hero .hero-presentation h1 {
+    font-size: clamp(2.2rem, 11vw, 3.5rem) !important;
   }
 }
 
