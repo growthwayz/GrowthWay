@@ -19,50 +19,6 @@
 }
 
 /* =========================================
-   CUSTOM CURSOR 
-   ========================================= */
-.custom-cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  background-color: var(--olive-primary);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
-}
-
-.custom-cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--olive-light);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out, width 0.2s, height 0.2s, border-color 0.2s;
-}
-
-body.cursor-hover .custom-cursor-dot {
-  width: 12px;
-  height: 12px;
-  background-color: var(--text-dark);
-}
-
-body.cursor-hover .custom-cursor-ring {
-  width: 60px;
-  height: 60px;
-  border-color: var(--text-dark);
-  background-color: rgba(17, 17, 17, 0.05);
-}
-
-/* =========================================
    MACRO LAYOUT
    ========================================= */
 .footer-wrapper {
@@ -1006,11 +962,6 @@ body.cursor-hover .custom-cursor-ring {
     text-align: center;
   }
 
-  /* No custom cursor on mobile */
-  .custom-cursor-dot,
-  .custom-cursor-ring {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

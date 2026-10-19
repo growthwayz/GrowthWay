@@ -247,6 +247,7 @@ function Home() {
 function App() {
   const location = useLocation()
   const isAdminRoute = location.pathname.startsWith('/admin')
+  const isWorkRoute = location.pathname === '/work'
 
   return (
     <div
@@ -277,7 +278,7 @@ function App() {
         }>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/work" element={<PortfolioPage />} />
+            <Route path="/work" element={<PortfolioPage standalone />} />
             <Route path="/work/:slug" element={<ProjectDetail />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy" element={<LegalPage type="privacy" />} />
@@ -326,9 +327,7 @@ function App() {
 
       {!isAdminRoute && (
         <>
-          <div id="contact">
-            <Footer />
-          </div>
+          {!isWorkRoute && <div id="contact"><Footer /></div>}
           <ChatWidget />
           <WhatsAppFloat />
         </>
