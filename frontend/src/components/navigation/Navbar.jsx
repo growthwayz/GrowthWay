@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 const WorkIcon = () => (
@@ -34,23 +35,19 @@ const ContactIcon = () => (
 const NavItem = ({ name, href, active, icon: Icon }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const location = useLocation();
 
   const effectiveHover = isHovered || isFocused;
 
   const handleClick = (e) => {
-    e.preventDefault();
-    if (window.location.pathname !== '/') {
-      window.location.href = '/' + href;
-      return;
-    }
-    const target = document.querySelector(href);
-    if (target) {
-      const targetTop = target.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: targetTop,
-        behavior: 'smooth'
-      });
-      window.history.pushState(null, '', href);
+    if (location.pathname === '/') {
+      const targetId = href.replace('#', '');
+      const el = document.getElementById(targetId);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.history.pushState(null, '', href);
+      }
     }
   };
 
@@ -61,18 +58,18 @@ const NavItem = ({ name, href, active, icon: Icon }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="nav-hover-capsule"></div>
-      <a
-        href={href}
-        className="nav-link-icon relative focus:outline-none flex flex-col items-center justify-center"
+      <Link
+        to={{ pathname: '/', hash: href }}
+        onClick={handleClick}
+        className="nav-link-icon relative focus:outline-none flex flex-row items-center justify-center"
         aria-label={name}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        onClick={handleClick}
       >
         <Icon />
         <span className="nav-hover-dot"></span>
         <span className="nav-hover-label">{name}</span>
-      </a>
+      </Link>
     </div>
   );
 };
@@ -80,8 +77,9 @@ const NavItem = ({ name, href, active, icon: Icon }) => {
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [mouseX, setMouseX] = useState(null);
   const navContainerRef = useRef(null);
+  const location = useLocation();
+  const currentHash = location.hash;
 
   // Scroll effect
   useEffect(() => {
@@ -111,10 +109,10 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: 'WORK', href: '#work', active: false, icon: WorkIcon },
-    { name: 'SERVICES', href: '#services', active: true, icon: ServicesIcon },
-    { name: 'ABOUT', href: '#about', active: false, icon: AboutIcon },
-    { name: 'CONTACT', href: '#contact', active: false, icon: ContactIcon },
+    { name: 'WORK', href: '#work', icon: WorkIcon },
+    { name: 'SERVICES', href: '#services', icon: ServicesIcon },
+    { name: 'ABOUT', href: '#about', icon: AboutIcon },
+    { name: 'CONTACT', href: '#contact', icon: ContactIcon },
   ];
 
   return (
@@ -122,12 +120,19 @@ export default function Navbar() {
       <nav
         ref={navContainerRef}
         className={`navbar-container navbar-glass mx-auto flex items-center gap-4 lg:gap-8 pointer-events-auto ${scrolled ? 'navbar-scrolled' : 'navbar-top'}`}
-        onMouseMove={(e) => setMouseX(e.clientX)}
-        onMouseLeave={() => setMouseX(null)}
       >
         {/* Logo */}
         <div className="flex-shrink-0 z-50">
-          <a href="/" className="flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm group">
+          <Link
+            to="/"
+            onClick={(e) => {
+              if (location.pathname === '/' && !location.hash) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#3D4A36] rounded-sm group"
+          >
             <img
               src="/logo-icon.png"
               alt="GrowthWay"
@@ -136,7 +141,7 @@ export default function Navbar() {
             <span className="text-[19px] font-display font-extrabold tracking-tight text-[#171717]">
               Growth<span className="font-semibold text-gw-olive">Way</span>
             </span>
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
@@ -146,7 +151,7 @@ export default function Navbar() {
               key={link.name}
               name={link.name}
               href={link.href}
-              active={link.active}
+              active={currentHash === link.href}
               icon={link.icon}
             />
           ))}
@@ -154,13 +159,15 @@ export default function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center z-50">
-          <a
-            href="/contact"
-            className="cta-button font-medium flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#3D4A36]"
+          <Link
+            to="/contact"
+            className="cta-button font-medium flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#3D4A36]"
           >
-            START A PROJECT
-            <span className="cta-arrow">→</span>
-          </a>
+            <span>START A PROJECT</span>
+            <span className="cta-arrow-circle">
+              <span className="cta-arrow">→</span>
+            </span>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -169,6 +176,7 @@ export default function Navbar() {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-navigation"
         >
           {isMobileMenuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -190,27 +198,40 @@ export default function Navbar() {
         className={`fixed inset-0 z-40 mobile-menu-glass transition-all duration-500 ease-in-out md:hidden flex flex-col justify-center px-8 pointer-events-auto ${isMobileMenuOpen ? 'opacity-100 visible mobile-menu-open' : 'opacity-0 invisible'
           }`}
       >
-        <nav className="flex flex-col gap-6 mt-16">
+        <nav id="mobile-navigation" className="flex flex-col gap-6 mt-16" aria-label="Mobile navigation">
           {navLinks.map((link, index) => (
-            <a
+            <Link
               key={link.name}
-              href={window.location.pathname === '/' ? link.href : '/' + link.href}
+              to={{ pathname: '/', hash: link.href }}
               className={`mobile-nav-item delay-${index + 1} text-4xl font-display font-medium text-[#171717] hover:text-[#3D4A36] transition-colors focus:text-[#3D4A36] focus:font-bold focus:outline-none flex items-center gap-4`}
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                if (location.pathname === '/') {
+                  const targetId = link.href.replace('#', '');
+                  const el = document.getElementById(targetId);
+                  if (el) {
+                    e.preventDefault();
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.history.pushState(null, '', link.href);
+                  }
+                }
+              }}
             >
               <link.icon />
               {link.name}
-            </a>
+            </Link>
           ))}
           <div className={`mobile-nav-item delay-5 mt-12`}>
-            <a
-              href="/contact"
-              className="inline-flex items-center gap-2 cta-button px-8 py-4 text-lg font-medium"
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-3 cta-button px-6 py-3 text-sm font-medium mobile-menu-cta"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              START A PROJECT
-              <span className="cta-arrow">→</span>
-            </a>
+              <span>START A PROJECT</span>
+              <span className="cta-arrow-circle">
+                <span className="cta-arrow">→</span>
+              </span>
+            </Link>
           </div>
         </nav>
       </div>
