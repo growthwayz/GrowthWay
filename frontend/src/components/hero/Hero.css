@@ -71,11 +71,8 @@
   position: absolute;
   width: 120px;
   height: 120px;
-  border: 1px solid rgba(92, 158, 49, 0.40);
-  /* gw-olive */
-  background: rgba(92, 158, 49, 0.05);
-  /* gw-olive */
-  backdrop-filter: blur(2px);
+  border: 1px solid rgba(92, 158, 49, 0.35);
+  background: rgba(92, 158, 49, 0.06);
 }
 
 .face-front {
@@ -125,10 +122,19 @@
 /* ─── Responsive hero layout ─── */
 
 /* Showreel card: reduce height on mobile */
-@media (max-width: 640px) {
-  .hero-showreel {
-    height: 40vh;
-  }
+@media (max-width: 1023px) {
+  .gw-hero { height: auto; }
+  .gw-hero .hero-stage { position: relative; height: auto; min-height: 100svh; overflow: visible; }
+  .gw-hero .hero-ui { position: relative; height: auto; opacity: 1 !important; }
+  .gw-hero .hero-intro-layer { display: none; }
+  .gw-hero .hero-presentation { flex: none; padding-top: 128px; padding-bottom: 48px; }
+  .gw-hero .hero-eyebrow { flex-wrap: wrap; row-gap: 8px; }
+  .gw-hero .hero-showreel { height: auto; aspect-ratio: 16 / 9; max-width: 720px; }
+}
+@media (max-width: 480px) {
+  .gw-hero .hero-presentation { padding-left: 20px; padding-right: 20px; }
+  .gw-hero .hero-eyebrow { font-size: 10px; letter-spacing: .15em; }
+  .gw-hero .hero-presentation h1 { font-size: clamp(2.75rem, 13vw, 4rem) !important; }
 }
 
 /* Reduced motion: disable cube spin */

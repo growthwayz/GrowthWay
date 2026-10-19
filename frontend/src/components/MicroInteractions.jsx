@@ -1,53 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
 const MicroInteractions = () => {
-  const cursorRef = useRef(null);
   const observerRef = useRef(null);
 
   useEffect(() => {
-    const cursor = cursorRef.current;
-
-    // ── 1. Custom Cursor (uses rAF for 60fps) ──
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-
-    const lerp = (start, end, factor) => start + (end - start) * factor;
-
-    const updateCursor = () => {
-      cursorX = lerp(cursorX, mouseX, 0.15);
-      cursorY = lerp(cursorY, mouseY, 0.15);
-
-      if (cursor) {
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-      }
-      requestAnimationFrame(updateCursor);
-    };
-    requestAnimationFrame(updateCursor);
-
-    const handleMouseMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-
-    // ── 2. Cursor hover states ──
-    const handleMouseOver = (e) => {
-      if (e.target.closest('.interactive-hover')) {
-        cursor?.classList.add('hovering');
-      }
-    };
-    const handleMouseOut = (e) => {
-      if (e.target.closest('.interactive-hover')) {
-        cursor?.classList.remove('hovering');
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('mouseout', handleMouseOut);
-
-    // ── 3. Scroll-triggered reveal animations (IntersectionObserver) ──
+    // Scroll-triggered reveal animations via IntersectionObserver
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .line-expand');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -56,38 +16,31 @@ const MicroInteractions = () => {
           }
         });
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
     );
 
-    revealElements.forEach((el) => observerRef.current.observe(el));
+    function observe(elements) {
+      elements.forEach(el => {
+        if (prefersReducedMotion) el.classList.add('visible');
+        else observerRef.current.observe(el);
+      });
+    }
+    observe(revealElements);
+    // CMS projects arrive after the initial render. Include their existing animations.
+    const added = new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
+      if (node.nodeType !== 1) return;
+      if (node.matches('.reveal, .reveal-left, .reveal-right, .reveal-scale, .line-expand')) observe([node]);
+      observe(node.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .line-expand'));
+    })));
+    added.observe(document.getElementById('main-content'), { childList: true, subtree: true });
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('mouseout', handleMouseOut);
       if (observerRef.current) observerRef.current.disconnect();
+      added.disconnect();
     };
   }, []);
 
-  // Re-observe when DOM changes (after filter changes)
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const revealElements = document.querySelectorAll('.reveal:not(.visible), .reveal-left:not(.visible), .reveal-right:not(.visible), .reveal-scale:not(.visible), .line-expand:not(.visible)');
-      revealElements.forEach((el) => observerRef.current?.observe(el));
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <>
-      {/* Custom Cursor */}
-      <div ref={cursorRef} className="cursor-dot hidden md:block"></div>
-      
-      {/* Grain Texture */}
-      <div className="noise-overlay"></div>
-    </>
-  );
+  return null;
 };
 
 export default MicroInteractions;

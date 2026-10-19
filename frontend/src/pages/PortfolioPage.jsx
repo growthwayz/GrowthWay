@@ -4,9 +4,9 @@ import SelectedWorkIntro from '../components/work/SelectedWorkIntro';
 import PortfolioFilter from '../components/work/PortfolioFilter';
 import FeaturedProject from '../components/work/FeaturedProject';
 import ProjectCollection from '../components/work/ProjectCollection';
-import Navbar from '../components/navigation/Navbar';
+import { usePublicCms, portfolioProject } from '../lib/publicCms';
 import MicroInteractions from '../components/MicroInteractions';
-import { projects, categories, stats, clientLogos } from '../data/projects';
+import { stats, clientLogos } from '../data/projects';
 
 /* ── Luxury Stats Bar ── */
 const StatsBar = () => (
@@ -73,6 +73,11 @@ const TrustedBy = () => (
 /* ── MAIN PAGE ── */
 const PortfolioPage = () => {
   const [activeCategory, setActiveCategory] = useState('All');
+  const { data: records, loading, error } = usePublicCms('/api/projects');
+  const { data: categoryRecords } = usePublicCms('/api/categories');
+  const { data: services } = usePublicCms('/api/services');
+  const projects = (records || []).map((record, index) => portfolioProject(record, index, categoryRecords || [], services || []));
+  const categories = ['All', ...new Set(projects.flatMap(project => project.categories))];
 
   const filteredProjects = projects.filter(project => {
     if (activeCategory === 'All') return true;
@@ -83,7 +88,7 @@ const PortfolioPage = () => {
   const remainingProjects = filteredProjects.filter(p => p.id !== featuredProject?.id);
 
   return (
-    <div className="bg-gw-canvas min-h-screen text-gw-ink relative overflow-x-hidden">
+    <div className="gw-portfolio bg-gw-canvas min-h-screen text-gw-ink relative overflow-x-hidden">
       <MicroInteractions />
 
       {/* ── HERO ── */}
@@ -102,6 +107,10 @@ const PortfolioPage = () => {
         onSelect={setActiveCategory} 
       />
 
+      {loading && <p role="status" className="px-5 py-16 text-center text-gw-muted">Loading selected work…</p>}
+      {error && <p role="alert" className="px-5 py-16 text-center text-gw-muted">{error}</p>}
+      {!loading && !error && !filteredProjects.length && <p className="px-5 py-16 text-center text-gw-muted">{activeCategory === 'All' ? 'Selected work will appear here when published.' : 'No projects in this category yet.'}</p>}
+
       {/* ── FEATURED PROJECT ── */}
       {featuredProject && (
         <FeaturedProject project={featuredProject} />
@@ -118,13 +127,13 @@ const PortfolioPage = () => {
       {/* ── FOOTER ── */}
       <footer className="footer-gradient text-gw-white py-32 md:py-48 px-6 md:px-18 relative overflow-hidden">
         {/* Ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gw-pink/[0.05] blur-[180px] pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gw-olive/[0.05] blur-[180px] pointer-events-none"></div>
         
         <div className="max-w-[1440px] mx-auto relative z-10 flex flex-col items-center text-center">
           <span className="text-[9px] uppercase tracking-luxury text-gw-white/20 mb-10 reveal">Let's create something extraordinary</span>
           
           <h2 className="font-display text-5xl md:text-7xl lg:text-[100px] uppercase tracking-[-0.04em] font-bold mb-6 leading-[0.9] reveal reveal-delay-1">
-            Ready to<br/><span className="bg-gradient-to-r from-gw-blush-soft to-gw-pink bg-clip-text text-transparent">grow</span>?
+            Ready to<br/><span className="bg-gradient-to-r from-gw-blush-soft to-gw-olive bg-clip-text text-transparent">grow</span>?
           </h2>
           
           <p className="text-gw-white/30 text-lg max-w-lg mb-6 text-balance reveal reveal-delay-2">
@@ -144,11 +153,14 @@ const PortfolioPage = () => {
             <div className="luxury-rule mb-10"></div>
             
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-              <span className="font-display font-bold text-xl tracking-tight interactive-hover">
-                Growthway<span className="text-gw-pink">.</span>
-              </span>
+              <div className="flex items-center gap-2.5">
+                <img src="/logo-icon.png" alt="Growth Way" className="w-6 h-6 rounded-[5px] object-cover" />
+                <span className="font-display font-bold text-xl tracking-tight interactive-hover">
+                  Growth<span className="text-gw-olive">Way</span>
+                </span>
+              </div>
 
-              <div className="flex gap-8 text-[10px] uppercase tracking-luxury text-gw-white/15">
+              <div className="flex flex-wrap justify-center gap-8 text-[10px] uppercase tracking-luxury text-gw-white/15">
                 <span className="interactive-hover hover:text-gw-white/40 transition-colors">Instagram</span>
                 <span className="interactive-hover hover:text-gw-white/40 transition-colors">LinkedIn</span>
                 <span className="interactive-hover hover:text-gw-white/40 transition-colors">Behance</span>
@@ -167,3 +179,4 @@ const PortfolioPage = () => {
 };
 
 export default PortfolioPage;
+
