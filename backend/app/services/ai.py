@@ -143,7 +143,7 @@ class AIService:
                 review = await self._invoke(self.review_chain, {'data': json.dumps(
                     {**payload, 'proposed_answer': answer.model_dump()}, ensure_ascii=False)}, 'review')
                 if review.safe and review.supported and review.in_scope:
-                    return ChatResponse(reply=answer.reply, suggestions=SUGGESTIONS, cta='/contact',
+                    return ChatResponse(reply=answer.reply, suggestions=SUGGESTIONS, cta=None,
                                         sources=list(dict.fromkeys(answer.evidence_ids))[:8])
                 logger.info('Chat review rejected: safe=%s supported=%s in_scope=%s',
                             review.safe, review.supported, review.in_scope)

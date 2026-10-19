@@ -2,7 +2,7 @@
 import re
 from app.models.ai import ChatResponse
 
-FALLBACK = "I don't have confirmed information to answer that. Please contact the Growthway team to discuss your project."
+FALLBACK = "I don't have confirmed information to answer that. Could you make your question more specific?"
 SUGGESTIONS = ['What services does Growthway offer?', 'How does a project work?', 'How do I start a project?']
 
 def fallback(reason='missing_information'):
@@ -10,9 +10,9 @@ def fallback(reason='missing_information'):
         'missing_information': FALLBACK,
         'out_of_scope': "I can help with Growthway's services, process, and project enquiries. What would you like to know about Growthway?",
         'clarification': 'Which Growthway service or project are you asking about?',
-        'validation': "I couldn't verify an answer from the available company information. Could you make your question more specific, or contact the Growthway team?",
+        'validation': "I couldn't verify an answer from the available company information. Could you make your question more specific?",
     }
-    return ChatResponse(reply=replies[reason], suggestions=SUGGESTIONS, cta='/contact')
+    return ChatResponse(reply=replies[reason], suggestions=SUGGESTIONS, cta=None)
 
 
 def conversational_reply(text):
@@ -32,6 +32,12 @@ def conversational_reply(text):
 
 def is_follow_up(text):
     # Short does not mean dependent: 'Where are you based?' is a new question.
+    # A named subject makes the question usable without earlier conversation.
+    # Keep generic references like 'that service' dependent on previous user text.
+    if re.search(r'\b(growthway|website|websites|branding|logo|logos|social media|'
+                 r'instagram|facebook|meta ads|reels?|photography|product shoots?|'
+                 r'personal brand|founders?|lucknow)\b', text, re.I):
+        return False
     return bool(re.search(
         r'\b(it|its|that|those|them|these)\b|\b(this|the same) (service|project|process)\b|'
         r'^\s*(tell me more|can you elaborate|please elaborate|go on)[.!?\s]*$',

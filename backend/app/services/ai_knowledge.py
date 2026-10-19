@@ -17,18 +17,25 @@ ALIASES = {'located': 'location', 'based': 'location', 'office': 'location',
            'restaurant': 'restaurants', 'cafe': 'cafes', 'reel': 'reels',
            'instagram': 'social', 'facebook': 'meta', 'advertising': 'ads',
            'website': 'websites', 'founders': 'founder', 'duration': 'timeline',
-           'company': 'agency'}
+           'company': 'agency', 'founded': 'founder', 'founding': 'founder',
+           'logo': 'branding', 'logos': 'branding', 'clothing': 'fashion'}
 
 def retrieval_query(text):
     # Questions without a named topic still have a clear company-overview intent.
     # Expand the search, not the answer: all facts still come from the document.
     normalized = ' '.join(re.findall(r'[a-z0-9]+', text.lower()))
+    normalized = re.sub(r'^(hi|hello|hey)( there)?\s+', '', normalized)
+    normalized = re.sub(r'\byou (guys|folks|all)\b', 'you', normalized)
+    normalized = re.sub(r'\byourselves\b', 'yourself', normalized)
+    normalized = re.sub(r'^what is it that (growthway|your company) does$', r'what is \1 about', normalized)
     if re.fullmatch(
         r'(what (do you do|are you|is (growthway|this company|your company|this agency)( all)?( about)?)|'
         r'who are you|tell me about (yourself|growthway|this company|your company)|'
         r'(give me )?(a |an )?(company overview|introduction))', normalized
     ):
         return 'creative growth agency identity digital presence strategy branding'
+    if re.search(r'\bonline (store|stores|shop|shops)\b', normalized):
+        return text + ' website ecommerce'
     return text
 
 def tokenize(text):

@@ -13,6 +13,7 @@ frontend/.env.local
 frontend/.env.production
 
 # Keep example templates committed
+backend/app/services/chat_leads.local.json*
 !.env.example
 !backend/.env.example
 !frontend/.env.example

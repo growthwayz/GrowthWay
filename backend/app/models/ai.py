@@ -23,7 +23,7 @@ class ChatRequest(StrictModel):
 class ChatResponse(StrictModel):
     reply: Annotated[str, Field(min_length=1, max_length=2000)]
     suggestions: list[Annotated[str, Field(min_length=1, max_length=120)]] = Field(default_factory=list, max_length=3)
-    cta: Literal['/contact', '/work', '/#services'] | None = '/contact'
+    cta: Literal['/contact', '/work', '/#services'] | None = None
     sources: list[str] = Field(default_factory=list, max_length=8)
 
 class GeneratedAnswer(StrictModel):

@@ -110,7 +110,7 @@ class ServiceTests(unittest.IsolatedAsyncioTestCase):
         self.service.answer_chain.ainvoke.side_effect = [bad, good]
         result = await self.service.ask_ai(data)
         self.assertEqual(result.reply, good.reply)
-        self.assertEqual(result.cta, '/contact')
+        self.assertIsNone(result.cta)
         self.assertEqual(result.sources, ['FAQ14'])
         self.service.review_chain.ainvoke.assert_awaited_once()
         repair = json.loads(self.service.answer_chain.ainvoke.call_args.args[0]['data'])
@@ -159,6 +159,29 @@ class ServiceTests(unittest.IsolatedAsyncioTestCase):
         data = request(); data.message = 'Tell me more'
         self.assertEqual((await self.service.ask_ai(data)).reply, fallback('clarification').reply)
         self.retrieve.assert_not_called()
+
+    async def test_self_contained_pronoun_questions_do_not_require_history(self):
+        for message in ['What is it that Growthway does?',
+                        'How long will it take to build a website?']:
+            with self.subTest(message=message):
+                self.retrieve.reset_mock()
+                data = request(history=[{'role': 'user', 'content': 'Unrelated old topic'}])
+                data.message = message
+                result = await self.service.ask_ai(data)
+                self.assertNotEqual(result.reply, fallback('clarification').reply)
+                self.retrieve.assert_called_once_with(message)
+                payload = json.loads(self.service.answer_chain.ainvoke.call_args.args[0]['data'])
+                self.assertEqual(payload['previous_user_messages'], [])
+
+    async def test_supported_partial_answer_is_reviewed_and_returned(self):
+        data = request(); data.message = 'Where are you based and what are your opening hours?'
+        self.service.answer_chain.ainvoke.return_value.reply = (
+            'Growthway is based in Lucknow. I do not have confirmed opening hours.')
+        result = await self.service.ask_ai(data)
+        self.assertIn('Lucknow', result.reply)
+        self.assertIn('confirmed opening hours', result.reply)
+        self.assertEqual(result.sources, ['GW004'])
+        self.service.review_chain.ainvoke.assert_awaited_once()
 
     async def test_distinct_non_answer_outcomes_use_safe_fixed_responses(self):
         for outcome in ['missing_information', 'out_of_scope', 'clarification']:
@@ -285,7 +308,7 @@ class RouteTests(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.headers['cache-control'], 'no-store')
         self.assertEqual(self.limit.await_count, 2)
-        for path in ['recommend', 'brief', 'search']:
+        for path in ['recommend', 'brief', 'search', 'contact']:
             self.assertEqual(self.client.post('/api/ai/' + path, json={}).status_code, 404)
 
     def test_input_limits_and_roles(self):

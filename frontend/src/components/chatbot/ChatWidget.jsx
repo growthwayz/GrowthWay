@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import api from '../../lib/api';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import './ChatWidget.css';
+import { contactReply } from './contactIntent';
 
 const INITIAL_SUGGESTIONS = ['What services does Growthway offer?', 'How does a project work?', 'Where is Growthway based?'];
-const CTA_LABELS = { '/contact': 'Talk to the Growthway team', '/work': 'Explore our work', '/#services': 'Explore services' };
+const CTA_LABELS = { '/contact': 'Open contact form' };
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,11 @@ export default function ChatWidget() {
   useEffect(() => () => requestRef.current?.abort(), []);
 
   useEffect(() => {
+    // Retire drafts from the removed intake feature; never restore or submit them.
+    try { window.sessionStorage.removeItem('growthway-enquiry-v2'); } catch { /* Storage may be disabled. */ }
+  }, []);
+
+  useEffect(() => {
     if (!isOpen) return;
     endRef.current?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
     if (!loading) {
@@ -47,7 +53,7 @@ export default function ChatWidget() {
   function handleKeys(event) {
     if (event.key === 'Escape') { event.preventDefault(); close(); }
     if (event.key !== 'Tab') return;
-    const items = panelRef.current?.querySelectorAll('button:not(:disabled), a[href], input:not(:disabled)');
+    const items = panelRef.current?.querySelectorAll('button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled)');
     if (!items?.length) return;
     const first = items[0], last = items[items.length - 1];
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
@@ -56,29 +62,41 @@ export default function ChatWidget() {
 
   async function sendMessage(text, retry = false) {
     text = text.trim();
-    if (!text || text.length > 2000 || busyRef.current || available !== true) return;
+    if (!text || text.length > 2000 || busyRef.current) return;
+    const previous = retry ? messages.slice(0, -2) : messages;
+    const handoff = contactReply(text);
+    if (handoff) {
+      setMessages([...previous, { role: 'user', content: text }, handoff]);
+      setInputValue(''); setRetryText(''); setSuggestions([]);
+      return;
+    }
+    if (available !== true) {
+      setInputValue('');
+      setMessages([...previous, { role: 'user', content: text }, { role: 'assistant', content: 'Chat is currently unavailable. Please try again shortly.', isError: true }]);
+      return;
+    }
     busyRef.current = true;
     const controller = new AbortController();
     requestRef.current = controller;
     // Retry replaces the failed exchange rather than adding duplicate user messages.
-    const previous = retry ? messages.slice(0, -2) : messages;
     const next = [...previous, { role: 'user', content: text }];
     setMessages(next); setInputValue(''); setLoading(true); setSuggestions([]); setRetryText('');
     try {
       const res = await api.post('/api/ai/chat', {
         sessionId, message: text,
-        history: previous.filter(m => !m.isError).slice(-3).map(({ role, content }) => ({ role, content })),
+        history: previous.filter(m => !m.isError && !m.private).slice(-3).map(({ role, content }) => ({ role, content })),
       }, { timeoutMs: 50000, signal: controller.signal });
       if (controller.signal.aborted) return;
       if (typeof res.reply !== 'string') throw new Error('Invalid chat response');
-      setMessages([...next, { role: 'assistant', content: res.reply, cta: CTA_LABELS[res.cta] ? res.cta : '/contact' }]);
+      // Contact buttons are controlled by the visitor's current request, not model output.
+      setMessages([...next, { role: 'assistant', content: res.reply }]);
       setSuggestions(Array.isArray(res.suggestions) ? res.suggestions.filter(s => typeof s === 'string' && s.length <= 120).slice(0, 3) : []);
     } catch (error) {
       if (controller.signal.aborted) return;
       const content = error.status === 429 || error.status === 504
         ? error.message
-        : 'Chat is unavailable right now. Please try again or use the contact page.';
-      setMessages([...next, { role: 'assistant', content, isError: true, cta: '/contact' }]);
+        : 'Chat is unavailable right now. Please try again shortly.';
+      setMessages([...next, { role: 'assistant', content, isError: true }]);
       setRetryText(text);
     } finally {
       busyRef.current = false;
@@ -106,7 +124,7 @@ export default function ChatWidget() {
             <p className="chat-welcome-text">Ask about Growthway’s services, process, or starting a project. Please avoid sharing sensitive personal information.</p>
           </div>}
           {available === null && <p>Checking chat availability…</p>}
-          {available === false && <p>Chat is currently unavailable. You can still contact the Growthway team below.</p>}
+          {available === false && <p>Chat is currently unavailable. Please try again shortly.</p>}
           {messages.map((msg, index) => <div key={index} className={`chat-bubble-row ${msg.role}`}>
             <div className="chat-bubble-sender">{msg.role === 'assistant' ? 'GROWTHWAY' : 'YOU'}</div>
             <div className={`chat-bubble ${msg.isError ? 'error' : ''}`}>{msg.content}</div>
@@ -123,10 +141,9 @@ export default function ChatWidget() {
           {retryText && <button className="chat-shortcut-link" disabled={loading || available !== true} onClick={() => sendMessage(retryText, true)}>Retry last message</button>}
           <form className="chat-form" onSubmit={event => { event.preventDefault(); sendMessage(inputValue); }}>
             <input ref={inputRef} type="text" className="chat-input" aria-label="Message Growthway" placeholder="Ask about Growthway…"
-              value={inputValue} maxLength={2000} onChange={event => setInputValue(event.target.value)} disabled={loading || available !== true} />
-            <button type="submit" className="chat-send" disabled={!inputValue.trim() || loading || available !== true} aria-label="Send message">→</button>
+              value={inputValue} maxLength={2000} onChange={event => setInputValue(event.target.value)} disabled={loading} />
+            <button type="submit" className="chat-send" disabled={!inputValue.trim() || loading} aria-label="Send message">→</button>
           </form>
-          <div className="chat-shortcuts"><a href="/contact" className="chat-shortcut-link">Talk to a human / Start a project →</a></div>
         </div>
       </div>
     </div>

@@ -55,6 +55,19 @@ class RetrievalTests(unittest.TestCase):
                 self.assertTrue({'GW001', 'FAQ01'} & {d.metadata['record_id'] for d in matches[:3]})
                 self.assertIn('creative growth agency', ' '.join(d.page_content.lower() for d in matches))
 
+    def test_everyday_phrasing_finds_relevant_evidence(self):
+        for question, expected in [
+            ('What do you guys do?', 'GW001'),
+            ('Tell me about yourselves', 'GW001'),
+            ('Hi, what do you folks do?', 'GW001'),
+            ('What is it that Growthway does?', 'GW001'),
+            ('Who founded Growthway?', 'GW003'),
+            ('Can you help with my logo?', 'GW007'),
+            ('Do you build online stores?', 'FAQ07'),
+        ]:
+            with self.subTest(question=question):
+                self.assertIn(expected, {d.metadata['record_id'] for d in self.kb.retrieve(question)})
+
     def test_refresh_and_invalid_replacement(self):
         with TemporaryDirectory() as folder:
             path = Path(folder) / 'knowledge.docx'

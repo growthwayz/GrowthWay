@@ -46,3 +46,12 @@ Keyword retrieval and model-based safety checks are not guarantees against hallu
 ```
 
 Tests use the actual company document, mocked Groq calls and isolated in-memory databases. They do not validate a live Groq credential or real-model answer quality. Before public activation, evaluate representative and adversarial conversations with the configured provider, and verify latency, refusal quality and source support.
+## Contact-form handoff
+
+The chatbot no longer collects or saves enquiries. Explicit visitor requests to
+contact Growthway, reach out, or make an enquiry get an Open contact form button
+pointing to the existing /contact page. Ordinary answers, greetings and failures
+have no contact button, and there is no permanent contact link in the chat footer.
+The former /api/ai/contact endpoint and draft collection code have been removed.
+Old browser drafts are cleared. Existing local test records are left untouched and
+ignored by Git; no code reads or writes them. The existing contact form is unchanged.
