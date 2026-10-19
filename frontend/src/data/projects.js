@@ -80,7 +80,7 @@ export const projects = [
     },
     gallery: [
       'https://res.cloudinary.com/bsflvvv9/image/upload/v1791883095/growthway/projects/noir_athletics.jpg',
-      'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=1200&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=1200&auto=format&fit=crop'
     ],
@@ -331,7 +331,7 @@ export const industryProjects = [
     imageAlt: 'Fine Jewellery and Fashion Lookbook',
     gallery: [
       'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1200&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1200&auto=format&fit=crop'
     ],
