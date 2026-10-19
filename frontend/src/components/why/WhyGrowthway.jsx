@@ -121,7 +121,7 @@ export default function WhyGrowthway() {
   if (!data || !data.items?.length) return null;
 
   return (
-    <section ref={sectionRef} className="why-section" aria-label="Why Growthway">
+    <section ref={sectionRef} id="culture" className="why-section" aria-label="Why Growthway">
       <div className="why-container">
         
         {/* Eyebrow & Metadata Header */}

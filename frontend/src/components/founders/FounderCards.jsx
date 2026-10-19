@@ -6,6 +6,7 @@
  */
 
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -24,7 +25,7 @@ export default function FounderCards() {
   const founder = (teamMembers || []).find(m => m.name?.toLowerCase().includes('priyanka')) || teamMembers?.[0];
   const photoSrc = founder?.photo || priyankaPhoto;
   const founderName = founder?.name || 'Priyanka Barnwal';
-  const founderRole = founder?.role || 'Founder, Creative Director & Strategic Lead';
+  const founderRole = founder?.role || 'Founder & Creative Director';
   const founderBio = founder?.bio;
 
   useGSAP(() => {
@@ -117,17 +118,17 @@ export default function FounderCards() {
             {/* Editorial Biography — Stylized Art Direction */}
             <div className="fc-founder-bio-card">
               <p className="fc-founder-bio">
-                {founderBio ? (
-                  <span>{founderBio}</span>
-                ) : (
-                  <>
-                    <span className="fc-bio-highlight">Priyanka is the creative heartbeat</span> and founding visionary of GrowthWay. With an instinctive eye for <span className="fc-bio-accent">cinematography</span>, <span className="fc-bio-accent">high-retention visual storytelling</span>, and <span className="fc-bio-accent">brand architecture</span>, she bridges the gap between raw artistic expression and measurable commercial growth.
-                  </>
-                )}
+                {founderBio || "Strategic visionary and on-ground creative director behind Growthway. Directing distinctive brand universes, high-retention cinematic media, and commercial growth roadmaps for ambitious category leaders."}
               </p>
             </div>
 
-
+            {/* Collaborate CTA Button */}
+            <Link to="/contact" className="fc-cta-btn group">
+              <span>COLLABORATE WITH US</span>
+              <span className="fc-cta-arrow-circle">
+                <span className="fc-cta-arrow">→</span>
+              </span>
+            </Link>
           </div>
 
         </div>

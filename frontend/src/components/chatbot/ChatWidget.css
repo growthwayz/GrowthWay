@@ -420,6 +420,7 @@
 }
 
 /* ── Reduced Motion ── */
+
 .chat-capsule-launcher.reduced-motion,
 .chat-panel.reduced-motion {
   transition: opacity 0.2s !important;
@@ -433,3 +434,5 @@
 .chat-wrapper.is-open .chat-panel.reduced-motion {
   transform: none !important;
 }
+
+.chat-bubble { white-space: pre-wrap; }

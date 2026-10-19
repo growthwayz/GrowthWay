@@ -96,58 +96,64 @@
   color: #263326;
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0;
   width: 100%;
   height: 100%;
+  line-height: 1;
+  text-decoration: none;
 }
 
 .nav-link-icon svg {
+  display: block;
   position: relative;
   flex-shrink: 0;
+  width: 20px;
+  height: 20px;
   transform: scale(1);
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav-item-container.is-hovered .nav-link-icon {
-  color: #5C9E31;                                  /* gw-olive */
-  flex-direction: row;
-  gap: 8px;
   color: #8DC63F;
+  gap: 8px;
 }
 
 .nav-item-container.is-hovered .nav-link-icon svg {
   transform: scale(1.05);
 }
 
-/* The Label */
+/* The Label — expands horizontally ("type wala chiz") on hover */
 .nav-hover-label {
-  position: static;
+  display: inline-block;
   max-width: 0;
   opacity: 0;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 10px;
+  line-height: 1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #263326;
   pointer-events: none;
   white-space: nowrap;
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease, margin 0.35s ease;
+  margin-left: 0;
 }
 
 .nav-item-container.is-hovered .nav-hover-label {
   max-width: 100px;
   opacity: 1;
   color: #8DC63F;
+  margin-left: 4px;
 }
 
 .nav-hover-dot {
   position: absolute;
-  bottom: -4px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%) scale(0.5);
   width: 4px;
@@ -155,6 +161,7 @@
   background-color: #8DC63F;
   border-radius: 50%;
   opacity: 0;
+  pointer-events: none;
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -164,51 +171,81 @@
 }
 
 .cta-button {
-  background: #263326;
-  color: #F5F1E8;
-  border-radius: 20px;
-  height: 32px;
-  padding: 0 14px;
+  background: #111111;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  height: 38px;
+  padding: 4px 5px 4px 18px;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   font-size: 11px;
-  display: flex;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   position: relative;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
 .mobile-menu-cta {
   height: auto;
-  padding: 16px 32px;
-  font-size: 18px;
+  padding: 8px 8px 8px 24px;
+  font-size: 14px;
 }
 
-.cta-button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease-in-out;
+.cta-arrow-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 10px rgba(92, 158, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
 }
 
-.cta-button:hover::after {
-  transform: translateX(100%);
-}
-
-.cta-button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.mobile-menu-cta .cta-arrow-circle {
+  width: 36px;
+  height: 36px;
 }
 
 .cta-arrow {
+  color: #0D1308;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
   display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: color 0.25s ease;
+}
+
+.mobile-menu-cta .cta-arrow {
+  font-size: 15px;
+}
+
+/* Hover: Vibrant signature olive pill with sleek dark disc and electric lime arrow */
+.cta-button:hover {
+  background: #5C9E31;
+  color: #FFFFFF;
+  border-color: #5C9E31;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(92, 158, 49, 0.45);
+}
+
+.cta-button:hover .cta-arrow-circle {
+  background: #111111;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+  transform: translateX(2.5px) scale(1.06);
 }
 
 .cta-button:hover .cta-arrow {
-  transform: translateX(4px);
+  color: #8FE44B;
 }
 
 /* Mobile Menu Glass */

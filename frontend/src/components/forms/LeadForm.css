@@ -436,20 +436,21 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 22px 32px;
+  padding: 10px 10px 10px 32px;
   background: #111111;
   color: #FFFFFF;
   border: none;
-  border-radius: 2px;
+  border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  user-select: none;
 }
 
 .lf-submit-btn:hover:not(:disabled) {
   background: #5C9E31;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(92, 158, 49, 0.25);
+  box-shadow: 0 10px 32px rgba(92, 158, 49, 0.45);
 }
 
 .lf-submit-btn:disabled {
@@ -460,16 +461,43 @@
 }
 
 .lf-submit-text {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.lf-submit-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #5C9E31;
+  box-shadow: 0 0 14px rgba(92, 158, 49, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.lf-submit-btn:hover:not(:disabled) .lf-submit-circle {
+  background: #111111;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
+  transform: translateX(3px) scale(1.05);
 }
 
 .lf-submit-arrow {
-  font-size: 1.3rem;
+  color: #0D1308;
+  font-size: 16px;
+  font-weight: 800;
   line-height: 1;
+  transition: color 0.25s ease;
+}
+
+.lf-submit-btn:hover:not(:disabled) .lf-submit-arrow {
+  color: #8FE44B;
 }
 
 .lf-privacy-note {

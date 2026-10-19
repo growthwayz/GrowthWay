@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Hero.css'
 import heroVideo from '../../assets/introvidio1.mp4'
 import { videoUrl } from '../../lib/media'
@@ -108,20 +109,32 @@ export default function Hero() {
 
           {/* CTAs */}
           <div className="flex flex-row flex-wrap items-center gap-4 sm:gap-5">
-            <a
-              href="/contact"
-              className="bg-gw-ink text-white px-7 sm:px-8 py-3.5 sm:py-4 text-xs sm:text-sm font-bold tracking-widest uppercase hover:bg-gw-olive transition-colors duration-300 shadow-xl flex items-center gap-3 group rounded-sm"
+            <Link
+              to="/contact"
+              className="hero-pill-btn hero-pill-primary group"
             >
-              <span>Start a Project</span>
-              <span className="group-hover:translate-x-1.5 transition-transform duration-300">→</span>
-            </a>
+              <span>START A PROJECT</span>
+              <span className="hero-pill-circle">
+                <span className="hero-pill-arrow">→</span>
+              </span>
+            </Link>
 
             <a
               href="#work"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-bold tracking-widest uppercase text-gw-ink border border-[#D6D0C7] hover:border-gw-ink rounded-sm transition-all"
+              onClick={(e) => {
+                e.preventDefault()
+                const el = document.getElementById('work')
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  window.history.pushState(null, '', '#work')
+                }
+              }}
+              className="hero-pill-btn hero-pill-secondary group"
             >
-              <span>Explore Selected Work</span>
-              <span>↓</span>
+              <span>EXPLORE SELECTED WORK</span>
+              <span className="hero-pill-circle hero-pill-circle-sec">
+                <span className="hero-pill-arrow">↓</span>
+              </span>
             </a>
           </div>
         </div>

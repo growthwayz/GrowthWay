@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import './Services.css';
 
@@ -128,7 +129,7 @@ export default function Services() {
           });
           setServicesData(merged);
         }
-      } catch (err) {
+      } catch {
         // Graceful fallback to verified 8 services
       }
     };
@@ -230,7 +231,7 @@ export default function Services() {
 
         <div className="hud-element hud-tl">
           <span>GROWTHWAY.AGENCY</span>
-          <span style={{ color: 'var(--accent)' }}>LAT: 19.0760 / LON: 72.8777</span>
+          <span style={{ color: 'var(--accent)' }}>LAT: 26.7606 / LON: 83.3732</span>
         </div>
         <div className="hud-element hud-tr">SYS.REV.04</div>
         <div className="hud-element hud-bl">SCROLL TO EXPLORE ↓</div>
@@ -316,15 +317,18 @@ export default function Services() {
                             <em>Fig. {service.id} // {service.title}</em>
                          </div>
 
-                         <div className="media-glass float-element">
+                         <div className="media-glass">
                             <div className="tags">
                               {service.media.tags.map(t => (
                                 <span key={t} className="tag">{t}</span>
                               ))}
                             </div>
                             <p>{service.description}</p>
-                            <button className="btn-explore trigger-modal cursor-hover" onClick={(e) => openModal(service.id, e)}>
-                              Access Sub-System
+                            <button type="button" className="btn-explore trigger-modal cursor-hover" onClick={(e) => openModal(service.id, e)}>
+                              <span>Access Sub-System</span>
+                              <span className="btn-explore-circle">
+                                <span className="btn-explore-arrow">→</span>
+                              </span>
                             </button>
                          </div>
 
@@ -351,7 +355,15 @@ export default function Services() {
       </section>
 
       {/* FULL SCREEN SERVICE DETAIL MODAL */}
-      <div className={`modal-overlay ${activeModalId ? 'is-open' : ''}`} id="service-modal">
+      <div
+        className={`modal-overlay ${activeModalId ? 'is-open' : ''}`}
+        id="service-modal"
+        onClick={(e) => {
+          if (e.target.id === 'service-modal' || e.target.classList.contains('modal-overlay')) {
+            closeModal();
+          }
+        }}
+      >
         <div className="modal-header-bar">
            <div style={{ fontFamily: 'var(--sp)', fontWeight: 700, fontSize: '1.5rem', color: 'var(--bg)' }}>Growthway.</div>
            <button className="modal-close cursor-hover" onClick={closeModal} aria-label="Close service details">CLOSE SYSTEM</button>
@@ -372,27 +384,35 @@ export default function Services() {
 
                 <div className="modal-body-grid">
                    <div>
-                      <div style={{ width: '40px', height: '4px', background: 'var(--accent)', marginBottom: '2rem' }}></div>
-                      <p className="modal-desc-large">{activeServiceModalData.description}</p>
-                      <a
-                        href="/contact"
-                        className="btn-explore cursor-hover"
-                        style={{
-                          marginTop: '2rem',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.5rem',
-                          background: 'var(--accent)',
-                          color: '#ffffff',
-                          textDecoration: 'none',
-                          padding: '12px 28px',
-                          borderRadius: '4px',
-                          fontWeight: 600,
-                          letterSpacing: '0.05em'
-                        }}
-                      >
-                        DISCUSS YOUR PROJECT →
-                      </a>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '2.5rem' }}>
+                        <Link
+                          to={`/work/${activeServiceModalData.slug}`}
+                          state={{ from: 'services', returnTo: '/#services', returnTarget: 'services', returnScrollY: typeof window !== 'undefined' ? window.scrollY : 0, returnLabel: 'Back to Services' }}
+                          onClick={() => {
+                            if (typeof window !== 'undefined') {
+                              sessionStorage.setItem('gw_return_scroll', String(window.scrollY));
+                              sessionStorage.setItem('gw_return_target', 'services');
+                            }
+                            closeModal();
+                          }}
+                          className="btn-capability-study cursor-hover"
+                        >
+                          <span>VIEW CAPABILITY CASE STUDY</span>
+                          <span className="btn-capability-circle">
+                            <span className="btn-arrow">→</span>
+                          </span>
+                        </Link>
+                        <Link
+                          to="/contact"
+                          onClick={closeModal}
+                          className="btn-capability-discuss cursor-hover"
+                        >
+                          <span>DISCUSS PROJECT</span>
+                          <span className="btn-capability-circle">
+                            <span className="btn-arrow">→</span>
+                          </span>
+                        </Link>
+                      </div>
                    </div>
                    <div>
                       <h3 style={{ fontFamily: 'var(--mono)', fontSize: '1rem', color: 'var(--muted)', letterSpacing: '0.1em', marginBottom: '1.5rem', textTransform: 'uppercase' }}>

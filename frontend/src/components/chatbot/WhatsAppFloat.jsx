@@ -19,17 +19,18 @@ export default function WhatsAppFloat() {
     const fetchSettings = async () => {
       try {
         const data = await api.get('/api/site-settings');
-        if (data.whatsappNumber) {
-          const number = data.whatsappNumber.replace(/\D/g, '');
-          setWhatsappUrl(`https://wa.me/${number}?text=${encodeURIComponent("Hi Growthway! Let's talk.")}`);
-          
-          // Delay appearance slightly for a nice entrance
-          setTimeout(() => {
-            setVisible(true);
-          }, 2000);
-        }
+        const number = (data?.whatsappNumber || '917607012896').replace(/\D/g, '');
+        setWhatsappUrl(`https://wa.me/${number}?text=${encodeURIComponent("Hi Growthway! Let's talk.")}`);
+        
+        // Delay appearance slightly for a nice entrance
+        setTimeout(() => {
+          setVisible(true);
+        }, 2000);
       } catch {
-        // Silently fail, button stays hidden
+        setWhatsappUrl(`https://wa.me/917607012896?text=${encodeURIComponent("Hi Growthway! Let's talk.")}`);
+        setTimeout(() => {
+          setVisible(true);
+        }, 2000);
       }
     };
     fetchSettings();
