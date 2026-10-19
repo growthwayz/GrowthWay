@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 from pydantic_settings import BaseSettings
+from pydantic import Field
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 
@@ -30,9 +31,16 @@ class Settings(BaseSettings):
     GA_MEASUREMENT_ID: str = ''
     SITE_URL: str = ''
     AI_ENABLED: bool = False
-    AI_PROVIDER: str = ''
+    AI_PROVIDER: str = 'groq'
     AI_API_KEY: str = ''
-    AI_MODEL: str = ''
+    AI_MODEL: str = 'openai/gpt-oss-20b'
+    AI_KNOWLEDGE_PATH: str = 'app/info/Growthway_Retrieval_Knowledge_v1.1.docx'
+    AI_TOP_K: int = Field(default=5, ge=1, le=8)
+    AI_TIMEOUT_SECONDS: float = Field(default=25, ge=1, le=45)
+    AI_MAX_TOKENS: int = Field(default=2048, ge=100, le=4096)
+    AI_IP_LIMIT: int = Field(default=10, ge=1, le=120)
+    AI_SESSION_LIMIT: int = Field(default=20, ge=1, le=100)
+    AI_MAX_CONCURRENT: int = Field(default=4, ge=1, le=16)
     model_config = {'env_file': str(BACKEND_DIR / '.env'), 'extra': 'ignore'}
 
 @lru_cache()

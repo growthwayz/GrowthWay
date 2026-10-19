@@ -1,222 +1,148 @@
-/**
- * ChatWidget — Item 31 (Phase D)
- * Art-directed, designer-grade AI Concierge & Briefing Assistant.
- * Connects to /api/ai/chat and provides direct human handoff & brief generation.
- */
-
 import { useState, useEffect, useRef } from 'react';
 import api from '../../lib/api';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import './ChatWidget.css';
+import { contactReply } from './contactIntent';
 
-const INITIAL_SUGGESTIONS = [
-  'What services & disciplines do you offer?',
-  'Explain your brand strategy sprint.',
-  'What are your typical project timelines?',
-  'Help me formulate a creative brief.',
-];
+const INITIAL_SUGGESTIONS = ['What services does Growthway offer?', 'How does a project work?', 'Where is Growthway based?'];
+const CTA_LABELS = { '/contact': 'Open contact form' };
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [available, setAvailable] = useState(null);
   const [suggestions, setSuggestions] = useState(INITIAL_SUGGESTIONS);
-  const [sessionId, setSessionId] = useState('');
-
-  const messagesEndRef = useRef(null);
+  const [sessionId] = useState(() => crypto.randomUUID());
+  const [retryText, setRetryText] = useState('');
   const inputRef = useRef(null);
-  const widgetRef = useRef(null);
+  const panelRef = useRef(null);
+  const launcherRef = useRef(null);
+  const endRef = useRef(null);
+  const busyRef = useRef(false);
+  const requestRef = useRef(null);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    setSessionId(Math.random().toString(36).substring(2, 15));
-  }, []);
+    const controller = new AbortController();
+    api.get('/api/ai/status', { signal: controller.signal })
+      .then(data => { if (!controller.signal.aborted) setAvailable(data.enabled === true); })
+      .catch(() => { if (!controller.signal.aborted) setAvailable(false); });
+    return () => controller.abort();
+  }, [isOpen]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
-  };
+  useEffect(() => () => requestRef.current?.abort(), []);
 
   useEffect(() => {
-    if (isOpen) {
-      scrollToBottom();
-      setTimeout(() => inputRef.current?.focus(), 150);
-    }
-  }, [messages, isOpen, loading, reducedMotion]);
+    // Retire drafts from the removed intake feature; never restore or submit them.
+    try { window.sessionStorage.removeItem('growthway-enquiry-v2'); } catch { /* Storage may be disabled. */ }
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsOpen(false);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+    endRef.current?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
+    if (!loading) {
+      if (!inputRef.current?.disabled) inputRef.current?.focus();
+      else panelRef.current?.querySelector('button')?.focus();
+    }
+  }, [isOpen, messages, loading, reducedMotion]);
 
-  const sendMessage = async (text) => {
-    if (!text.trim()) return;
+  function close() { setIsOpen(false); launcherRef.current?.focus(); }
 
-    const newMsgs = [...messages, { role: 'user', content: text }];
-    setMessages(newMsgs);
-    setInputValue('');
-    setLoading(true);
-    setSuggestions([]);
+  function handleKeys(event) {
+    if (event.key === 'Escape') { event.preventDefault(); close(); }
+    if (event.key !== 'Tab') return;
+    const items = panelRef.current?.querySelectorAll('button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled)');
+    if (!items?.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
 
+  async function sendMessage(text, retry = false) {
+    text = text.trim();
+    if (!text || text.length > 2000 || busyRef.current) return;
+    const previous = retry ? messages.slice(0, -2) : messages;
+    const handoff = contactReply(text);
+    if (handoff) {
+      setMessages([...previous, { role: 'user', content: text }, handoff]);
+      setInputValue(''); setRetryText(''); setSuggestions([]);
+      return;
+    }
+    if (available !== true) {
+      setInputValue('');
+      setMessages([...previous, { role: 'user', content: text }, { role: 'assistant', content: 'Chat is currently unavailable. Please try again shortly.', isError: true }]);
+      return;
+    }
+    busyRef.current = true;
+    const controller = new AbortController();
+    requestRef.current = controller;
+    // Retry replaces the failed exchange rather than adding duplicate user messages.
+    const next = [...previous, { role: 'user', content: text }];
+    setMessages(next); setInputValue(''); setLoading(true); setSuggestions([]); setRetryText('');
     try {
       const res = await api.post('/api/ai/chat', {
-        sessionId,
-        message: text,
-        history: messages.slice(-5),
-      });
-
-      setMessages([...newMsgs, { role: 'assistant', content: res.reply }]);
-      if (res.suggestions && res.suggestions.length > 0) {
-        setSuggestions(res.suggestions);
-      }
-    } catch {
-      setMessages([
-        ...newMsgs,
-        {
-          role: 'assistant',
-          content: "Our concierge connection is currently resting. You can reach our founding team directly via WhatsApp or submit a project brief.",
-          isError: true,
-        },
-      ]);
+        sessionId, message: text,
+        history: previous.filter(m => !m.isError && !m.private).slice(-3).map(({ role, content }) => ({ role, content })),
+      }, { timeoutMs: 50000, signal: controller.signal });
+      if (controller.signal.aborted) return;
+      if (typeof res.reply !== 'string') throw new Error('Invalid chat response');
+      // Contact buttons are controlled by the visitor's current request, not model output.
+      setMessages([...next, { role: 'assistant', content: res.reply }]);
+      setSuggestions(Array.isArray(res.suggestions) ? res.suggestions.filter(s => typeof s === 'string' && s.length <= 120).slice(0, 3) : []);
+    } catch (error) {
+      if (controller.signal.aborted) return;
+      const content = error.status === 429 || error.status === 504
+        ? error.message
+        : 'Chat is unavailable right now. Please try again shortly.';
+      setMessages([...next, { role: 'assistant', content, isError: true }]);
+      setRetryText(text);
     } finally {
+      busyRef.current = false;
       setLoading(false);
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendMessage(inputValue);
-  };
+  }
 
   return (
-    <div className={`chat-wrapper ${isOpen ? 'is-open' : ''}`} ref={widgetRef}>
-      {/* Floating Capsule Launcher */}
-      <button
-        className={`chat-capsule-launcher ${reducedMotion ? 'reduced-motion' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? 'Close AI concierge' : 'Ask Growthway AI'}
-        aria-expanded={isOpen}
-      >
+    <div className={`chat-wrapper ${isOpen ? 'is-open' : ''}`}>
+      <button ref={launcherRef} className={`chat-capsule-launcher ${reducedMotion ? 'reduced-motion' : ''}`}
+        onClick={() => isOpen ? close() : setIsOpen(true)} aria-expanded={isOpen} aria-controls="growthway-chat"
+        aria-label={isOpen ? 'Close Growthway assistant' : 'Ask Growthway'}>
         <img src="/logo-icon.png" alt="" className="w-4 h-4 rounded-[3px] object-cover" />
-        <span className="chat-launcher-beacon" />
-        <span className="chat-launcher-label">
-          {isOpen ? 'CLOSE CONCIERGE ✕' : 'GW // AI INTEL'}
-        </span>
+        <span className="chat-launcher-beacon" /><span className="chat-launcher-label">{isOpen ? 'CLOSE ×' : 'ASK GROWTHWAY'}</span>
       </button>
-
-      {/* Designer Chat Drawer / Panel */}
-      <div className={`chat-panel ${reducedMotion ? 'reduced-motion' : ''}`} aria-hidden={!isOpen}>
-        
-        {/* Header */}
+      <div id="growthway-chat" ref={panelRef} className={`chat-panel ${reducedMotion ? 'reduced-motion' : ''}`}
+        role="dialog" aria-label="Growthway assistant" aria-hidden={!isOpen} inert={!isOpen} onKeyDown={handleKeys}>
         <div className="chat-header">
-          <div className="flex items-center gap-3">
-            <img
-              src="/logo-icon.png"
-              alt="Growth Way"
-              className="w-8 h-8 rounded-[6px] object-cover border border-white/20 shadow-sm"
-            />
-            <div>
-              <h3 className="chat-title">GW // INTELLIGENCE</h3>
-              <span className="chat-subtitle">Creative Agency Concierge · v2.6</span>
-            </div>
-          </div>
-          <button
-            className="chat-close"
-            onClick={() => setIsOpen(false)}
-            aria-label="Close concierge"
-          >
-            ✕
-          </button>
+          <div><h3 className="chat-title">Ask Growthway</h3><span className="chat-subtitle">AI company assistant</span></div>
+          <button className="chat-close" onClick={close} aria-label="Close assistant">×</button>
         </div>
-
-        {/* Message Stream */}
-        <div className="chat-body" aria-live="polite">
-          {messages.length === 0 && (
-            <div className="chat-welcome-card">
-              <div className="chat-welcome-eyebrow">
-                <span>[DIRECT ACCESS]</span>
-                <span>MUMBAI STUDIO</span>
-              </div>
-              <h4 className="chat-welcome-heading">
-                Turn your ambition into meaningful impact.
-              </h4>
-              <p className="chat-welcome-text">
-                Ask about our design systems, branding methodology, client case studies, or request guidance on framing your project brief.
-              </p>
-            </div>
-          )}
-
-          {messages.map((msg, i) => (
-            <div key={i} className={`chat-bubble-row ${msg.role}`}>
-              <div className="chat-bubble-sender">
-                {msg.role === 'assistant' ? 'GROWTHWAY INTELLIGENCE' : 'CLIENT DISPATCH'}
-              </div>
-              <div className={`chat-bubble ${msg.isError ? 'error' : ''}`}>
-                {msg.content}
-              </div>
-            </div>
-          ))}
-
-          {loading && (
-            <div className="chat-bubble-row assistant">
-              <div className="chat-bubble-sender">PROCESSING BRIEF...</div>
-              <div className="chat-bubble loading">
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-          )}
-
-          <div ref={messagesEndRef} />
+        <div className="chat-body" aria-live="polite" aria-busy={loading}>
+          {messages.length === 0 && <div className="chat-welcome-card">
+            <h4 className="chat-welcome-heading">How can we help your brand?</h4>
+            <p className="chat-welcome-text">Ask about Growthway’s services, process, or starting a project. Please avoid sharing sensitive personal information.</p>
+          </div>}
+          {available === null && <p>Checking chat availability…</p>}
+          {available === false && <p>Chat is currently unavailable. Please try again shortly.</p>}
+          {messages.map((msg, index) => <div key={index} className={`chat-bubble-row ${msg.role}`}>
+            <div className="chat-bubble-sender">{msg.role === 'assistant' ? 'GROWTHWAY' : 'YOU'}</div>
+            <div className={`chat-bubble ${msg.isError ? 'error' : ''}`}>{msg.content}</div>
+            {msg.cta && <a className="chat-shortcut-link" href={msg.cta}>{CTA_LABELS[msg.cta]}</a>}
+          </div>)}
+          {loading && <div className="chat-bubble loading" role="status" aria-label="Preparing an answer"><span /><span /><span /></div>}
+          <div ref={endRef} />
         </div>
-
-        {/* Dynamic Suggestions */}
-        {suggestions.length > 0 && (
-          <div className="chat-suggestions">
-            <span className="chat-sug-title">Suggested Inquiries:</span>
-            <div className="chat-sug-grid">
-              {suggestions.map((sug, i) => (
-                <button
-                  key={i}
-                  className="chat-suggestion-chip"
-                  onClick={() => sendMessage(sug)}
-                >
-                  <span className="chat-sug-idx">0{i + 1}</span>
-                  <span>{sug}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Input Bar & Shortcuts */}
+        {available === true && suggestions.length > 0 && <div className="chat-suggestions"><div className="chat-sug-grid">
+          {suggestions.map((suggestion, index) => <button key={suggestion} className="chat-suggestion-chip" disabled={loading}
+            onClick={() => sendMessage(suggestion)}><span className="chat-sug-idx">0{index + 1}</span><span>{suggestion}</span></button>)}
+        </div></div>}
         <div className="chat-footer">
-          <form onSubmit={handleSubmit} className="chat-form">
-            <input
-              ref={inputRef}
-              type="text"
-              className="chat-input"
-              placeholder="Ask anything about our creative work..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              disabled={loading}
-            />
-            <button
-              type="submit"
-              className="chat-send"
-              disabled={!inputValue.trim() || loading}
-              aria-label="Send query"
-            >
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </button>
+          {retryText && <button className="chat-shortcut-link" disabled={loading || available !== true} onClick={() => sendMessage(retryText, true)}>Retry last message</button>}
+          <form className="chat-form" onSubmit={event => { event.preventDefault(); sendMessage(inputValue); }}>
+            <input ref={inputRef} type="text" className="chat-input" aria-label="Message Growthway" placeholder="Ask about Growthway…"
+              value={inputValue} maxLength={2000} onChange={event => setInputValue(event.target.value)} disabled={loading} />
+            <button type="submit" className="chat-send" disabled={!inputValue.trim() || loading} aria-label="Send message">→</button>
           </form>
 
           {/* Quick Handoff Links */}
